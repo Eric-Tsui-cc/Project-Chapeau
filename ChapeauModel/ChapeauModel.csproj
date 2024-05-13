@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Employeemodel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="NewFile1.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
