@@ -15,19 +15,23 @@ namespace ChapeauModel
 
     public class Bill
     {
-        public int billId { get; set; }
+        public int BillId { get; set; }
         public decimal Amount { get; set; }
         public decimal Tip { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         public int OrderId { get; set; }
+        public DateOnly Date { get; set; }
+        public TimeOnly Time { get; set; }
         public Bill() { }
-        public Bill(int billId, decimal amount, decimal tip, PaymentMethod paymentMethod, int orderId)
+        public Bill(int BillId, decimal Amount, decimal Tip, PaymentMethod PaymentMethod, int OrderId, DateOnly Date, TimeOnly Time)
         {
-            this.billId = billId;
-            Amount = amount;
-            Tip = tip;
-            PaymentMethod = paymentMethod;
-            OrderId = orderId;
+            this.BillId = BillId;
+            this.Amount = Amount;
+            this.Tip = Tip;
+            this.PaymentMethod = PaymentMethod;
+            this.OrderId = OrderId;
+            this.Date = Date;
+            this.Time = Time;    
         }
     }
 }

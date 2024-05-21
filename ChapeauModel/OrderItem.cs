@@ -6,27 +6,25 @@ using System.Threading.Tasks;
 
 namespace ChapeauModel
 {
-    public enum StatusOfOrderitem
-    {
-        Available,
-        OutOfStock
-    }
+    public enum StatusOfOrderitem { Running, Preparing, Prepared, Servered }
+
 
     public class OrderItem
     {
-        public string dateTime { get; set; }
-        public MenuItem menuItem { get; set; }
-        public int orderId { get; set; }
-        public int count { get; set; }
-        public StatusOfOrderitem status { get; set; }
+        public DateTime OrderTime { get; set; }
+        public MenuItem MenuItemId { get; set; }
+        public int OrderId { get; set; }
+        public int Count { get; set; }
+        public StatusOfOrderitem Status { get; set; }
+
         public OrderItem() { }
-        public OrderItem(string dateTime, MenuItem menuItem, int orderId, int count, StatusOfOrderitem status)
+        public OrderItem(DateTime orderTime, MenuItem menuItemId, int orderId, int count, StatusOfOrderitem Status)
         {
-            this.dateTime = dateTime;
-            this.menuItem = menuItem;
-            this.orderId = orderId;
-            this.count = count;
-            this.status = status;
+            OrderTime = orderTime;
+            MenuItemId = menuItemId;
+            OrderId = orderId;
+            Count = count;
+            this.Status = Status;
         }
     }
 }

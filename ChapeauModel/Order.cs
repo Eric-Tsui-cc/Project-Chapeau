@@ -6,26 +6,24 @@ using System.Threading.Tasks;
 
 namespace ChapeauModel
 {
-    public enum StatusOfOrder { Running, Prepared, Server }
+    public enum StatusOfOrder { Paid,Unpaid }
     public class Order
     {   
-        public int orderId { get; set; }
-        public string tableName { get; set; }
-        public string comment { get; set; }
-        public string orderName { get; set; }
-        public StatusOfOrder status { get; set; }
-        public int employeeId {  get; set; }
+        public int OrderId { get; set; }
+        public string Comment { get; set; }
+        public int EmployeeId { get; set; }
+        public StatusOfOrder Status { get; set; }
+        public int TableId {  get; set; }
         public List<OrderItem> items { get; set; }
         public Order() { }
-        public Order(int orderId, string tableName, List<OrderItem> items, string comment, string orderName, StatusOfOrder status, int employeeId)
+        public Order(int OrderId, string Comment, int EmployeeId, StatusOfOrder Status, int TableId, List<OrderItem> items)
         {
-            this.orderId = orderId;
-            this.tableName = tableName;
+            this.OrderId = OrderId;
+            this.Comment = Comment;
+            this.EmployeeId = EmployeeId;
+            this.Status = Status;
+            this.TableId = TableId;
             this.items = items;
-            this.comment = comment;
-            this.orderName = orderName;
-            this.status = status; 
-            this.employeeId = employeeId;
         }
     }
 

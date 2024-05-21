@@ -55,9 +55,20 @@ namespace ChapeauDAL
         new SqlParameter("@EmployeeId", order.employeeId)
     };
             ExecuteEditQuery(query, sqlParameters);
+
+            foreach (OrderItem item in order.items)
+            {
+                string itemQuery = "INSERT INTO OrderItems (orderId, menuItem, count, status) VALUES (@OrderId, @MenuItem, @Count, @Status)";
+                SqlParameter[] itemParameters =
+                {
+                new SqlParameter("@OrderId", order.orderId),
+                new SqlParameter("@MenuItem", item.menuItem),
+                new SqlParameter("@Count", item.count),
+                new SqlParameter("@Status", item.status)
+            };
+                ExecuteEditQuery(itemQuery, itemParameters);
+            }
         }
-
-
 
         private List<Order> ReadOrders(DataTable dataTable)
         {
