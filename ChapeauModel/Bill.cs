@@ -19,11 +19,11 @@ namespace ChapeauModel
         public decimal Amount { get; set; }
         public decimal Tip { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
-        public int OrderId { get; set; }
+        public Order OrderId { get; set; }
         public DateOnly Date { get; set; }
         public TimeOnly Time { get; set; }
         public Bill() { }
-        public Bill(int BillId, decimal Amount, decimal Tip, PaymentMethod PaymentMethod, int OrderId, DateOnly Date, TimeOnly Time)
+        public Bill(int BillId, decimal Amount, decimal Tip, PaymentMethod PaymentMethod, Order OrderId, DateOnly Date, TimeOnly Time)
         {
             this.BillId = BillId;
             this.Amount = Amount;

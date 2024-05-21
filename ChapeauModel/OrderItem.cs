@@ -13,17 +13,17 @@ namespace ChapeauModel
     {
         public DateTime OrderTime { get; set; }
         public MenuItem MenuItemId { get; set; }
-        public int OrderId { get; set; }
+        public Order OrderId { get; set; }
         public int Count { get; set; }
         public StatusOfOrderitem Status { get; set; }
 
         public OrderItem() { }
-        public OrderItem(DateTime orderTime, MenuItem menuItemId, int orderId, int count, StatusOfOrderitem Status)
+        public OrderItem(DateTime OrderTime, MenuItem MenuItemId, Order OrderId, int Count, StatusOfOrderitem Status)
         {
-            OrderTime = orderTime;
-            MenuItemId = menuItemId;
-            OrderId = orderId;
-            Count = count;
+            this.OrderTime = OrderTime;
+            this.MenuItemId = MenuItemId;
+            this.OrderId = OrderId;
+            this.Count = Count;
             this.Status = Status;
         }
     }
