@@ -26,15 +26,16 @@ namespace ChapeauModel
         public Card Card { get; set; }
         public decimal Price { get; set; }
         public int Stock { get; set; }
+        public MenuItem() { }
 
-        public MenuItem(int menuItemId, string name, Category category, Card card, decimal price, int stock)
+        public MenuItem(int MenuItemId, string Name, Category Category, Card Card, decimal Price, int Stock)
         {
-            MenuItemId = menuItemId;
-            Name = name;
-            Category = category;
-            Card = card;
-            Price = price;
-            Stock = stock;
+            this.MenuItemId = MenuItemId;
+            this.Name = Name;
+            this.Category = Category;
+            this.Card = Card;
+            this.Price = Price;
+            this.Stock = Stock;
         }
     }
 }

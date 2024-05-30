@@ -18,38 +18,43 @@ namespace ChapeauDAL
             SqlParameter[] sqlParameters = new SqlParameter[0];
             return ReadOrders(ExecuteSelectQuery(query, sqlParameters));
         }
-        public Order GetOrderInfo(int orderId)
+        private List<Order> ReadOrders(DataTable dataTable)
         {
-            string query = "SELECT orderId, tableId, status, employeeId FROM Orders WHERE orderId = @OrderId";
-            SqlParameter[] sqlParameters = { new SqlParameter("@OrderId", orderId) };
-            DataTable resultTable = ExecuteSelectQuery(query, sqlParameters);
+            List<Order> orders = new List<Order>();
 
-            if (resultTable.Rows.Count == 1)
+            foreach (DataRow dr in dataTable.Rows)
             {
-                DataRow dr = resultTable.Rows[0];
+                int orderId = Convert.ToInt32(dr["OrderId"]);
+                int employeeId = Convert.ToInt32(dr["EmployeeId"]);
+                int tableId = Convert.ToInt32(dr["TableId"]);
+
+                Employee employee = GetEmployeeById(employeeId);
+                Table table = GetTableById(tableId);
+                List<OrderItem> items = GetOrderItemsByOrderId(orderId);
+
                 Order order = new Order()
                 {
-                    orderId = (int)dr["orderId"],
-                    tableId = (int)dr["tableId"],
-                    status = (StatusOfOrder)Enum.Parse(typeof(StatusOfOrder), dr["status"].ToString()),
-                    employeeId = (int)dr["employeeId"]
+                    OrderId = orderId,
+                    EmployeeId = employee,
+                    Status = (StatusOfOrder)Enum.Parse(typeof(StatusOfOrder), dr["Status"].ToString()),
+                    TableId = table,
+                    items = items
                 };
-                return order;
+                orders.Add(order);
             }
-            else
-            {
-                return null;
-            }
+            return orders;
         }
+
+
         public void CreateOrder(Order order)
         {
             string query = "INSERT INTO Orders (orderId, tableId, status, employeeId) VALUES (@OrderId, @TableId, @Status, @EmployeeId)";
             SqlParameter[] sqlParameters =
             {
-                new SqlParameter("@OrderId", order.orderId),
-                new SqlParameter("@TableId", order.tableId),
-                new SqlParameter("@Status", order.status),
-                new SqlParameter("@EmployeeId", order.employeeId)
+                new SqlParameter("@OrderId", order.OrderId),
+                new SqlParameter("@TableId", order.TableId),
+                new SqlParameter("@Status", order.Status),
+                new SqlParameter("@EmployeeId", order.EmployeeId)
             };
             ExecuteEditQuery(query, sqlParameters);
 
@@ -58,32 +63,17 @@ namespace ChapeauDAL
                 string itemQuery = "INSERT INTO OrderItems (orderId, menuItem, count, status) VALUES (@OrderId, @MenuItem, @Count, @Status)";
                 SqlParameter[] itemParameters =
                 {
-                new SqlParameter("@OrderId", order.orderId),
-                new SqlParameter("@MenuItem", item.menuItem),
-                new SqlParameter("@Count", item.count),
-                new SqlParameter("@Status", item.status)
+                new SqlParameter("@OrderId", order.OrderId),
+                new SqlParameter("@MenuItem", item.MenuItemId),
+                new SqlParameter("@Count", item.Count),
+                new SqlParameter("@Status", item.Status)
             };
                 ExecuteEditQuery(itemQuery, itemParameters);
             }
         }
 
-        private List<Order> ReadOrders(DataTable dataTable)
-        {
-            List<Order> orders = new List<Order>();
+        
 
-            foreach (DataRow dr in dataTable.Rows)
-            {
-                Order order = new Order()
-                {
-                    orderId = (int)dr["orderId"],
-                    tableId = dr["tableId"],
-                    status = (StatusOfOrder)Enum.Parse(typeof(StatusOfOrder), dr["status"].ToString()),
-                    employeeId = (int)dr["employeeId"]
-                };
-                orders.Add(order);
-            }
-            return orders;
-        }
 
     }
 }
