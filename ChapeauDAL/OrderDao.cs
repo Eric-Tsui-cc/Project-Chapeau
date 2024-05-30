@@ -44,6 +44,40 @@ namespace ChapeauDAL
             }
             return orders;
         }
+        public Order GetOrderById(int orderId)
+        {
+            Order order = null;
+            string query = "SELECT * FROM Orders WHERE OrderId = @OrderId;";
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@OrderId", orderId)
+            };
+
+            DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                DataRow row = dataTable.Rows[0];
+
+                int employeeId = Convert.ToInt32(row["EmployeeId"]);
+                int tableId = Convert.ToInt32(row["TableId"]);
+
+                Employee employee = GetEmployeeById(employeeId);
+                Table table = GetTableById(tableId);
+                List<OrderItem> items = GetOrderItemsByOrderId(orderId);
+
+                order = new Order
+                {
+                    OrderId = orderId,
+                    EmployeeId = employee,
+                    Status = (StatusOfOrder)Enum.Parse(typeof(StatusOfOrder), row["Status"].ToString()),
+                    TableId = table,
+                    items = items
+                };
+            }
+
+            return order;
+        }
 
 
         public void CreateOrder(Order order)
