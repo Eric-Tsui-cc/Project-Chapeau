@@ -60,7 +60,7 @@ namespace ChapeauDAL
         public Order GetOrderById(int orderId)
         {
             Order order = null;
-            string query = "SELECT * FROM Orders WHERE OrderId = @OrderId;";
+            string query = "SELECT * FROM [ORDER] WHERE OrderId = @OrderId;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@OrderId", orderId)

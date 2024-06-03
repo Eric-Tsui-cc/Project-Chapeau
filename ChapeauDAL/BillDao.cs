@@ -10,8 +10,10 @@ using System.Threading.Tasks;
 
 namespace ChapeauDAL
 {
+    
     public class BillDao : BaseDao
     {
+        private readonly OrderDao _orderDao = new OrderDao();
         // Retrieve all bills from the database
         public List<Bill> GetAllBills()
         {
@@ -59,15 +61,17 @@ namespace ChapeauDAL
 
             foreach (DataRow dr in dataTable.Rows)
             {
+                int orderId = (int)dr["OrderId"];
+                Order order = _orderDao.GetOrderById(orderId);
                 Bill bill = new Bill()
                 {
                     BillId = (int)dr["BillId"],
-                    OrderId = (Order)dr["OrderId"],
-                    Amount = (double)dr["Amount"],
-                    Tip = (double)dr["Tip"],
+                    OrderId = order,
+                    Amount = (decimal)dr["Amount"],
+                    Tip = (decimal)dr["Tip"],
                     PaymentMethod = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), dr["PaymentMethod"].ToString()),
-                    Date = DateOnly.FromDateTime((DateTime)dr["Date"]),
-                    Time = TimeOnly.FromDateTime((DateTime)dr["Time"]),
+                    Date = (DateTime)dr["Date"], 
+                    Time = (TimeSpan)dr["Time"], 
                     Feedback = dr["Feedback"].ToString()
                 };
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChapeauModel
 {
-    public enum StatusOfOrder { Paid,Unpaid }
+    public enum StatusOfOrder { Running, Preparing, Prepared, Served }
     public class Order
     {   
         public int OrderId { get; set; }

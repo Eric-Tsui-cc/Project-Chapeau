@@ -12,17 +12,17 @@ namespace ChapeauUI
         public ChapeauUI()
         {
             InitializeComponent();
-            List<Order> orders = GetOrders();
-            label1.Text = orders[0].OrderId.ToString();
-            label2.Text = orders[0].TableId.TableId.ToString();
+            Bill bill = GetBillbyId(9);
+            label1.Text = bill.Amount.ToString();
+            label2.Text = bill.Tip.ToString();
 
         }
-        private List<Order> GetOrders()
+        private Bill GetBillbyId(int id)
         {
 
-            OrderService orderService = new OrderService();
-            List<Order> orders = orderService.GetOrders();
-            return orders;
+            BillDao billDao = new BillDao();
+            Bill bill = billDao.GetBillById(id);
+            return bill;
 
         }
     }
