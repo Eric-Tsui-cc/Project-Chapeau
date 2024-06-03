@@ -12,6 +12,9 @@ namespace ChapeauDAL
 {
     public class OrderDao : BaseDao
     {
+        private readonly TableDao _tableDao;
+        private readonly OrderItemDao _orderItemDao;
+        private readonly EmployeeDao _employeeDao;
         public List<Order> GetAllOrders()
         {
             string query = "SELECT orderId, tableId, status, employeeId FROM Orders";
@@ -28,9 +31,9 @@ namespace ChapeauDAL
                 int employeeId = Convert.ToInt32(dr["EmployeeId"]);
                 int tableId = Convert.ToInt32(dr["TableId"]);
 
-                Employee employee = GetEmployeeById(employeeId);
-                Table table = GetTableById(tableId);
-                List<OrderItem> items = GetOrderItemsByOrderId(orderId);
+                Employee employee = _employeeDao.GetEmployeeById(employeeId);
+                Table table = _tableDao.GetTableById(tableId);
+                List<OrderItem> items = _orderItemDao.GetOrderItemsByOrderId(orderId);
 
                 Order order = new Order()
                 {
@@ -62,9 +65,9 @@ namespace ChapeauDAL
                 int employeeId = Convert.ToInt32(row["EmployeeId"]);
                 int tableId = Convert.ToInt32(row["TableId"]);
 
-                Employee employee = GetEmployeeById(employeeId);
-                Table table = GetTableById(tableId);
-                List<OrderItem> items = GetOrderItemsByOrderId(orderId);
+                Employee employee = _employeeDao.GetEmployeeById(employeeId);
+                Table table = _tableDao.GetTableById(tableId);
+                List<OrderItem> items = _orderItemDao.GetOrderItemsByOrderId(orderId);
 
                 order = new Order
                 {

@@ -14,13 +14,13 @@ namespace ChapeauModel
     public class Table
     {
         public int TableId { get; set; }
-        public string TableNr { get; set; }
+        public int TableNumber { get; set; }
         public StatusOfTable Status { get; set; }
         public Table() { }
-        public Table(int TableId, string TableNr, StatusOfTable Status)
+        public Table(int TableId, int TableNumber, StatusOfTable Status)
         {
             this.TableId = TableId;
-            this.TableNr = TableNr;
+            this.TableNumber = TableNumber;
             this.Status = Status;
         }
     }

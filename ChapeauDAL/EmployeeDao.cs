@@ -11,13 +11,50 @@ namespace ChapeauDAL
 {
     public class EmployeeDao:BaseDao
     {
-        public Table GetTableById(int tableId)
+        public void CreateEmployee(Employee employee)
         {
-            Table table = null;
-            string query = "SELECT * FROM Tables WHERE TableId = @TableId;";
+            string query = "INSERT INTO Employee (EmployeeId, Username, Password, Status) VALUES (@EmployeeId, @Username, @Password, @Status)";
+            SqlParameter[] sqlParameters =
+            {
+            new SqlParameter("@EmployeeId", employee.EmployeeId),
+            new SqlParameter("@Username", employee.Username),
+            new SqlParameter("@Password", employee.Password),
+            new SqlParameter("@Status", employee.Status.ToString())  // Convert enum to string
+    };
+            ExecuteEditQuery(query, sqlParameters);
+        }
+        public void UpdateEmployee(Employee employee)
+        {
+            string query = "UPDATE Employee " +
+                           "SET Username=@Username, Password=@Password, Status=@Status " +
+                           "WHERE EmployeeId=@EmployeeId;";
+            SqlParameter[] sqlParameters =
+            {
+            new SqlParameter("@EmployeeId", employee.EmployeeId),
+            new SqlParameter("@Username", employee.Username),
+            new SqlParameter("@Password", employee.Password),
+            new SqlParameter("@Status", employee.Status.ToString())  // Convert enum to string
+    };
+            ExecuteEditQuery(query, sqlParameters);
+        }
+
+        public void DeleteEmployee(Employee employee)
+        {
+            string query = "DELETE FROM Employee WHERE EmployeeId=@EmployeeId;";
+            SqlParameter[] sqlParameters =
+            {
+            new SqlParameter("@EmployeeId", employee.EmployeeId)
+    };
+            ExecuteEditQuery(query, sqlParameters);
+        }
+
+        public Employee GetEmployeeById(int employeeId)
+        {
+            Employee employee = null;
+            string query = "SELECT * FROM Employees WHERE EmployeeId = @EmployeeId;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@TableId", tableId)
+                new SqlParameter("@EmployeeId", employeeId)
             };
 
             DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
@@ -25,15 +62,16 @@ namespace ChapeauDAL
             if (dataTable.Rows.Count > 0)
             {
                 DataRow row = dataTable.Rows[0];
-                table = new Table
+                employee = new Employee
                 {
-                    TableId = Convert.ToInt32(row["TableId"]),
-                    TableNr = row["TableNr"].ToString(),
-                    Status = (StatusOfTable)Enum.Parse(typeof(StatusOfTable), row["Status"].ToString())
+                    EmployeeId = Convert.ToInt32(row["EmployeeId"]),
+                    Username = row["Username"].ToString(),
+                    Password = row["Password"].ToString(),
+                    Status = (EmployeeStatus)Enum.Parse(typeof(EmployeeStatus), row["Status"].ToString())
                 };
             }
 
-            return table;
+            return employee;
         }
     }
 }

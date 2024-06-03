@@ -132,31 +132,22 @@ namespace ChapeauDAL
 
             return dataTable;
         }
-       
-        public Employee GetEmployeeById(int employeeId)
+        public void DeleteOrder(Order order)
         {
-            Employee employee = null;
-            string query = "SELECT * FROM Employees WHERE EmployeeId = @EmployeeId;";
-            SqlParameter[] sqlParameters = new SqlParameter[]
+            string query = "DELETE FROM [Order] WHERE OrderId=@OrderId;";
+            SqlParameter[] sqlParameters =
             {
-                new SqlParameter("@EmployeeId", employeeId)
-            };
+                new SqlParameter("@OrderId", order.OrderId)
+    };
+            ExecuteEditQuery(query, sqlParameters);
 
-            DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
-
-            if (dataTable.Rows.Count > 0)
+            string deleteItemQuery = "DELETE FROM OrderItem WHERE OrderId=@OrderId;";
+            SqlParameter[] deleteItemParameters =
             {
-                DataRow row = dataTable.Rows[0];
-                employee = new Employee
-                {
-                    EmployeeId = Convert.ToInt32(row["EmployeeId"]),
-                    Username = row["Username"].ToString(),
-                    Password = row["Password"].ToString(),
-                    Status = (EmployeeStatus)Enum.Parse(typeof(EmployeeStatus), row["Status"].ToString())
-                };
-            }
-
-            return employee;
+                new SqlParameter("@OrderId", order.OrderId)
+    };
+            ExecuteEditQuery(deleteItemQuery, deleteItemParameters);
         }
+
     }
 }
