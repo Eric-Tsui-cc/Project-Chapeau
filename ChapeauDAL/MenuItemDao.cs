@@ -38,5 +38,46 @@ namespace ChapeauDAL
 
             return menuItem;
         }
+        public void CreateMenuItem(MenuItem menuItem)
+        {
+            string query = "INSERT INTO MenuItem (MenuItemId, Name, Category, Card, Price, Stock) VALUES (@MenuItemId, @Name, @Category, @Card, @Price, @Stock)";
+            SqlParameter[] sqlParameters =
+            {
+            new SqlParameter("@MenuItemId", menuItem.MenuItemId),
+            new SqlParameter("@Name", menuItem.Name),
+            new SqlParameter("@Category", menuItem.Category.ToString()),  
+            new SqlParameter("@Card", menuItem.Card.ToString()),  
+            new SqlParameter("@Price", menuItem.Price),
+            new SqlParameter("@Stock", menuItem.Stock)
+        };
+            ExecuteEditQuery(query, sqlParameters);
+        }
+
+        public void UpdateMenuItem(MenuItem menuItem)
+        {
+            string query = "UPDATE MenuItem " +
+                           "SET Name=@Name, Category=@Category, Card=@Card, Price=@Price, Stock=@Stock " +
+                           "WHERE MenuItemId=@MenuItemId;";
+            SqlParameter[] sqlParameters =
+            {
+            new SqlParameter("@MenuItemId", menuItem.MenuItemId),
+            new SqlParameter("@Name", menuItem.Name),
+            new SqlParameter("@Category", menuItem.Category.ToString()),  
+            new SqlParameter("@Card", menuItem.Card.ToString()),  
+            new SqlParameter("@Price", menuItem.Price),
+            new SqlParameter("@Stock", menuItem.Stock)
+        };
+            ExecuteEditQuery(query, sqlParameters);
+        }
+
+        public void DeleteMenuItem(int menuItemId)
+        {
+            string query = "DELETE FROM MenuItem WHERE MenuItemId=@MenuItemId;";
+            SqlParameter[] sqlParameters =
+            {
+            new SqlParameter("@MenuItemId", menuItemId)
+        };
+            ExecuteEditQuery(query, sqlParameters);
+        }
     }
 }
