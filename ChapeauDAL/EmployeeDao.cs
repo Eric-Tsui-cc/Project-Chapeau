@@ -51,7 +51,7 @@ namespace ChapeauDAL
         public Employee GetEmployeeById(int employeeId)
         {
             Employee employee = null;
-            string query = "SELECT * FROM Employees WHERE EmployeeId = @EmployeeId;";
+            string query = "SELECT * FROM EMPLOYEE WHERE EmployeeId = @EmployeeId;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@EmployeeId", employeeId)

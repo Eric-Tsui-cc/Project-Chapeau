@@ -12,4 +12,9 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ChapeauDAL\ChapeauDAL.csproj" />
+    <ProjectReference Include="..\ChapeauService\ChapeauService.csproj" />
+  </ItemGroup>
+
 </Project>

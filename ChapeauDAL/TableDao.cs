@@ -14,7 +14,7 @@ namespace ChapeauDAL
         public Table GetTableById(int tableId)
         {
             Table table = null;
-            string query = "SELECT * FROM Tables WHERE TableId = @TableId;";
+            string query = "SELECT * FROM [TABLE] WHERE TableId = @TableId;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@TableId", tableId)
@@ -37,7 +37,7 @@ namespace ChapeauDAL
         }
         public List<Table> GetAllTables()
         {
-            string query = "SELECT TableId, Status,TableNumber FROM TABLE";
+            string query = "SELECT TableId, Status,TableNumber FROM [TABLE]";
             SqlParameter[] sqlParameters = new SqlParameter[0];
             return ReadTables(ExecuteSelectQuery(query, sqlParameters));
         }

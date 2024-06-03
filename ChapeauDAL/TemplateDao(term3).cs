@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System;
 using ChapeauDAL;
-using ChapeauModel;
+using Models;
 
 namespace ChapeauDAL
 {                                                        //Just for references, delete this when the project finish.

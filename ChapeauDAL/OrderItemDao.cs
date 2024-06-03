@@ -16,12 +16,12 @@ namespace ChapeauDAL
         public OrderItem GetOrderItemByMenuItemID(int menuItemId)
         {
             OrderItem orderItem = null;
-            string query = "SELECT * FROM OrderItems WHERE MenuItemId = @MenuItemId;";
+            string query = "SELECT * FROM [ORDER_ITEM] WHERE MenuItemId = @MenuItemId;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@MenuItemId", menuItemId)
             };
-
+            
             DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
 
             if (dataTable.Rows.Count > 0)
@@ -48,7 +48,7 @@ namespace ChapeauDAL
         public List<OrderItem> GetOrderItemsByOrderId(int orderId)
         {
             List<OrderItem> orderItems = new List<OrderItem>();
-            string query = "SELECT * FROM OrderItems WHERE OrderId = @OrderId;";
+            string query = "SELECT * FROM [ORDER_ITEM] WHERE OrderId = @OrderId;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
         new SqlParameter("@OrderId", orderId)

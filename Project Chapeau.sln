@@ -5,13 +5,13 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChapeauDAL", "ChapeauDAL\ChapeauDAL.csproj", "{5AB0A04B-8DAE-4BBE-9683-B151DB0F073D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChapeauModel", "ChapeauModel\ChapeauModel.csproj", "{FB7422E4-8751-4F60-AE79-30D603A5EA22}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChapeauService", "ChapeauService\ChapeauService.csproj", "{888F19B3-3FA6-4171-B265-11FC03F0A4FB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChapeauUI", "ChapeauUI\ChapeauUI.csproj", "{4541D0BC-65AC-40E4-8407-22972C1532A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTester", "ConsoleTester\ConsoleTester.csproj", "{AB645C0C-AB65-475A-9215-E69906D909A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTester", "ConsoleTester\ConsoleTester.csproj", "{AB645C0C-AB65-475A-9215-E69906D909A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChapeauModel", "ChapeauModel\ChapeauModel.csproj", "{8E363E38-EF2C-4607-AC82-C83AF2A0B5D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{5AB0A04B-8DAE-4BBE-9683-B151DB0F073D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AB0A04B-8DAE-4BBE-9683-B151DB0F073D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AB0A04B-8DAE-4BBE-9683-B151DB0F073D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB7422E4-8751-4F60-AE79-30D603A5EA22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB7422E4-8751-4F60-AE79-30D603A5EA22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB7422E4-8751-4F60-AE79-30D603A5EA22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB7422E4-8751-4F60-AE79-30D603A5EA22}.Release|Any CPU.Build.0 = Release|Any CPU
 		{888F19B3-3FA6-4171-B265-11FC03F0A4FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{888F19B3-3FA6-4171-B265-11FC03F0A4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{888F19B3-3FA6-4171-B265-11FC03F0A4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{AB645C0C-AB65-475A-9215-E69906D909A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB645C0C-AB65-475A-9215-E69906D909A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB645C0C-AB65-475A-9215-E69906D909A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E363E38-EF2C-4607-AC82-C83AF2A0B5D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E363E38-EF2C-4607-AC82-C83AF2A0B5D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E363E38-EF2C-4607-AC82-C83AF2A0B5D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E363E38-EF2C-4607-AC82-C83AF2A0B5D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

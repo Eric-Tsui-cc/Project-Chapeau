@@ -12,12 +12,12 @@ namespace ChapeauDAL
 {
     public class OrderDao : BaseDao
     {
-        private readonly TableDao _tableDao;
-        private readonly OrderItemDao _orderItemDao;
-        private readonly EmployeeDao _employeeDao;
+        private readonly TableDao _tableDao = new TableDao();
+        private readonly OrderItemDao _orderItemDao = new OrderItemDao();
+        private readonly EmployeeDao _employeeDao = new EmployeeDao();
         public List<Order> GetAllOrders()
         {
-            string query = "SELECT orderId, tableId, status, employeeId FROM Orders";
+            string query = "SELECT orderId, tableId, status, employeeId FROM [ORDER]";
             SqlParameter[] sqlParameters = new SqlParameter[0];
             return ReadOrders(ExecuteSelectQuery(query, sqlParameters));
         }
@@ -35,11 +35,21 @@ namespace ChapeauDAL
                 Table table = _tableDao.GetTableById(tableId);
                 List<OrderItem> items = _orderItemDao.GetOrderItemsByOrderId(orderId);
 
+                string statusString = dr["Status"].ToString();
+                StatusOfOrder status;
+                if (Enum.IsDefined(typeof(StatusOfOrder), statusString))
+                {
+                    status = (StatusOfOrder)Enum.Parse(typeof(StatusOfOrder), statusString);
+                }
+                else
+                {
+                    status = StatusOfOrder.Running;
+                }
                 Order order = new Order()
                 {
                     OrderId = orderId,
                     EmployeeId = employee,
-                    Status = (StatusOfOrder)Enum.Parse(typeof(StatusOfOrder), dr["Status"].ToString()),
+                    Status = status,
                     TableId = table,
                     items = items
                 };

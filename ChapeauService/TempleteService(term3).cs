@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using ChapeauDAL;
-using ChapeauModel;
+using Models;
 
 namespace SomerenService
 {                                                                          //for reference only, delete this when the project finish.
