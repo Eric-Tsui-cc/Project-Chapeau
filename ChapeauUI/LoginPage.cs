@@ -46,11 +46,9 @@ namespace ChapeauUI
             }
             else if (employee.Role == EmployeeRole.Chef)
             {
+
             }
-            else
-            {
-                throw new Exception("Employee role is not defined! Please contact the manager!");
-            }
+
         }
 
 
@@ -65,7 +63,7 @@ namespace ChapeauUI
             // show new form, which needs to be open
             newForm.ShowDialog();
 
-            // close previous form (LoginUI), so it's not running in the background
+            // close previous form (LoginPage), so it's not running in the background
             activeForm.Close();
         }
 
@@ -74,10 +72,10 @@ namespace ChapeauUI
             IfCorrectChecker hashCheckAndGetEmployee = new IfCorrectChecker();
             string UCode = userCodeTextBox.Text;
 
-            if (UCode == null)
+            if (UCode == "")
             {
                 wrongUCLabel.Visible = true;
-                wrongUCLabel.Text = "No User Code Written";
+                wrongUCLabel.Text = "No User Code Entered";
             }
             else if (hashCheckAndGetEmployee.IsCorrectPassword(UCode) == false)
             {
@@ -91,24 +89,5 @@ namespace ChapeauUI
             }
         }
 
-        private void wrongUCLabel_Click(object sender, EventArgs e)
-        {
-            string UCode = userCodeTextBox.Text;
-
-            if (UCode == "1111")
-            {
-                wrongUCLabel.Visible = true;
-                wrongUCLabel.Text = "No User Code Written";
-            }
-            else
-            {
-
-            }
-        }
-
-        private void wrongUCLabel_Click_1(object sender, EventArgs e)
-        {
-
-        }
     }
 }

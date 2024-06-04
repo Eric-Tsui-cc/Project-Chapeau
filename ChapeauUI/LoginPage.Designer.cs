@@ -59,7 +59,6 @@
             wrongUCLabel.TabIndex = 2;
             wrongUCLabel.Text = "Wrong User Code";
             wrongUCLabel.Visible = false;
-            wrongUCLabel.Click += wrongUCLabel_Click_1;
             // 
             // userCodeTextBox
             // 

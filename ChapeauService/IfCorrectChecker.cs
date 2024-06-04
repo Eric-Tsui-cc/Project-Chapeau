@@ -36,6 +36,7 @@ namespace ChapeauService
             return passwordMatch;
         }
 
+
         private string HashUserCode(string userCode)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -48,6 +49,12 @@ namespace ChapeauService
                 }
                 return builder.ToString();
             }
+        }
+
+
+        public void AddNewEmployee(Employee employee, string rawPassword)
+        {
+            employeeDb.AddEmployee(employee, rawPassword);
         }
         public Employee GetEmployeeByHashedUC(string inputUserCode)
         {

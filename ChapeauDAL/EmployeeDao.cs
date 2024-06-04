@@ -1,38 +1,33 @@
 ﻿using ChapeauModel;
+using System.Security.Cryptography;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
 
 namespace ChapeauDAL
 {
     public class EmployeeDao : BaseDao
-
     {
-        public List<Employee> GetAllEployees()
+        public List<Employee> GetAllEmployees()
         {
-            string query = "SELECT EmployeeId,UserCode, Role,Status, LastName, FirstName FROM EMPLOYEE";
+            string query = "SELECT EmployeeId, UserCode, Role, Status, LastName, FirstName FROM EMPLOYEE";
             SqlParameter[] sqlParameters = new SqlParameter[0];
             return ReadAllEmployees(ExecuteSelectQuery(query, sqlParameters));
         }
-        public Employee ReadEmployee(DataTable dataTable)
+
+        private Employee ReadEmployee(DataRow row)
         {
-            DataRow row = dataTable.Rows[0];
-            Employee employee = new Employee()
+            return new Employee()
             {
                 EmployeeId = Convert.ToInt32(row["EmployeeId"]),
                 UserCode = row["UserCode"].ToString(),
                 FirstName = row["FirstName"].ToString(),
                 LastName = row["LastName"].ToString(),
                 role = row["Role"].ToString(),
-                status = row["Status"].ToString(),
-
+                status = row["Status"].ToString()
             };
-            return employee;
         }
 
         private List<Employee> ReadAllEmployees(DataTable dataTable)
@@ -41,97 +36,96 @@ namespace ChapeauDAL
 
             foreach (DataRow dr in dataTable.Rows)
             {
-                Employee employee = new Employee();
-
-                employees.Add(ReadEmployee(dataTable));
+                employees.Add(ReadEmployee(dr));
             }
             return employees;
         }
 
-        public Employee GetEmployeeByHashedUC(string UserCode)
+        public Employee GetEmployeeByHashedUC(string userCode)
         {
-            Employee employee = new Employee();
-
-            string query = "SELECT EmployeeId, FirstName, LastName, Role, Status, UserCode, FROM [EMPLOYEE] WHERE UserCode = @UserCode";
-            // prevents from SQL injection
+            string query = "SELECT EmployeeId, FirstName, LastName, Role, Status, UserCode FROM [EMPLOYEE] WHERE UserCode = @UserCode";
             SqlParameter[] sqlParameters = new SqlParameter[1]
             {
-                new SqlParameter("@UserCode", UserCode)
+                new SqlParameter("@UserCode", userCode)
             };
             DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
-            // if no records found based on the username - user with given username doesn't exist
+
             if (dataTable.Rows.Count == 0)
             {
                 return null;
             }
             else
             {
-                return ReadEmployee(dataTable);
+                return ReadEmployee(dataTable.Rows[0]);
             }
         }
 
-        public Employee GetByEmployeeId(int EmployeeId)
+        public Employee GetByEmployeeId(int employeeId)
         {
-            Employee employee = null;
-            string query = "SELECT * FROM TABLE WHERE OrderId = @Id;";
+            string query = "SELECT * FROM EMPLOYEE WHERE EmployeeId = @Id;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-        new SqlParameter("@Id", employee.EmployeeId)
+                new SqlParameter("@Id", employeeId)
             };
-
             DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
-            // if no records found based on the username - user with given username doesn't exist
+
             if (dataTable.Rows.Count == 0)
             {
                 return null;
             }
             else
             {
-                return ReadEmployee(dataTable);
+                return ReadEmployee(dataTable.Rows[0]);
             }
-
         }
 
         public void ChangeEmployeeStatus(Employee employee)
         {
-            string query = "UPDATE EMPLOYEE " +
-                "SET Status = @Status" +
-                "WHERE EmployeeId=@id ";
-            SqlParameter[] sqlParameters =
+            string query = "UPDATE EMPLOYEE SET Status = @Status WHERE EmployeeId = @Id";
+            SqlParameter[] sqlParameters = new SqlParameter[]
             {
-
-        new SqlParameter("@id", employee.EmployeeId),
-        new SqlParameter("@Status", employee.Status),
-
-        };
+                new SqlParameter("@Id", employee.EmployeeId),
+                new SqlParameter("@Status", employee.Status)
+            };
             ExecuteEditQuery(query, sqlParameters);
         }
 
         public void DeleteEmployee(Employee employee)
         {
-            string query = "DELETE FROM EMPLOYEE WHERE EmployeeId=@id;";
+            string query = "DELETE FROM EMPLOYEE WHERE EmployeeId = @Id;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-            new SqlParameter("@id", employee.EmployeeId)
+                new SqlParameter("@Id", employee.EmployeeId)
             };
             ExecuteEditQuery(query, sqlParameters);
         }
-        public void AddEmployee(Employee employee)
+        private string HashUserCode(string userCode)
         {
-            string query = "INSERT INTO  EMPLOYEE (EmployeeId, Status, UserCode, Role, FirstName, LastName)" +
-                " VALUES (@EmployeeId, @Status, @UserCode, @Role, @FirstName, @LastName);";
-            SqlParameter[] sqlParameters =
+            using (SHA256 sha256 = SHA256.Create())
             {
-            new SqlParameter("@EmployeeId", employee.EmployeeId),
-            new SqlParameter("@Status", employee.Status),
-            new SqlParameter("@Role", employee.Role),
-            new SqlParameter("@UserCode", employee.UserCode),
-            new SqlParameter("@FirstName", employee.FirstName),
-            new SqlParameter("@LastName", employee.LastName)
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(userCode));
+                StringBuilder builder = new StringBuilder();
+                foreach (byte b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+        public void AddEmployee(Employee employee, string rawUserCode)
+        {
+            string hashedPassword = HashUserCode(rawUserCode);
 
-        };
+            string query = "INSERT INTO EMPLOYEE ( Status, UserCode, Role, FirstName, LastName) VALUES ( @Status, @UserCode, @Role, @FirstName, @LastName);";
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@Status", employee.status),
+                new SqlParameter("@UserCode", hashedPassword),
+                new SqlParameter("@Role", employee.role),
+                new SqlParameter("@FirstName", employee.FirstName),
+                new SqlParameter("@LastName", employee.LastName)
+            };
             ExecuteEditQuery(query, sqlParameters);
         }
     }
 }
-
