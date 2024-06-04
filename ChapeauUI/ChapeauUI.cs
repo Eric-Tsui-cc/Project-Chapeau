@@ -1,10 +1,6 @@
 using ChapeauDAL;
 using ChapeauModel;
 using ChapeauService;
-using SomerenService;
-
-using ChapeauModel;
-
 namespace ChapeauUI
 
 {
@@ -12,8 +8,8 @@ namespace ChapeauUI
     {
 
         public ChapeauUI()
-        public ChapeauUI(Employee employee)
-        {
+        {   
+
             InitializeComponent();
             Bill bill = GetBillbyId(9);
             label1.Text = bill.Amount.ToString();
@@ -22,13 +18,9 @@ namespace ChapeauUI
         }
         private Bill GetBillbyId(int id)
         {
-
             BillDao billDao = new BillDao();
             Bill bill = billDao.GetBillById(id);
             return bill;
-
         }
-
-
     }
 }

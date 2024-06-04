@@ -1,6 +1,6 @@
 ﻿namespace ChapeauUI
 {
-    partial class Bill
+    partial class BillForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Bill));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BillForm));
             label1 = new Label();
             pictureBox1 = new PictureBox();
             pnlReceipt = new Panel();
