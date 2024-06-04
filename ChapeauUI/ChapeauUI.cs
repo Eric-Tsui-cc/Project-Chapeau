@@ -1,8 +1,10 @@
+using ChapeauModel;
+
 namespace ChapeauUI
 {
     public partial class ChapeauUI : Form
     {
-        public ChapeauUI()
+        public ChapeauUI(Employee employee)
         {
             InitializeComponent();
         }
