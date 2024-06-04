@@ -30,6 +30,8 @@ namespace ChapeauUI
                 MessageBox.Show(error.Message);
             }
         }
+
+
         // opens UI based on the role of employee which is logging in
 
         private void OpenFormBasedOnTheRole(Employee employee)
@@ -50,9 +52,6 @@ namespace ChapeauUI
             }
 
         }
-
-
-
 
         private void OpenUI(Form newForm)
         {
@@ -77,13 +76,13 @@ namespace ChapeauUI
                 wrongUCLabel.Visible = true;
                 wrongUCLabel.Text = "No User Code Entered";
             }
-            else if (hashCheckAndGetEmployee.IsCorrectPassword(UCode) == false)
+            else if (hashCheckAndGetEmployee.IsCorrectUserCode(UCode) == false)
             {
                 wrongUCLabel.Visible = true;
                 wrongUCLabel.Text = "Wrong Password";
 
             }
-            else if (hashCheckAndGetEmployee.IsCorrectPassword(UCode))
+            else if (hashCheckAndGetEmployee.IsCorrectUserCode(UCode))
             {
                 OpenFormBasedOnTheRole(hashCheckAndGetEmployee.GetEmployeeByHashedUC(UCode));
             }

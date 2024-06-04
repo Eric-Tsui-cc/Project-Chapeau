@@ -14,7 +14,7 @@ namespace ChapeauService
             employeeDb = new EmployeeDao();
         }
 
-        public bool IsCorrectPassword(string inputUserCode)
+        public bool IsCorrectUserCode(string inputUserCode)
         {
             // Hash the input user code using SHA256
             string hashedInputUserCode = HashUserCode(inputUserCode);

@@ -36,11 +36,11 @@
             // LoginButton
             // 
             LoginButton.BackColor = Color.Coral;
-            LoginButton.BorderRadius = 25;
+            LoginButton.BorderRadius = 30;
             LoginButton.Cursor = Cursors.Hand;
             LoginButton.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point);
             LoginButton.ForeColor = SystemColors.ButtonHighlight;
-            LoginButton.Location = new Point(529, 713);
+            LoginButton.Location = new Point(529, 703);
             LoginButton.Name = "LoginButton";
             LoginButton.Size = new Size(637, 102);
             LoginButton.TabIndex = 1;

@@ -7,7 +7,38 @@ namespace ChapeauUI
 {
     public class RoundedButton : Button
     {
-        public int BorderRadius { get; set; } = 25;
+        public int BorderRadius { get; set; } = 30;
+
+        private Color defaultBackColor = Color.Coral;
+        private Color hoverBackColor = Color.Tomato;
+
+        private Color defaultForeColor = Color.White;
+        private Color hoverForeColor = Color.White;
+
+        public RoundedButton()
+        {
+            // Set the initial colors to the button's default colors
+            this.BackColor = defaultBackColor;
+            this.ForeColor = defaultForeColor;
+
+            // Add event handlers for mouse enter and leave
+            this.MouseEnter += RoundedButton_MouseEnter;
+            this.MouseLeave += RoundedButton_MouseLeave;
+        }
+
+        // Event handler for mouse entering the button
+        private void RoundedButton_MouseEnter(object sender, EventArgs e)
+        {
+            this.BackColor = hoverBackColor;
+            this.ForeColor = hoverForeColor;
+        }
+
+        // Event handler for mouse leaving the button
+        private void RoundedButton_MouseLeave(object sender, EventArgs e)
+        {
+            this.BackColor = defaultBackColor;
+            this.ForeColor = defaultForeColor;
+        }
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
