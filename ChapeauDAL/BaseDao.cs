@@ -5,7 +5,7 @@ using System.Data;
 using ChapeauModel;
 
 namespace ChapeauDAL
-{                                                           //maybe need to change somethings in this file.
+{
     public abstract class BaseDao
     {
         private SqlDataAdapter adapter;
@@ -13,12 +13,11 @@ namespace ChapeauDAL
 
         public BaseDao()
         {
-            // DO NOT FORGET TO INSERT YOUR CONNECTION STRING NAMED 'SOMEREN DATABASE' IN YOUR APP.CONFIG!!
-            /*
-                conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SomerenDatabase"].ConnectionString);
-                adapter = new SqlDataAdapter();
-             */
-            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["MyDatabaseConnection"].ConnectionString);
+            if (ConfigurationManager.ConnectionStrings["Plebbproject"] == null)
+            {
+                throw new Exception("Connection string 'Plebbproject' not found in App.config.");
+            }
+            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["Plebbproject"].ConnectionString);
             adapter = new SqlDataAdapter();
         }
 
@@ -33,7 +32,7 @@ namespace ChapeauDAL
             }
             catch (Exception e)
             {
-                //Print.ErrorLog(e);
+                // Print.ErrorLog(e);
                 throw;
             }
             return conn;
@@ -44,7 +43,6 @@ namespace ChapeauDAL
             conn.Close();
         }
 
-        /* For Insert/Update/Delete Queries with transaction */
         protected void ExecuteEditTranQuery(string query, SqlParameter[] sqlParameters, SqlTransaction sqlTransaction)
         {
             SqlCommand command = new SqlCommand(query, conn, sqlTransaction);
@@ -57,7 +55,7 @@ namespace ChapeauDAL
             }
             catch (Exception e)
             {
-                //Print.ErrorLog(e);
+                // Print.ErrorLog(e);
                 throw;
             }
             finally
@@ -66,7 +64,6 @@ namespace ChapeauDAL
             }
         }
 
-        /* For Insert/Update/Delete Queries */
         protected void ExecuteEditQuery(string query, SqlParameter[] sqlParameters)
         {
             SqlCommand command = new SqlCommand();
@@ -90,7 +87,6 @@ namespace ChapeauDAL
             }
         }
 
-        /* For Select Queries */
         public object ExecuteScalarQuery(string query, SqlParameter[] parameters)
         {
             using (SqlConnection connection = new SqlConnection(/* Your connection string */))

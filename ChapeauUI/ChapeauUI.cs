@@ -3,6 +3,8 @@ using ChapeauModel;
 using ChapeauService;
 using SomerenService;
 
+using ChapeauModel;
+
 namespace ChapeauUI
 
 {
@@ -10,6 +12,7 @@ namespace ChapeauUI
     {
 
         public ChapeauUI()
+        public ChapeauUI(Employee employee)
         {
             InitializeComponent();
             Bill bill = GetBillbyId(9);
@@ -25,5 +28,7 @@ namespace ChapeauUI
             return bill;
 
         }
+
+
     }
 }

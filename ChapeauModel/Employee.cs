@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 namespace ChapeauModel
 {
     public enum EmployeeStatus
@@ -10,25 +11,62 @@ namespace ChapeauModel
         Active,
         Inactive
     }
-
+    public enum EmployeeRole
+    {
+        Waiter, Bartender, Chef, Manager, Undefined
+    }
     public class Employee
     {
+        public string role = "";
 
         public int EmployeeId { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public EmployeeStatus Status { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string UserCode { get; set; }
+        public string status { get; set; }
 
-        public Employee() { }
-
-        public Employee(int employeeId, string username, string password, EmployeeStatus status)
+        public EmployeeStatus Status
         {
-            EmployeeId = employeeId;
-            Username = username;
-            Password = password;
-            Status = status;
+            get
+            {
+                if (status == "Active")
+                {
+                    return EmployeeStatus.Active;
+                }
+                else
+                {
+                    return EmployeeStatus.Inactive;
+                }
+
+            }
+        }
+
+        public EmployeeRole Role
+        {
+            get
+            {
+                if (role == "Waiter")
+                {
+                    return EmployeeRole.Waiter;
+                }
+                else if (role == "Chef")
+                {
+                    return EmployeeRole.Chef;
+                }
+                else if (role == "Bartender")
+                {
+                    return EmployeeRole.Bartender;
+                }
+                else if (role == "Manager")
+                {
+                    return EmployeeRole.Manager;
+                }
+                else
+                {
+                    return EmployeeRole.Undefined;
+                }
+            }
         }
     }
 }
-
 
