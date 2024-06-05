@@ -155,26 +155,6 @@ namespace ChapeauUI
                     break;
             }
         }
-        private void RefreshOrdersListView()
-        {
-            List<Order> orders = orderService.GetAllOrders();
-            TableOrdersListView.Items.Clear();
-
-            foreach (var order in orders)
-            {
-                ListViewItem item = new ListViewItem(order.OrderId.ToString());
-                item.SubItems.Add(order.EmployeeId.ToString());
-                item.SubItems.Add(Order.StatusToString(order.Status));
-                item.SubItems.Add(order.OrderTakenTime.ToString());
-                item.SubItems.Add(order.Comments);
-                item.SubItems.Add(order.TableId.ToString());
-                item.SubItems.Add(order.BillId.ToString());
-                item.SubItems.Add(order.Count.ToString());
-                item.SubItems.Add(order.MenuItemId.ToString());
-
-                TableOrdersListView.Items.Add(item);
-            }
-        }
 
         private void btnChangeStatus_Click(object sender, EventArgs e)
         {
@@ -194,7 +174,7 @@ namespace ChapeauUI
                         {
                             order.Status = Order.StringToStatus(newStatus);
                             orderService.ChangeOrderStatus(order);
-                            RefreshOrdersListView();
+                            roundedButton5_Click( sender, e);
                         }
                         else
                         {
