@@ -51,7 +51,7 @@ namespace ChapeauUI
 
         private void btnChangeStatus_Click(object sender, EventArgs e)
         {
-            if (TableListView.SelectedItems.Count != null)
+            if (TableListView.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = TableListView.SelectedItems[0];
                 int tableId = int.Parse(selectedItem.Text);

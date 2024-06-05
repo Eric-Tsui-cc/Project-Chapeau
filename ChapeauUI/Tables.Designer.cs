@@ -43,7 +43,7 @@
             // comboBoxStatus
             // 
             comboBoxStatus.Items.AddRange(new object[] { "Free", "Occupied", "Reserved", "Ordered" });
-            comboBoxStatus.Location = new Point(466, 764);
+            comboBoxStatus.Location = new Point(566, 764);
             comboBoxStatus.Name = "comboBoxStatus";
             comboBoxStatus.Size = new Size(632, 45);
             comboBoxStatus.TabIndex = 1;
@@ -61,7 +61,7 @@
             btnChangeStatus.BorderRadius = 30;
             btnChangeStatus.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold, GraphicsUnit.Point);
             btnChangeStatus.ForeColor = Color.White;
-            btnChangeStatus.Location = new Point(466, 873);
+            btnChangeStatus.Location = new Point(566, 873);
             btnChangeStatus.Name = "btnChangeStatus";
             btnChangeStatus.Size = new Size(632, 93);
             btnChangeStatus.TabIndex = 6;
@@ -75,7 +75,7 @@
             TableListView.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
             TableListView.FullRowSelect = true;
             TableListView.GridLines = true;
-            TableListView.Location = new Point(367, 73);
+            TableListView.Location = new Point(479, 75);
             TableListView.Name = "TableListView";
             TableListView.Size = new Size(883, 642);
             TableListView.TabIndex = 8;
@@ -146,15 +146,14 @@
             // 
             // Tables
             // 
-            AutoScaleMode = AutoScaleMode.Inherit;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1603, 1058);
+            AutoScaleDimensions = new SizeF(15F, 37F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1795, 1058);
             Controls.Add(panel2);
             Controls.Add(TableListView);
             Controls.Add(btnChangeStatus);
             Controls.Add(comboBoxStatus);
             Controls.Add(label1);
-            MaximumSize = new Size(1631, 1213);
             Name = "Tables";
             Text = "Table Overview";
             panel2.ResumeLayout(false);

@@ -17,7 +17,7 @@ namespace ChapeauService
             tableDao = new();
         }
 
-        /*Get Drinks*/
+        /*Get Tables*/
 
         public List<Table> GetAllTables()
         {
@@ -28,6 +28,7 @@ namespace ChapeauService
         {
             return tableDao.GetById(tableId);
         }
+        //Change
         public void ChangeTableStatus(Table table)
         {
              tableDao.ChangeTableStatus(table);
