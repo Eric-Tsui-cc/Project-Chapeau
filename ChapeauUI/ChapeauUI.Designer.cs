@@ -28,44 +28,93 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
-            OpenTables = new RoundedButton();
+            panel2 = new Panel();
+            roundedButton1 = new RoundedButton();
+            roundedButton3 = new RoundedButton();
+            roundedButton4 = new RoundedButton();
+            label1 = new Label();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
-            // panel1
+            // panel2
             // 
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(118, 1004);
-            panel1.TabIndex = 0;
+            panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(roundedButton1);
+            panel2.Controls.Add(roundedButton3);
+            panel2.Controls.Add(roundedButton4);
+            panel2.Location = new Point(1, -7);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(205, 1075);
+            panel2.TabIndex = 8;
             // 
-            // OpenTables
+            // roundedButton1
             // 
-            OpenTables.BackColor = Color.Coral;
-            OpenTables.BorderRadius = 30;
-            OpenTables.ForeColor = Color.White;
-            OpenTables.Location = new Point(1564, 43);
-            OpenTables.Name = "OpenTables";
-            OpenTables.Size = new Size(169, 52);
-            OpenTables.TabIndex = 1;
-            OpenTables.Text = "Tables";
-            OpenTables.UseVisualStyleBackColor = false;
+            roundedButton1.BackColor = Color.Coral;
+            roundedButton1.BorderRadius = 30;
+            roundedButton1.ForeColor = Color.White;
+            roundedButton1.Location = new Point(18, 933);
+            roundedButton1.Name = "roundedButton1";
+            roundedButton1.Size = new Size(169, 52);
+            roundedButton1.TabIndex = 4;
+            roundedButton1.Text = "Log Out";
+            roundedButton1.UseVisualStyleBackColor = false;
+            roundedButton1.Click += roundedButton1_Click;
+            // 
+            // roundedButton3
+            // 
+            roundedButton3.BackColor = Color.Coral;
+            roundedButton3.BorderRadius = 30;
+            roundedButton3.ForeColor = Color.White;
+            roundedButton3.Location = new Point(18, 783);
+            roundedButton3.Name = "roundedButton3";
+            roundedButton3.Size = new Size(169, 52);
+            roundedButton3.TabIndex = 2;
+            roundedButton3.Text = "Orders";
+            roundedButton3.UseVisualStyleBackColor = false;
+            roundedButton3.Click += roundedButton3_Click;
+            // 
+            // roundedButton4
+            // 
+            roundedButton4.BackColor = Color.Coral;
+            roundedButton4.BorderRadius = 30;
+            roundedButton4.ForeColor = Color.White;
+            roundedButton4.Location = new Point(18, 716);
+            roundedButton4.Name = "roundedButton4";
+            roundedButton4.Size = new Size(169, 52);
+            roundedButton4.TabIndex = 1;
+            roundedButton4.Text = "Tables";
+            roundedButton4.UseVisualStyleBackColor = false;
+            roundedButton4.Click += roundedButton4_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.Location = new Point(684, 144);
+            label1.Name = "label1";
+            label1.Size = new Size(507, 65);
+            label1.TabIndex = 9;
+            label1.Text = "Welcome to Chapeau";
             // 
             // ChapeauUI
             // 
             AutoScaleDimensions = new SizeF(15F, 37F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1795, 1058);
-            Controls.Add(OpenTables);
-            Controls.Add(panel1);
+            Controls.Add(label1);
+            Controls.Add(panel2);
             Name = "ChapeauUI";
             Text = "Form1";
+            panel2.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private Panel panel1;
-        private RoundedButton OpenTables;
+        private Panel panel2;
+        private RoundedButton roundedButton1;
+        private RoundedButton roundedButton3;
+        private RoundedButton roundedButton4;
+        private Label label1;
     }
 }

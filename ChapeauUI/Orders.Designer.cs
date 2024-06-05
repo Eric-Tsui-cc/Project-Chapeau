@@ -1,6 +1,6 @@
 ﻿namespace ChapeauUI
 {
-    partial class Tables
+    partial class Orders
     {
         /// <summary>
         /// Required designer variable.
@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            comboBoxStatus = new ComboBox();
             label1 = new Label();
-            btnChangeStatus = new RoundedButton();
-            TableListView = new ListView();
+            TableOrdersListView = new ListView();
             panel2 = new Panel();
             roundedButton2 = new RoundedButton();
             roundedButton1 = new RoundedButton();
@@ -40,14 +38,6 @@
             panel2.SuspendLayout();
             SuspendLayout();
             // 
-            // comboBoxStatus
-            // 
-            comboBoxStatus.Items.AddRange(new object[] { "Free", "Occupied", "Reserved", "Ordered" });
-            comboBoxStatus.Location = new Point(466, 764);
-            comboBoxStatus.Name = "comboBoxStatus";
-            comboBoxStatus.Size = new Size(632, 45);
-            comboBoxStatus.TabIndex = 1;
-            // 
             // label1
             // 
             label1.Location = new Point(0, 0);
@@ -55,31 +45,17 @@
             label1.Size = new Size(100, 23);
             label1.TabIndex = 5;
             // 
-            // btnChangeStatus
+            // TableOrdersListView
             // 
-            btnChangeStatus.BackColor = Color.Coral;
-            btnChangeStatus.BorderRadius = 30;
-            btnChangeStatus.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold, GraphicsUnit.Point);
-            btnChangeStatus.ForeColor = Color.White;
-            btnChangeStatus.Location = new Point(466, 873);
-            btnChangeStatus.Name = "btnChangeStatus";
-            btnChangeStatus.Size = new Size(632, 93);
-            btnChangeStatus.TabIndex = 6;
-            btnChangeStatus.Text = "Change Table Status";
-            btnChangeStatus.UseVisualStyleBackColor = false;
-            btnChangeStatus.Click += btnChangeStatus_Click;
-            // 
-            // TableListView
-            // 
-            TableListView.BorderStyle = BorderStyle.FixedSingle;
-            TableListView.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            TableListView.FullRowSelect = true;
-            TableListView.GridLines = true;
-            TableListView.Location = new Point(367, 73);
-            TableListView.Name = "TableListView";
-            TableListView.Size = new Size(883, 642);
-            TableListView.TabIndex = 8;
-            TableListView.UseCompatibleStateImageBehavior = false;
+            TableOrdersListView.BorderStyle = BorderStyle.FixedSingle;
+            TableOrdersListView.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            TableOrdersListView.FullRowSelect = true;
+            TableOrdersListView.GridLines = true;
+            TableOrdersListView.Location = new Point(251, 42);
+            TableOrdersListView.Name = "TableOrdersListView";
+            TableOrdersListView.Size = new Size(1363, 599);
+            TableOrdersListView.TabIndex = 8;
+            TableOrdersListView.UseCompatibleStateImageBehavior = false;
             // 
             // panel2
             // 
@@ -104,7 +80,7 @@
             roundedButton2.TabIndex = 5;
             roundedButton2.Text = "Home";
             roundedButton2.UseVisualStyleBackColor = false;
-            roundedButton2.Click += roundedButton2_Click;
+            roundedButton2.Click += roundedButton2_Click_1;
             // 
             // roundedButton1
             // 
@@ -117,7 +93,7 @@
             roundedButton1.TabIndex = 4;
             roundedButton1.Text = "Log Out";
             roundedButton1.UseVisualStyleBackColor = false;
-            roundedButton1.Click += roundedButton1_Click;
+            roundedButton1.Click += roundedButton1_Click_1;
             // 
             // roundedButton3
             // 
@@ -130,7 +106,6 @@
             roundedButton3.TabIndex = 2;
             roundedButton3.Text = "Orders";
             roundedButton3.UseVisualStyleBackColor = false;
-            roundedButton3.Click += roundedButton3_Click;
             // 
             // roundedButton4
             // 
@@ -143,33 +118,32 @@
             roundedButton4.TabIndex = 1;
             roundedButton4.Text = "Tables";
             roundedButton4.UseVisualStyleBackColor = false;
+            roundedButton4.Click += roundedButton4_Click;
             // 
-            // Tables
+            // Orders
             // 
-            AutoScaleMode = AutoScaleMode.Inherit;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1603, 1058);
+            AutoScaleDimensions = new SizeF(15F, 37F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1795, 1058);
             Controls.Add(panel2);
-            Controls.Add(TableListView);
-            Controls.Add(btnChangeStatus);
-            Controls.Add(comboBoxStatus);
+            Controls.Add(TableOrdersListView);
             Controls.Add(label1);
-            MaximumSize = new Size(1631, 1213);
-            Name = "Tables";
+            Name = "Orders";
             Text = "Table Overview";
             panel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
-        private System.Windows.Forms.ComboBox comboBoxStatus;
         private System.Windows.Forms.Label label1;
-        private RoundedButton btnChangeStatus;
-        private ListView TableListView;
+        private ListView TableOrdersListView;
         private Panel panel2;
         private RoundedButton roundedButton1;
         private RoundedButton roundedButton3;
         private RoundedButton roundedButton4;
         private RoundedButton roundedButton2;
+
     }
 }
+
+

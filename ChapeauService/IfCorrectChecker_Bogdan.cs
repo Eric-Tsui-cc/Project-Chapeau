@@ -5,11 +5,11 @@ using ChapeauModel;
 
 namespace ChapeauService
 {
-    public class IfCorrectChecker
+    public class IfCorrectChecker_Bogdan
     {
         private EmployeeDao employeeDb;
 
-        public IfCorrectChecker()
+        public IfCorrectChecker_Bogdan()
         {
             employeeDb = new EmployeeDao();
         }

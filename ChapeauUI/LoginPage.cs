@@ -68,7 +68,7 @@ namespace ChapeauUI
 
         private void CheckIfUCcorrect()
         {
-            IfCorrectChecker hashCheckAndGetEmployee = new IfCorrectChecker();
+            IfCorrectChecker_Bogdan hashCheckAndGetEmployee = new IfCorrectChecker_Bogdan();
             string UCode = userCodeTextBox.Text;
 
             if (UCode == "")
