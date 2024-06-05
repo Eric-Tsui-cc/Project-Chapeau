@@ -29,7 +29,7 @@ namespace ChapeauUI
 
         private void roundedButton4_Click(object sender, EventArgs e)
         {
-            Tables newForm = new Tables();
+            Orders newForm = new Orders();
 
             OpenUI(newForm);
         }

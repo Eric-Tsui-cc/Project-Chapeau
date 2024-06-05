@@ -35,6 +35,10 @@
             roundedButton1 = new RoundedButton();
             roundedButton3 = new RoundedButton();
             roundedButton4 = new RoundedButton();
+            comboBoxStatus = new ComboBox();
+            roundedButton5 = new RoundedButton();
+            btnChangeStatus = new RoundedButton();
+            comboBox1 = new ComboBox();
             panel2.SuspendLayout();
             SuspendLayout();
             // 
@@ -120,11 +124,59 @@
             roundedButton4.UseVisualStyleBackColor = false;
             roundedButton4.Click += roundedButton4_Click;
             // 
+            // comboBoxStatus
+            // 
+            comboBoxStatus.Items.AddRange(new object[] { "Ready to Serve", "Preparing", "Longest Waiting Time", "Table ID Ascending", "All" });
+            comboBoxStatus.Location = new Point(251, 697);
+            comboBoxStatus.Name = "comboBoxStatus";
+            comboBoxStatus.Size = new Size(589, 45);
+            comboBoxStatus.TabIndex = 10;
+            // 
+            // roundedButton5
+            // 
+            roundedButton5.BackColor = Color.Coral;
+            roundedButton5.BorderRadius = 30;
+            roundedButton5.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold, GraphicsUnit.Point);
+            roundedButton5.ForeColor = Color.White;
+            roundedButton5.Location = new Point(251, 784);
+            roundedButton5.Name = "roundedButton5";
+            roundedButton5.Size = new Size(589, 88);
+            roundedButton5.TabIndex = 11;
+            roundedButton5.Text = "Sort";
+            roundedButton5.UseVisualStyleBackColor = false;
+            roundedButton5.Click += roundedButton5_Click;
+            // 
+            // btnChangeStatus
+            // 
+            btnChangeStatus.BackColor = Color.Coral;
+            btnChangeStatus.BorderRadius = 30;
+            btnChangeStatus.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold, GraphicsUnit.Point);
+            btnChangeStatus.ForeColor = Color.White;
+            btnChangeStatus.Location = new Point(1025, 784);
+            btnChangeStatus.Name = "btnChangeStatus";
+            btnChangeStatus.Size = new Size(589, 88);
+            btnChangeStatus.TabIndex = 13;
+            btnChangeStatus.Text = "Change Table Status";
+            btnChangeStatus.UseVisualStyleBackColor = false;
+            btnChangeStatus.Click += btnChangeStatus_Click;
+            // 
+            // comboBox1
+            // 
+            comboBox1.Items.AddRange(new object[] { "Done", "Preparing", "Served", "Undefined" });
+            comboBox1.Location = new Point(1025, 701);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(589, 45);
+            comboBox1.TabIndex = 12;
+            // 
             // Orders
             // 
             AutoScaleDimensions = new SizeF(15F, 37F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1795, 1058);
+            Controls.Add(btnChangeStatus);
+            Controls.Add(comboBox1);
+            Controls.Add(roundedButton5);
+            Controls.Add(comboBoxStatus);
             Controls.Add(panel2);
             Controls.Add(TableOrdersListView);
             Controls.Add(label1);
@@ -142,7 +194,10 @@
         private RoundedButton roundedButton3;
         private RoundedButton roundedButton4;
         private RoundedButton roundedButton2;
-
+        private ComboBox comboBoxStatus;
+        private RoundedButton roundedButton5;
+        private RoundedButton btnChangeStatus;
+        private ComboBox comboBox1;
     }
 }
 

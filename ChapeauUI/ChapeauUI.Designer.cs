@@ -40,8 +40,6 @@
             // 
             panel2.BorderStyle = BorderStyle.FixedSingle;
             panel2.Controls.Add(roundedButton1);
-            panel2.Controls.Add(roundedButton3);
-            panel2.Controls.Add(roundedButton4);
             panel2.Location = new Point(1, -7);
             panel2.Name = "panel2";
             panel2.Size = new Size(205, 1075);
@@ -64,12 +62,13 @@
             // 
             roundedButton3.BackColor = Color.Coral;
             roundedButton3.BorderRadius = 30;
+            roundedButton3.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point);
             roundedButton3.ForeColor = Color.White;
-            roundedButton3.Location = new Point(18, 783);
+            roundedButton3.Location = new Point(974, 514);
             roundedButton3.Name = "roundedButton3";
-            roundedButton3.Size = new Size(169, 52);
+            roundedButton3.Size = new Size(534, 314);
             roundedButton3.TabIndex = 2;
-            roundedButton3.Text = "Orders";
+            roundedButton3.Text = "View Orders";
             roundedButton3.UseVisualStyleBackColor = false;
             roundedButton3.Click += roundedButton3_Click;
             // 
@@ -77,12 +76,13 @@
             // 
             roundedButton4.BackColor = Color.Coral;
             roundedButton4.BorderRadius = 30;
+            roundedButton4.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point);
             roundedButton4.ForeColor = Color.White;
-            roundedButton4.Location = new Point(18, 716);
+            roundedButton4.Location = new Point(310, 515);
             roundedButton4.Name = "roundedButton4";
-            roundedButton4.Size = new Size(169, 52);
+            roundedButton4.Size = new Size(534, 314);
             roundedButton4.TabIndex = 1;
-            roundedButton4.Text = "Tables";
+            roundedButton4.Text = "View Tables";
             roundedButton4.UseVisualStyleBackColor = false;
             roundedButton4.Click += roundedButton4_Click;
             // 
@@ -102,7 +102,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1795, 1058);
             Controls.Add(label1);
+            Controls.Add(roundedButton3);
             Controls.Add(panel2);
+            Controls.Add(roundedButton4);
             Name = "ChapeauUI";
             Text = "Form1";
             panel2.ResumeLayout(false);
