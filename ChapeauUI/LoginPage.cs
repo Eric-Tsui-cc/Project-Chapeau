@@ -39,7 +39,7 @@ namespace ChapeauUI
             if (employee.Role == EmployeeRole.Waiter)
             {
                 // passing employee who logged in data to the next form.
-                ChapeauUI newForm = new ChapeauUI(employee);
+                ChapeauUI newForm = new ChapeauUI();
                 OpenUI(newForm);
             }
             else if (employee.Role == EmployeeRole.Chef || employee.Role == EmployeeRole.Bartender)
