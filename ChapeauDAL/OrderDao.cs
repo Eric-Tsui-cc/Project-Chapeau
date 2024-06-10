@@ -31,7 +31,7 @@ namespace ChapeauDAL
                 int employeeId = Convert.ToInt32(dr["EmployeeId"]);
                 int tableId = Convert.ToInt32(dr["TableId"]);
 
-                Employee employee = _employeeDao.GetEmployeeById(employeeId);
+                Employee employee = _employeeDao.GetByEmployeeId(employeeId);
                 Table table = _tableDao.GetTableById(tableId);
                 List<OrderItem> items = _orderItemDao.GetOrderItemsByOrderId(orderId);
 
@@ -75,7 +75,7 @@ namespace ChapeauDAL
                 int employeeId = Convert.ToInt32(row["EmployeeId"]);
                 int tableId = Convert.ToInt32(row["TableId"]);
 
-                Employee employee = _employeeDao.GetEmployeeById(employeeId);
+                Employee employee = _employeeDao.GetByEmployeeId(employeeId);
                 Table table = _tableDao.GetTableById(tableId);
                 List<OrderItem> items = _orderItemDao.GetOrderItemsByOrderId(orderId);
 
