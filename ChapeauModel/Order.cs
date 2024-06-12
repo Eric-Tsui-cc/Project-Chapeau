@@ -10,17 +10,17 @@ namespace ChapeauModel
     public class Order
     {   
         public int OrderId { get; set; }
-        public Employee EmployeeId { get; set; }
+        public Employee Employee { get; set; }
         public StatusOfOrder Status { get; set; }
-        public Table TableId {  get; set; }
+        public Table Table {  get; set; }
         public List<OrderItem> items { get; set; }
         public Order() { }
         public Order(int OrderId, string Comment, Employee EmployeeId, StatusOfOrder Status, Table TableId, List<OrderItem> items)
         {
             this.OrderId = OrderId;
-            this.EmployeeId = EmployeeId;
+            this.Employee = EmployeeId;
             this.Status = Status;
-            this.TableId = TableId;
+            this.Table = TableId;
             this.items = items;
         }
     }

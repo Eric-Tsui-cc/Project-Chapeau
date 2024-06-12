@@ -36,7 +36,7 @@ namespace ChapeauDAL
                 orderItem = new OrderItem
                 {
                     OrderTime = Convert.ToDateTime(row["OrderTime"]),
-                    MenuItemId = menuItem,
+                    MenuItem = menuItem,
                     OrderId = order,
                     Count = Convert.ToInt32(row["Count"]),
                     Status = (StatusOfOrderitem)Enum.Parse(typeof(StatusOfOrderitem), row["Status"].ToString())
@@ -64,7 +64,7 @@ namespace ChapeauDAL
                 OrderItem orderItem = new OrderItem
                 {
                     OrderTime = Convert.ToDateTime(row["OrderTime"]),
-                    MenuItemId = menuItem,
+                    MenuItem = menuItem,
                     OrderId = new Order { OrderId = orderId },
                     Count = Convert.ToInt32(row["Count"]),
                     Status = (StatusOfOrderitem)Enum.Parse(typeof(StatusOfOrderitem), row["Status"].ToString())

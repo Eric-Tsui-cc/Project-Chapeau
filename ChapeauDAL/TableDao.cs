@@ -28,7 +28,7 @@ namespace ChapeauDAL
                 table = new Table
                 {
                     TableId = Convert.ToInt32(row["TableId"]),
-                    TableNumber = Convert.ToInt32(row["TableId"]),
+                    Capacity = Convert.ToInt32(row["Capacity"]),
                     Status = (StatusOfTable)Enum.Parse(typeof(StatusOfTable), row["Status"].ToString())
                 };
             }
@@ -38,6 +38,12 @@ namespace ChapeauDAL
         public List<Table> GetAllTables()
         {
             string query = "SELECT TableId, Status,TableNumber FROM [TABLE]";
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            return ReadTables(ExecuteSelectQuery(query, sqlParameters));
+        }
+        public List<Table> GetAllFreeTables()
+        {
+            string query = "SELECT * FROM [TABLE] WHERE Status = 'Free'";
             SqlParameter[] sqlParameters = new SqlParameter[0];
             return ReadTables(ExecuteSelectQuery(query, sqlParameters));
         }
@@ -59,25 +65,33 @@ namespace ChapeauDAL
                 {
                     TableId = Convert.ToInt32(dr["TableId"]),
                     Status = status,
-                    TableNumber = Convert.ToInt32(dr["TableNumber"]),
+                    Capacity = Convert.ToInt32(dr["Capacity"]),
                 };
                 tables.Add(table);
             }
             return tables;
         }
 
-        public void ChangeTableStatus(Table table)
+        public void ChangeTableStatusToFree(int tableId)
         {
-            string query = "UPDATE TABLE " +
-                "SET Status = @Status" +
-                "WHERE TableId=@id, TableNumber=@TableNumber ";
+            string query = "UPDATE [TABLE] SET Status = @Status WHERE TableId = @TableId";
             SqlParameter[] sqlParameters =
             {
-            new SqlParameter("@id", table.TableId),
-            new SqlParameter("@TableNumber", table.TableNumber),
-            new SqlParameter("@Status", table.Status),
+                new SqlParameter("@Status", StatusOfTable.Free.ToString()),
+                new SqlParameter("@TableId", tableId)
+    };
 
-        };
+            ExecuteEditQuery(query, sqlParameters);
+        }
+        public void ChangeTableStatusToOccupied(int tableId)
+        {
+            string query = "UPDATE [TABLE] SET Status = @Status WHERE TableId = @TableId";
+            SqlParameter[] sqlParameters =
+            {
+                new SqlParameter("@Status", StatusOfTable.Occupied.ToString()),
+                new SqlParameter("@TableId", tableId)
+    };
+
             ExecuteEditQuery(query, sqlParameters);
         }
 
@@ -92,12 +106,12 @@ namespace ChapeauDAL
         }
         public void AddTable(Table table)
         {
-            string query = "INSERT INTO TABLE (TableId, Status, TableNumber) VALUES (@TableNumber, @Status, @TableNumber);";
+            string query = "INSERT INTO TABLE (TableId, Status, Capacity) VALUES (@TableNumber, @Status, @Capacity);";
             SqlParameter[] sqlParameters =
             {
             new SqlParameter("@TableId", table.TableId),
             new SqlParameter("@Status", table.Status),
-            new SqlParameter("@TableNumber", table.TableNumber),
+            new SqlParameter("@Capacity", table.Capacity),
 
         };
             ExecuteEditQuery(query, sqlParameters);
@@ -120,7 +134,7 @@ namespace ChapeauDAL
                 {
                     TableId = Convert.ToInt32(dr["TableId"]),
                     Status = (StatusOfTable)Enum.Parse(typeof(StatusOfTable), dr["Status"].ToString()),
-                    TableNumber = Convert.ToInt32(dr["TableNumber"]),
+                    Capacity = Convert.ToInt32(dr["Capacity"]),
                 };
                 tables.Add(table);
             }
@@ -128,6 +142,29 @@ namespace ChapeauDAL
             return tables;
 
 
+        }
+        public StatusOfTable GetStatusByTableId(int tableId)
+        {
+            string query = "SELECT Status FROM [TABLE] WHERE TableId = @TableId;";
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+        new SqlParameter("@TableId", tableId)
+            };
+
+            DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                DataRow row = dataTable.Rows[0];
+                string statusString = row["Status"].ToString();
+                if (Enum.TryParse(statusString, out StatusOfTable status))
+                {
+                    return status;
+                }
+            }
+
+            // Return a default status if no data found
+            return StatusOfTable.Occupied;
         }
     }
 }

@@ -15,6 +15,7 @@ namespace ChapeauDAL
         private readonly TableDao _tableDao = new TableDao();
         private readonly OrderItemDao _orderItemDao = new OrderItemDao();
         private readonly EmployeeDao _employeeDao = new EmployeeDao();
+        private readonly MenuItemDao _menuItemDao = new MenuItemDao();
         public List<Order> GetAllOrders()
         {
             string query = "SELECT orderId, tableId, status, employeeId FROM [ORDER]";
@@ -48,9 +49,9 @@ namespace ChapeauDAL
                 Order order = new Order()
                 {
                     OrderId = orderId,
-                    EmployeeId = employee,
+                    Employee = employee,
                     Status = status,
-                    TableId = table,
+                    Table = table,
                     items = items
                 };
                 orders.Add(order);
@@ -82,9 +83,9 @@ namespace ChapeauDAL
                 order = new Order
                 {
                     OrderId = orderId,
-                    EmployeeId = employee,
+                    Employee = employee,
                     Status = (StatusOfOrder)Enum.Parse(typeof(StatusOfOrder), row["Status"].ToString()),
-                    TableId = table,
+                    Table = table,
                     items = items
                 };
             }
@@ -95,29 +96,36 @@ namespace ChapeauDAL
 
         public void CreateOrder(Order order)
         {
-            string query = "INSERT INTO Orders (orderId, tableId, status, employeeId) VALUES (@OrderId, @TableId, @Status, @EmployeeId)";
+            string query = "INSERT INTO [ORDER] (tableId, status, employeeId) VALUES (@TableId, @Status, @EmployeeId); SELECT SCOPE_IDENTITY();";
             SqlParameter[] sqlParameters =
             {
-                new SqlParameter("@OrderId", order.OrderId),
-                new SqlParameter("@TableId", order.TableId),
-                new SqlParameter("@Status", order.Status),
-                new SqlParameter("@EmployeeId", order.EmployeeId)
-            };
-            ExecuteEditQuery(query, sqlParameters);
+                new SqlParameter("@TableId", order.Table.TableId),
+                new SqlParameter("@Status", order.Status.ToString()),
+                new SqlParameter("@EmployeeId", order.Employee.EmployeeId)
+    };
+
+            // Execute the query and get the generated order ID
+            int orderId = Convert.ToInt32(ExecuteScalarQuery(query, sqlParameters));
+
+            // Set the generated order ID to the order object
+            order.OrderId = orderId;
 
             foreach (OrderItem item in order.items)
             {
-                string itemQuery = "INSERT INTO OrderItems (orderId, menuItem, count, status) VALUES (@OrderId, @MenuItem, @Count, @Status)";
+                string itemQuery = "INSERT INTO ORDER_ITEM (orderId, menuItemId, count, status, OrderTime) VALUES (@OrderId, @MenuItemId, @Count, @Status, @OrderTime)";
                 SqlParameter[] itemParameters =
                 {
-                new SqlParameter("@OrderId", order.OrderId),
-                new SqlParameter("@MenuItem", item.MenuItemId),
-                new SqlParameter("@Count", item.Count),
-                new SqlParameter("@Status", item.Status)
-            };
+                    new SqlParameter("@OrderId", orderId), // Use the generated order ID
+                    new SqlParameter("@MenuItemId", _menuItemDao.GetMenuItemByName(item.MenuItem.Name).MenuItemId),
+                    new SqlParameter("@Count", item.Count),
+                    new SqlParameter("@Status", item.Status.ToString()),
+                    new SqlParameter("@OrderTime", item.OrderTime)
+        };
                 ExecuteEditQuery(itemQuery, itemParameters);
             }
         }
+
+
         public void DeleteOrder(Order order)
         {
             string query = "DELETE FROM [Order] WHERE OrderId=@OrderId;";

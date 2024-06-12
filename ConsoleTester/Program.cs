@@ -8,10 +8,20 @@ namespace ConsoleTester
         static void Main(string[] args)
         {
             OrderDao orderDao = new OrderDao();
-            List<Order> orders = orderDao.GetAllOrders();
-            foreach (Order order in orders)
+            MenuItemDao menuItemDao = new MenuItemDao();
+            TableDao tableDao = new TableDao();
+            string card = "Lunch";
+            string catagory = "Mains";
+            List<MenuItem> menuItemList = menuItemDao.GetAllMenuItems();
+            List<string>Cards = menuItemDao.GetAllCategories();
+            List<Table>tables = tableDao.GetAllFreeTables();
+            
+
+
+
+            foreach (MenuItem menuItem in menuItemList)
             {
-                Console.WriteLine(order.OrderId);
+                Console.WriteLine(menuItem.Name);
             }
         }
     }

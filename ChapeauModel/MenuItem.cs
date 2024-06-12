@@ -8,13 +8,19 @@ namespace ChapeauModel
 {
     public enum Category
     {
+        Mains,
+        Starters,
+        Entremet,
+        Desserts,
         Beers,
-        SoftDrink
+        Wines,
+        Spirit,
+        CoffeeTea
     }
     public enum Card
     {
         Lunch,
-        Drink,
+        Drinks,
         Dinner
     }
 

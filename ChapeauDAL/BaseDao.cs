@@ -89,7 +89,7 @@ namespace ChapeauDAL
 
         public object ExecuteScalarQuery(string query, SqlParameter[] parameters)
         {
-            using (SqlConnection connection = new SqlConnection(/* Your connection string */))
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Plebbproject"].ConnectionString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {

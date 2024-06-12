@@ -16,6 +16,12 @@ namespace ChapeauDAL
             SqlParameter[] sqlParameters = new SqlParameter[0];
             return ReadAllEmployees(ExecuteSelectQuery(query, sqlParameters));
         }
+        public List<Employee> GetAllActiveEmployees()
+        {
+            string query = "SELECT * FROM [EMPLOYEE] WHERE Status = 'Active'";
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            return ReadAllEmployees(ExecuteSelectQuery(query, sqlParameters));
+        }
 
         private Employee ReadEmployee(DataRow row)
         {
