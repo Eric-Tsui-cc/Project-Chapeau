@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace ChapeauUI
 {
-    public partial class TableInfoForm : Form 
+    public partial class TableInfoForm : Form
     {
         private OverviewService overviewService;
         private Table table;
@@ -46,31 +46,34 @@ namespace ChapeauUI
                 title = "Confirm Status Change";
             }
 
-            
+
             DialogResult result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            
+
             if (result == DialogResult.Yes)
             {
                 if (table.Status == StatusOfTable.Occupied)
                 {
                     overviewService.ChangeTableStatusToFree(table.TableId);
                     MessageBox.Show("Status Changed！", "Confirm", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
+
                 }
                 else
                 {
                     overviewService.ChangeTableStatusToOccupied(table.TableId);
                     MessageBox.Show("Status Changed！", "Confirm", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
+
 
                 }
             }
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            TableInfoFormDetail newWindow = new TableInfoFormDetail(table);
 
+            newWindow.ShowDialog();
         }
     }
 }

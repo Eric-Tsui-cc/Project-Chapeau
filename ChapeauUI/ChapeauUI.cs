@@ -34,7 +34,7 @@ namespace ChapeauUI
 
 
         }
-        protected void UpdateButtonStatus()
+        public void UpdateButtonStatus()
         {
             foreach (var pair in buttonTableIdMap)
             {
@@ -213,6 +213,12 @@ namespace ChapeauUI
         private void buttonFresh_Click(object sender, EventArgs e)
         {
             UpdateButtonStatus();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MakeOrderPage orderPage = new MakeOrderPage();
+            orderPage.ShowDialog();
         }
     }
 }

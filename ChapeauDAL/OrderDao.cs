@@ -13,9 +13,18 @@ namespace ChapeauDAL
     public class OrderDao : BaseDao
     {
         private readonly TableDao _tableDao = new TableDao();
-        private readonly OrderItemDao _orderItemDao = new OrderItemDao();
+        private readonly OrderItemDao _orderItemDao;
         private readonly EmployeeDao _employeeDao = new EmployeeDao();
         private readonly MenuItemDao _menuItemDao = new MenuItemDao();
+
+        public OrderDao(OrderItemDao orderItemDao)
+        {
+            _orderItemDao = orderItemDao;
+        }
+        public OrderDao()
+        {
+
+        }
         public List<Order> GetAllOrders()
         {
             string query = "SELECT orderId, tableId, status, employeeId FROM [ORDER]";
@@ -64,7 +73,7 @@ namespace ChapeauDAL
             string query = "SELECT * FROM [ORDER] WHERE OrderId = @OrderId;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@OrderId", orderId)
+        new SqlParameter("@OrderId", orderId)
             };
 
             DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
@@ -142,8 +151,36 @@ namespace ChapeauDAL
     };
             ExecuteEditQuery(deleteItemQuery, deleteItemParameters);
         }
+        public List<int> GetRunningOrderIdsByTableId(int tableId)
+        {
+            List<int> orderIds = new List<int>();
+            string query = "SELECT OrderId FROM [ORDER] WHERE TableId = @TableId AND Status = @Status;";
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@TableId", tableId),
+                new SqlParameter("@Status", StatusOfOrder.Running.ToString())
+            };
 
+            DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
 
+            foreach (DataRow row in dataTable.Rows)
+            {
+                orderIds.Add(Convert.ToInt32(row["OrderId"]));
+            }
+
+            return orderIds;
+        }
+        public void ChangeOrderStatusToServed(int orderId)
+        {
+            string query = "UPDATE [ORDER] SET Status = @Status WHERE OrderId = @OrderId";
+            SqlParameter[] sqlParameters =
+            {
+                 new SqlParameter("@Status", StatusOfOrder.Served.ToString()),
+                 new SqlParameter("@OrderId", orderId)
+    };
+
+            ExecuteEditQuery(query, sqlParameters);
+        }
 
     }
 }

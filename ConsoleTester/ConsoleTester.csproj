@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChapeauDAL\ChapeauDAL.csproj" />
+    <ProjectReference Include="..\ChapeauService\ChapeauService.csproj" />
   </ItemGroup>
 
 </Project>

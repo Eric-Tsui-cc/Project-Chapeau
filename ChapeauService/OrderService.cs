@@ -78,6 +78,10 @@ namespace ChapeauService
         {
             return currentOrderId++;
         }
+        public void ChangeTableStatusToOccupied(int tableId)
+        {
+            tabledb.ChangeTableStatusToOccupied(tableId);
+        }
 
     }
     public static class OrderIdGenerator

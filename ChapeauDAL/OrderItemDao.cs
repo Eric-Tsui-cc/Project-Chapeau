@@ -11,10 +11,20 @@ namespace ChapeauDAL
 {
     public class OrderItemDao:BaseDao
     {
+        private readonly MenuItemDao _menuItemDao = new MenuItemDao();
         private readonly OrderDao _orderDao;
-        private readonly MenuItemDao _menuItemDao;
+
+        public OrderItemDao(OrderDao orderDao)
+        {
+            _orderDao = orderDao;
+        }
+        public OrderItemDao()
+        {
+
+        }
         public OrderItem GetOrderItemByMenuItemID(int menuItemId)
         {
+            
             OrderItem orderItem = null;
             string query = "SELECT * FROM [ORDER_ITEM] WHERE MenuItemId = @MenuItemId;";
             SqlParameter[] sqlParameters = new SqlParameter[]
@@ -46,7 +56,7 @@ namespace ChapeauDAL
             return orderItem;
         }
         public List<OrderItem> GetOrderItemsByOrderId(int orderId)
-        {
+        {   
             List<OrderItem> orderItems = new List<OrderItem>();
             string query = "SELECT * FROM [ORDER_ITEM] WHERE OrderId = @OrderId;";
             SqlParameter[] sqlParameters = new SqlParameter[]

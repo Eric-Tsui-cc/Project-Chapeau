@@ -11,10 +11,17 @@ namespace ChapeauService
     public class OverviewService
     {
         private TableDao tabledb;
-        
+        private OrderDao orderdb;
+        private OrderItemDao orderItemdb;
+
         public OverviewService()
         {
             tabledb = new TableDao();
+
+            // Avoiding circular dependencies when creating OrderDao and OrderItemDao instances
+            orderdb = new OrderDao(null); // temp for null
+            orderItemdb = new OrderItemDao(orderdb);
+            orderdb = new OrderDao(orderItemdb); // Reassign the value, passing the actual orderItemdb
         }
         public StatusOfTable GetStatusByTableId(int tableId)
         {
@@ -31,6 +38,18 @@ namespace ChapeauService
         public void ChangeTableStatusToOccupied(int tableId)
         {
             tabledb.ChangeTableStatusToOccupied(tableId);
+        }
+        public Order GetOrderById(int orderId)
+        {
+            return orderdb.GetOrderById(orderId);
+        }
+        public List<int> GetRunningOrderIdsByTableId(int tableId)
+        {
+            return orderdb.GetRunningOrderIdsByTableId(tableId);
+        }
+        public void ChangeOrderStatusToServed(int orderId)
+        {
+            orderdb.ChangeOrderStatusToServed(orderId);
         }
     }
 }

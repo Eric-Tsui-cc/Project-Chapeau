@@ -40,6 +40,7 @@
             Table9 = new Button();
             Table10 = new Button();
             buttonFresh = new Button();
+            button1 = new Button();
             SuspendLayout();
             // 
             // label1
@@ -54,6 +55,7 @@
             // 
             // Table1
             // 
+            Table1.Font = new Font("Monotype Corsiva", 14F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             Table1.Location = new Point(59, 122);
             Table1.Name = "Table1";
             Table1.Size = new Size(127, 124);
@@ -64,6 +66,7 @@
             // 
             // Table2
             // 
+            Table2.Font = new Font("Monotype Corsiva", 14F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             Table2.Location = new Point(248, 122);
             Table2.Name = "Table2";
             Table2.Size = new Size(127, 124);
@@ -74,6 +77,7 @@
             // 
             // Table3
             // 
+            Table3.Font = new Font("Monotype Corsiva", 14F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             Table3.Location = new Point(452, 122);
             Table3.Name = "Table3";
             Table3.Size = new Size(127, 124);
@@ -84,6 +88,7 @@
             // 
             // Table4
             // 
+            Table4.Font = new Font("Monotype Corsiva", 14F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             Table4.Location = new Point(659, 122);
             Table4.Name = "Table4";
             Table4.Size = new Size(127, 124);
@@ -94,6 +99,7 @@
             // 
             // Table5
             // 
+            Table5.Font = new Font("Monotype Corsiva", 14F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             Table5.Location = new Point(857, 122);
             Table5.Name = "Table5";
             Table5.Size = new Size(127, 124);
@@ -104,6 +110,7 @@
             // 
             // Table6
             // 
+            Table6.Font = new Font("Monotype Corsiva", 14F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             Table6.Location = new Point(59, 330);
             Table6.Name = "Table6";
             Table6.Size = new Size(127, 124);
@@ -114,6 +121,7 @@
             // 
             // Table7
             // 
+            Table7.Font = new Font("Monotype Corsiva", 14F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             Table7.Location = new Point(248, 330);
             Table7.Name = "Table7";
             Table7.Size = new Size(127, 124);
@@ -124,6 +132,7 @@
             // 
             // Table8
             // 
+            Table8.Font = new Font("Monotype Corsiva", 14F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             Table8.Location = new Point(452, 330);
             Table8.Name = "Table8";
             Table8.Size = new Size(127, 124);
@@ -134,6 +143,7 @@
             // 
             // Table9
             // 
+            Table9.Font = new Font("Monotype Corsiva", 14F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             Table9.Location = new Point(659, 330);
             Table9.Name = "Table9";
             Table9.Size = new Size(127, 124);
@@ -144,6 +154,7 @@
             // 
             // Table10
             // 
+            Table10.Font = new Font("Monotype Corsiva", 14F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             Table10.Location = new Point(857, 330);
             Table10.Name = "Table10";
             Table10.Size = new Size(127, 124);
@@ -154,19 +165,32 @@
             // 
             // buttonFresh
             // 
-            buttonFresh.Location = new Point(1003, 26);
+            buttonFresh.Font = new Font("Segoe Print", 10.5F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            buttonFresh.Location = new Point(323, 37);
             buttonFresh.Name = "buttonFresh";
-            buttonFresh.Size = new Size(163, 87);
+            buttonFresh.Size = new Size(173, 53);
             buttonFresh.TabIndex = 12;
             buttonFresh.Text = "Fresh";
             buttonFresh.UseVisualStyleBackColor = true;
             buttonFresh.Click += buttonFresh_Click;
+            // 
+            // button1
+            // 
+            button1.Font = new Font("MV Boli", 16F, FontStyle.Bold, GraphicsUnit.Point);
+            button1.Location = new Point(857, 519);
+            button1.Name = "button1";
+            button1.Size = new Size(295, 106);
+            button1.TabIndex = 13;
+            button1.Text = "Make An Order";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // ChapeauUI
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1194, 684);
+            Controls.Add(button1);
             Controls.Add(buttonFresh);
             Controls.Add(Table10);
             Controls.Add(Table9);
@@ -199,5 +223,6 @@
         private Button Table9;
         private Button Table10;
         private Button buttonFresh;
+        private Button button1;
     }
 }

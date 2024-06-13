@@ -117,6 +117,7 @@ namespace ChapeauUI
             order.Employee = (Employee)comboBox4.SelectedItem;
             order.Table = (Table)comboBox5.SelectedItem;
             orderService.AddOrder(order);
+            orderService.ChangeTableStatusToOccupied(order.Table.TableId);
             MessageBox.Show("Order already added！", "Confirm", MessageBoxButtons.OK, MessageBoxIcon.Information);
             LoadComboBoxData();
 
