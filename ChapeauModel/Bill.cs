@@ -15,8 +15,7 @@ namespace ChapeauModel
 
     public class Bill
     {
-        public int BillId { get; set; }
-        public Order OrderId { get; set; }
+        public Order Order { get; set; }
         public decimal Amount { get; set; }
         public decimal Tip { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
@@ -24,14 +23,11 @@ namespace ChapeauModel
         public TimeSpan Time { get; set; }
         public string Feedback { get; set; } // customer feedback if any
 
-        public Bill()
+
+        public Bill(List<Order> Orders, decimal amount, decimal tip, PaymentMethod paymentMethod, DateTime date, TimeSpan time, string feedback)
         {
             
-        }
-        public Bill(int billId, Order orderId, decimal amount, decimal tip, PaymentMethod paymentMethod, DateTime date, TimeSpan time, string feedback)
-        {
-            this.BillId = billId;
-            this.OrderId = orderId;
+            this.Order = Order;
             this.Amount = amount;
             this.Tip = tip;
             this.PaymentMethod = paymentMethod;

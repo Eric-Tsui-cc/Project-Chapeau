@@ -7,14 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ChapeauModel;
+using ChapeauService;
 
 namespace ChapeauUI
 {
     public partial class BillForm : Form
     {
+        private PaymentService paymentService;
+        private Bill bill;
+        private Order order;
+        List<Order> orders;
+        private decimal total;
+        private decimal Vat;
+        private decimal tip;
+        private decimal paid;
+        private decimal unpaid;
+        private decimal temptotal;
+
+        PaymentMethod paymentMethod;
         public BillForm()
         {
             InitializeComponent();
+            paymentService = new PaymentService();
+            LoadComboBoxData();
         }
 
         private void label12_Click(object sender, EventArgs e)
@@ -25,6 +41,79 @@ namespace ChapeauUI
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+        private void LoadComboBoxData()
+        {
+            List<Table> OcuupiedTables = paymentService.GetAllOccupiedTables();
+            comboBox1.DataSource = OcuupiedTables;
+            comboBox1.DisplayMember = "TableId";
+            comboBox1.SelectedIndex = -1;
+
+            comboBox2.DataSource = Enum.GetValues(typeof(PaymentMethod));
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            total = 0;
+            Vat = 0;
+            paid = 0;
+            
+            orders = paymentService.GetUnpaidOrdersByTableId(comboBox1.SelectedIndex + 1);
+            listView1.Items.Clear();
+            foreach (Order order in orders) // fill the listview with ordered items
+            {
+                foreach (OrderItem item in order.items)
+                {
+                    ListViewItem Listitem = new ListViewItem(order.OrderId.ToString());
+                    Listitem.SubItems.Add(item.MenuItem.Name);
+                    Listitem.SubItems.Add(item.Count.ToString());
+                    Listitem.SubItems.Add(item.MenuItem.Price.ToString("€ 0.00"));
+                    listView1.Items.Add(Listitem);
+                    if(item.MenuItem.Category is Category.Beers || item.MenuItem.Category is Category.Wines || item.MenuItem.Category is Category.Spirit)
+                    {
+                        Vat = Vat + item.MenuItem.Price* item.Count * 0.21m;
+                    }
+                    else
+                    {
+                        Vat = Vat + item.MenuItem.Price * item.Count* 0.09m;
+                    }
+                    total = total + item.MenuItem.Price * item.Count;
+                }
+            }
+            unpaid = total;
+            UpdateAmount();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //tip = decimal.Parse(textBox1.Text);
+            //paymentMethod = comboBox2.SelectedItem.GetType();
+            //bill = new Bill(orders, total, tip);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            paid = decimal.Parse(textBox3.Text);
+            if(temptotal - paid < 0)
+            {
+                MessageBox.Show("The amount paid exceeds the total amount. Please check the payment amount.", "Payment Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            unpaid = temptotal - paid;
+            UpdateAmount();
+            
+        }
+        public void UpdateAmount()
+        {
+            labelTotalPrice.Text = total.ToString("€ 0.00");
+            labelVat.Text = Vat.ToString("€ 0.00");
+
+            temptotal = unpaid;
+
+            
+
+            label8.Text = unpaid.ToString("€ 0.00");
         }
     }
 }

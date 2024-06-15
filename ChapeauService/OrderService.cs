@@ -82,6 +82,10 @@ namespace ChapeauService
         {
             tabledb.ChangeTableStatusToOccupied(tableId);
         }
+        public List<OrderItem> GetDrinkOrderItems()
+        {
+            return orderitemdb.GetDrinkOrderItems();
+        }
 
     }
     public static class OrderIdGenerator
@@ -93,4 +97,5 @@ namespace ChapeauService
             return currentOrderId++;
         }
     }
+    
 }

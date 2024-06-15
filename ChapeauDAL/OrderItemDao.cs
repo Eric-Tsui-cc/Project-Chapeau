@@ -47,7 +47,7 @@ namespace ChapeauDAL
                 {
                     OrderTime = Convert.ToDateTime(row["OrderTime"]),
                     MenuItem = menuItem,
-                    OrderId = order,
+                    Order = order,
                     Count = Convert.ToInt32(row["Count"]),
                     Status = (StatusOfOrderitem)Enum.Parse(typeof(StatusOfOrderitem), row["Status"].ToString())
                 };
@@ -75,7 +75,48 @@ namespace ChapeauDAL
                 {
                     OrderTime = Convert.ToDateTime(row["OrderTime"]),
                     MenuItem = menuItem,
-                    OrderId = new Order { OrderId = orderId },
+                    Order = new Order { OrderId = orderId },
+                    Count = Convert.ToInt32(row["Count"]),
+                    Status = (StatusOfOrderitem)Enum.Parse(typeof(StatusOfOrderitem), row["Status"].ToString())
+                };
+
+                orderItems.Add(orderItem);
+            }
+
+            return orderItems;
+        }
+        public List<OrderItem> GetDrinkOrderItems()
+        {
+            List<OrderItem> orderItems = new List<OrderItem>();
+
+            string query = @"
+            SELECT oi.OrderId, oi.MenuItemId, oi.Comment, oi.OrderTime, oi.Count, oi.Status, mi.Name 
+            FROM [ORDER_ITEM] oi
+            JOIN [MENU_ITEM] mi ON oi.MenuItemId = mi.MenuItemId
+            WHERE mi.Card = @Card";
+
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+            new SqlParameter("@Card", "drink")
+            };
+
+            DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                int menuItemId = Convert.ToInt32(row["MenuItemId"]);
+                MenuItem menuItem = new MenuItem
+                {
+                    MenuItemId = menuItemId,
+                    Name = row["Name"].ToString()
+                };
+
+                OrderItem orderItem = new OrderItem
+                {
+                    Order = _orderDao.GetOrderById(Convert.ToInt32(row["OrderId"])),
+                    MenuItem = menuItem,
+                    Comment = row["Comment"].ToString(),
+                    OrderTime = Convert.ToDateTime(row["OrderTime"]),
                     Count = Convert.ToInt32(row["Count"]),
                     Status = (StatusOfOrderitem)Enum.Parse(typeof(StatusOfOrderitem), row["Status"].ToString())
                 };

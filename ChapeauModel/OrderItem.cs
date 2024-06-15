@@ -16,18 +16,20 @@ namespace ChapeauModel
     {
         public DateTime OrderTime { get; set; }
         public MenuItem MenuItem { get; set; }
-        public Order OrderId { get; set; }
+        public Order Order { get; set; }
         public int Count { get; set; }
         public StatusOfOrderitem Status { get; set; }
+        public string Comment {  get; set; }
 
         public OrderItem() { }
-        public OrderItem(DateTime OrderTime, MenuItem MenuItemId, Order OrderId, int Count, StatusOfOrderitem Status)
+        public OrderItem(DateTime OrderTime, MenuItem MenuItemId, Order OrderId, int Count, StatusOfOrderitem Status, string comment)
         {
             this.OrderTime = OrderTime;
             this.MenuItem = MenuItemId;
-            this.OrderId = OrderId;
+            this.Order = OrderId;
             this.Count = Count;
             this.Status = Status;
+            Comment = comment;
         }
     }
 }

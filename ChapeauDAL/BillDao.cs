@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ChapeauDAL
 {
-    
+
     public class BillDao : BaseDao
     {
         private readonly OrderDao _orderDao = new OrderDao();
@@ -36,7 +36,7 @@ namespace ChapeauDAL
             {
                 string query = "INSERT INTO [Bill] (OrderId, Amount, Tip, PaymentMethod, Date, Time, Feedback) VALUES (@orderId, @amount, @tip, @paymentMethod, @date, @time, @feedback)";
                 SqlParameter[] sqlParameters = {
-                    new SqlParameter("@orderId", bill.OrderId),
+                    new SqlParameter("@orderId", bill.Order),
                     new SqlParameter("@amount", bill.Amount),
                     new SqlParameter("@tip", bill.Tip),
                     new SqlParameter("@paymentMethod", bill.PaymentMethod.ToString()), // Enum as string
@@ -55,29 +55,7 @@ namespace ChapeauDAL
 
 
         //  Method to read the bills from the data table
-        private List<Bill> ReadBills(DataTable dataTable)
-        {
-            List<Bill> bills = new List<Bill>();
-
-            foreach (DataRow dr in dataTable.Rows)
-            {
-                int orderId = (int)dr["OrderId"];
-                Order order = _orderDao.GetOrderById(orderId);
-                Bill bill = new Bill()
-                {
-                    BillId = (int)dr["BillId"],
-                    OrderId = order,
-                    Amount = (decimal)dr["Amount"],
-                    Tip = (decimal)dr["Tip"],
-                    PaymentMethod = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), dr["PaymentMethod"].ToString()),
-                    Date = (DateTime)dr["Date"], 
-                    Time = (TimeSpan)dr["Time"], 
-                    Feedback = dr["Feedback"].ToString()
-                };
-
-                bills.Add(bill);
-            }
-            return bills;
-        }
+        
+        
     }
 }
