@@ -41,6 +41,7 @@
             Table10 = new Button();
             buttonFresh = new Button();
             button1 = new Button();
+            button2 = new Button();
             SuspendLayout();
             // 
             // label1
@@ -185,11 +186,22 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // button2
+            // 
+            button2.Location = new Point(553, 539);
+            button2.Name = "button2";
+            button2.Size = new Size(122, 86);
+            button2.TabIndex = 14;
+            button2.Text = "button2";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // ChapeauUI
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1194, 684);
+            Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(buttonFresh);
             Controls.Add(Table10);
@@ -224,5 +236,6 @@
         private Button Table10;
         private Button buttonFresh;
         private Button button1;
+        private Button button2;
     }
 }

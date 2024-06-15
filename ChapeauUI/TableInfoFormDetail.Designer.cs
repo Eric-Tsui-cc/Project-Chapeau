@@ -70,6 +70,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label3.ForeColor = Color.Red;
             label3.Location = new Point(320, 86);
             label3.Name = "label3";
             label3.Size = new Size(0, 31);

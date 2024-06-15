@@ -220,5 +220,11 @@ namespace ChapeauUI
             MakeOrderPage orderPage = new MakeOrderPage();
             orderPage.ShowDialog();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            BillForm billForm = new BillForm();
+            billForm.ShowDialog();
+        }
     }
 }

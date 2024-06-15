@@ -9,16 +9,17 @@ namespace ConsoleTester
         static void Main(string[] args)
         {
 
-            OverviewService overviewService = new OverviewService();
-            int tableid = 4;
-            List<int> orderids = overviewService.GetRunningOrderIdsByTableId(tableid);
-            foreach(int orderid in orderids)
+            OrderService orderService = new OrderService();
+            PaymentService paymentService = new PaymentService();
+            List<OrderItem> orderItems = orderService.GetDrinkOrderItems();
+            int table = 4;
+            List<Order>orders = paymentService.GetUnpaidOrdersByTableId(10);
+            foreach (Order order in orders)
             {
-                Order order = overviewService.GetOrderById(orderid);
                 Console.WriteLine(order.OrderId);
             }
 
-            
+
         }
     }
 }

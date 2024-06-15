@@ -47,6 +47,12 @@ namespace ChapeauDAL
             SqlParameter[] sqlParameters = new SqlParameter[0];
             return ReadTables(ExecuteSelectQuery(query, sqlParameters));
         }
+        public List<Table> GetAllOccupiedTables()
+        {
+            string query = "SELECT * FROM [TABLE] WHERE Status = 'Occupied'";
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            return ReadTables(ExecuteSelectQuery(query, sqlParameters));
+        }
 
         private List<Table> ReadTables(DataTable dataTable)
         {

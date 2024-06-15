@@ -19,11 +19,12 @@ namespace ChapeauDAL
 
         public OrderDao(OrderItemDao orderItemDao)
         {
+            
             _orderItemDao = orderItemDao;
         }
         public OrderDao()
         {
-
+            _orderItemDao = new OrderItemDao();
         }
         public List<Order> GetAllOrders()
         {
@@ -181,6 +182,88 @@ namespace ChapeauDAL
 
             ExecuteEditQuery(query, sqlParameters);
         }
+        public void MarkOrderAsPaid(int orderId)
+        {
+            string query = "UPDATE [ORDER] SET PaymentStatus = 1 WHERE OrderId = @OrderId";
+            SqlParameter[] sqlParameters =
+            {
+                new SqlParameter("@OrderId", orderId)
+    };
 
+            ExecuteEditQuery(query, sqlParameters);
+        }
+        public List<Order> GetOrdersByTableId(int tableId)
+        {
+            List<Order> orders = new List<Order>();
+            string query = "SELECT * FROM [ORDER] WHERE TableId = @TableId";
+            SqlParameter[] sqlParameters =
+            {
+                new SqlParameter("@TableId", tableId)
+    };
+
+            DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                int orderId = Convert.ToInt32(row["OrderId"]);
+                int employeeId = Convert.ToInt32(row["EmployeeId"]);
+                int tableIdFromDb = Convert.ToInt32(row["TableId"]);
+                StatusOfOrder status = (StatusOfOrder)Enum.Parse(typeof(StatusOfOrder), row["Status"].ToString());
+
+                Employee employee = _employeeDao.GetByEmployeeId(employeeId);
+                Table table = _tableDao.GetTableById(tableIdFromDb);
+                List<OrderItem> items = _orderItemDao.GetOrderItemsByOrderId(orderId);
+
+                Order order = new Order
+                {
+                    OrderId = orderId,
+                    Employee = employee,
+                    Status = status,
+                    Table = table,
+                    items = items
+                };
+
+                orders.Add(order);
+            }
+
+            return orders;
+        }
+        public List<Order> GetUnpaidOrdersByTableId(int tableId)
+        {
+            List<Order> orders = new List<Order>();
+            string query = "SELECT * FROM [ORDER] WHERE TableId = @TableId AND PaymentStatus = 0";
+            SqlParameter[] sqlParameters =
+            {
+            new SqlParameter("@TableId", tableId)
+        };
+
+            DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                int orderId = Convert.ToInt32(row["OrderId"]);
+                int employeeId = Convert.ToInt32(row["EmployeeId"]);
+                int tableIdFromDb = Convert.ToInt32(row["TableId"]);
+                StatusOfOrder status = (StatusOfOrder)Enum.Parse(typeof(StatusOfOrder), row["Status"].ToString());
+
+                Employee employee = _employeeDao.GetByEmployeeId(employeeId);
+                Table table = _tableDao.GetTableById(tableIdFromDb);
+                List<OrderItem> items = _orderItemDao.GetOrderItemsByOrderId(orderId);
+
+                Order order = new Order
+                {
+                    OrderId = orderId,
+                    Employee = employee,
+                    Status = status,
+                    Table = table,
+                    items = items,
+                    PaymentStatus = 0 // Assuming PaymentStatus is a property of Order class
+                };
+
+                orders.Add(order);
+            }
+
+            return orders;
+        }
     }
 }

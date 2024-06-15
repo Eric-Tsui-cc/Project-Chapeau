@@ -14,14 +14,16 @@ namespace ChapeauModel
         public StatusOfOrder Status { get; set; }
         public Table Table {  get; set; }
         public List<OrderItem> items { get; set; }
+        public int PaymentStatus { get; set; }
         public Order() { }
-        public Order(int OrderId, string Comment, Employee EmployeeId, StatusOfOrder Status, Table TableId, List<OrderItem> items)
+        public Order(int OrderId, string Comment, Employee EmployeeId, StatusOfOrder Status, Table TableId, List<OrderItem> items, int paymentStatus)
         {
             this.OrderId = OrderId;
             this.Employee = EmployeeId;
             this.Status = Status;
             this.Table = TableId;
             this.items = items;
+            PaymentStatus = paymentStatus;
         }
     }
 
