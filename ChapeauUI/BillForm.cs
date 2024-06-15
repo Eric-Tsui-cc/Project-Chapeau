@@ -46,9 +46,16 @@ namespace ChapeauUI
         private void LoadComboBoxData()
         {
             List<Table> OcuupiedTables = paymentService.GetAllOccupiedTables();
+
+            if (OcuupiedTables.Count == 0)
+            {
+                OcuupiedTables.Add(new Table { TableId = -1});
+            }
+
             comboBox1.DataSource = OcuupiedTables;
             comboBox1.DisplayMember = "TableId";
-            comboBox1.SelectedIndex = 0;
+            comboBox1.ValueMember = "TableId"; 
+            comboBox1.SelectedIndex = 0; 
 
             comboBox2.DataSource = Enum.GetValues(typeof(PaymentMethod));
         }
@@ -58,34 +65,44 @@ namespace ChapeauUI
             total = 0;
             Vat = 0;
             paid = 0;
-            Table table = (Table) comboBox1.SelectedItem;
-            orders = paymentService.GetUnpaidOrdersByTableId(table.TableId);
-            listView1.Items.Clear();
-            foreach (Order order in orders) // fill the listview with ordered items
+
+            if (comboBox1.SelectedItem is Table table && table.TableId != -1)
             {
-                foreach (OrderItem item in order.items)
+                orders = paymentService.GetUnpaidOrdersByTableId(table.TableId);
+                listView1.Items.Clear();
+                foreach (Order order in orders) // 填充 listview
                 {
-                    ListViewItem Listitem = new ListViewItem(order.OrderId.ToString());
-                    Listitem.SubItems.Add(item.MenuItem.Name);
-                    Listitem.SubItems.Add(item.Count.ToString());
-                    Listitem.SubItems.Add(item.MenuItem.Price.ToString("€ 0.00"));
-                    listView1.Items.Add(Listitem);
-                    if (item.MenuItem.Category is Category.Beers || item.MenuItem.Category is Category.Wines)
+                    foreach (OrderItem item in order.items)
                     {
-                        Vat = Vat + item.MenuItem.Price * item.Count * 0.21m;
+                        ListViewItem listItem = new ListViewItem(order.OrderId.ToString());
+                        listItem.SubItems.Add(item.MenuItem.Name);
+                        listItem.SubItems.Add(item.Count.ToString());
+                        listItem.SubItems.Add(item.MenuItem.Price.ToString("€ 0.00"));
+                        listView1.Items.Add(listItem);
+
+                        if (item.MenuItem.Category is Category.Beers || item.MenuItem.Category is Category.Wines)
+                        {
+                            Vat += item.MenuItem.Price * item.Count * 0.21m;
+                        }
+                        else
+                        {
+                            Vat += item.MenuItem.Price * item.Count * 0.09m;
+                        }
+                        total += item.MenuItem.Price * item.Count;
                     }
-                    else
-                    {
-                        Vat = Vat + item.MenuItem.Price * item.Count * 0.09m;
-                    }
-                    total = total + item.MenuItem.Price * item.Count;
                 }
+                unpaid = total;
+                UpdateAmount();
             }
-            unpaid = total;
-            UpdateAmount();
+            else
+            {
+                listView1.Items.Clear(); 
+                MessageBox.Show("There are no occupied tables available for billing.", "No Occupied Tables", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+            private void button1_Click(object sender, EventArgs e)
         {
             try
             {
