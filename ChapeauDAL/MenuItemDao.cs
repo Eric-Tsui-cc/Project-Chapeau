@@ -6,10 +6,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 
 namespace ChapeauDAL
 {
-    internal class MenuItemDao : BaseDao
+    public class MenuItemDao : BaseDao
     {
         public List<MenuItem> GetAllMenuItems()
         {
@@ -47,21 +48,20 @@ namespace ChapeauDAL
             return menuItems;
         }
 
-        public MenuItem GetMenuItemById(int menuItemId)
+        public List< MenuItem> GetMenuItemById(int menuItemId)
         {
-            MenuItem menuItem = null;
+            List<MenuItem> menuItems = new List<MenuItem>();
             string query = "SELECT * FROM MENU_ITEM WHERE MenuItemId = @MenuItemId;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@MenuItemId", menuItemId)
+        new SqlParameter("@MenuItemId", menuItemId)
             };
 
             DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
 
-            if (dataTable.Rows.Count > 0)
+            foreach (DataRow row in dataTable.Rows)
             {
-                DataRow row = dataTable.Rows[0];
-                menuItem = new MenuItem
+                MenuItem menuItem = new MenuItem
                 {
                     MenuItemId = Convert.ToInt32(row["MenuItemId"]),
                     Name = row["Name"].ToString(),
@@ -70,13 +70,14 @@ namespace ChapeauDAL
                     Price = Convert.ToDecimal(row["Price"]),
                     Stock = Convert.ToInt32(row["Stock"])
                 };
+                menuItems.Add(menuItem);
             }
 
-            return menuItem;
+            return menuItems;
         }
-        public MenuItem GetMenuItemByName(string itemName)
+        public List<MenuItem> GetMenuItemByName(string itemName)
         {
-            MenuItem menuItem = null;
+            List<MenuItem> menuItems = new List<MenuItem>();
             string query = "SELECT * FROM MENU_ITEM WHERE Name = @Name;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
@@ -85,10 +86,9 @@ namespace ChapeauDAL
 
             DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
 
-            if (dataTable.Rows.Count > 0)
+            foreach (DataRow row in dataTable.Rows)
             {
-                DataRow row = dataTable.Rows[0];
-                menuItem = new MenuItem
+                MenuItem menuItem = new MenuItem
                 {
                     MenuItemId = Convert.ToInt32(row["MenuItemId"]),
                     Name = row["Name"].ToString(),
@@ -97,9 +97,10 @@ namespace ChapeauDAL
                     Price = Convert.ToDecimal(row["Price"]),
                     Stock = Convert.ToInt32(row["Stock"])
                 };
+                menuItems.Add(menuItem);
             }
 
-            return menuItem;
+            return menuItems;
         }
         public List<MenuItem> GetMenuItemsByCard(string cardType)
         {
@@ -180,7 +181,7 @@ namespace ChapeauDAL
                     Card = (Card)Enum.Parse(typeof(Card), row["Card"].ToString()),
                     Category = (Category)Enum.Parse(typeof(Category), row["Category"].ToString()),
                     Price = Convert.ToDecimal(row["Price"]),
-                    // Add more properties as needed
+                    Stock = Convert.ToInt32(row["Stock"])
                 };
 
                 menuItems.Add(menuItem);
