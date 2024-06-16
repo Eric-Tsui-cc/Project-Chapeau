@@ -16,15 +16,17 @@ namespace ChapeauUI
     {
         private PaymentService paymentService;
         private Bill bill;
-        private Order order;
+        //private Order order;
         List<Order> orders;
-        private decimal total;
+        private decimal totalWithoutVat;
         private decimal Vat;
         private decimal tip;
         private decimal paid;
+        /// </summary>
         private decimal unpaid;
-        private decimal temptotal;
+       // private decimal temptotal;
         private string feedback;
+        private decimal total;
         PaymentMethod paymentMethod;
         private Table table;
         public BillForm()
@@ -62,15 +64,17 @@ namespace ChapeauUI
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            total = 0;
+            totalWithoutVat = 0;
             Vat = 0;
             paid = 0;
+            total = 0;
+            tip = 0;
 
             if (comboBox1.SelectedItem is Table table && table.TableId != -1)
             {
                 orders = paymentService.GetUnpaidOrdersByTableId(table.TableId);
                 listView1.Items.Clear();
-                foreach (Order order in orders) // 填充 listview
+                foreach (Order order in orders) // listview
                 {
                     foreach (OrderItem item in order.items)
                     {
@@ -80,18 +84,21 @@ namespace ChapeauUI
                         listItem.SubItems.Add(item.MenuItem.Price.ToString("€ 0.00"));
                         listView1.Items.Add(listItem);
 
-                        if (item.MenuItem.Category is Category.Beers || item.MenuItem.Category is Category.Wines)
+                        decimal itemTotalPrice = item.MenuItem.Price * item.Count;
+                        totalWithoutVat += itemTotalPrice;
+
+                        if (item.MenuItem.Category is Category.Beers || item.MenuItem.Category is Category.Wines || item.MenuItem.Category is Category.Spirit)
                         {
-                            Vat += item.MenuItem.Price * item.Count * 0.21m;
+                            Vat +=  itemTotalPrice * 0.21m;
                         }
                         else
                         {
-                            Vat += item.MenuItem.Price * item.Count * 0.09m;
+                            Vat += itemTotalPrice * 0.09m;
                         }
-                        total += item.MenuItem.Price * item.Count;
+                       // Total += item.MenuItem.Price * item.Count + tip;
                     }
                 }
-                unpaid = total;
+               // unpaid = Total;
                 UpdateAmount();
             }
             else
@@ -122,8 +129,12 @@ namespace ChapeauUI
                 // Get the selected payment method
                 paymentMethod = (PaymentMethod)comboBox2.SelectedItem;
 
+                // Calculate the total amount including VAT and tip
+                total = totalWithoutVat + Vat + tip;
+                unpaid = total;
+
                 // Create a new Bill object with the collected data
-                bill = new Bill(orders, total, tip, paymentMethod, DateTime.Today, DateTime.Now.TimeOfDay, feedback);
+                bill = new Bill(orders, totalWithoutVat, tip, paymentMethod, DateTime.Today, DateTime.Now.TimeOfDay, feedback);
 
                 // Finalize the payment
                 paymentService.FinalizePayment(bill);
@@ -149,32 +160,58 @@ namespace ChapeauUI
 
         private void button2_Click(object sender, EventArgs e)
         {
-
-            paid = decimal.Parse(textBox3.Text);
-            if (temptotal - paid < 0)
+            try
             {
-                MessageBox.Show("The amount paid exceeds the total amount. Please check the payment amount.", "Payment Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                decimal goingDutchAmount = decimal.Parse(textBox3.Text);
+                //paid = decimal.Parse(textBox3.Text);
+                if (unpaid - goingDutchAmount < 0)
+                {
+                    MessageBox.Show("The amount paid exceeds the total amount. Please check the payment amount.", "Payment Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                unpaid -= goingDutchAmount;
+                UpdateAmount();
             }
-            unpaid = temptotal - paid;
-            UpdateAmount();
-
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
         public void UpdateAmount()
         {
-            labelTotalPrice.Text = total.ToString("€ 0.00");
+            // Calculate the total amount including VAT and tip
+            if (!string.IsNullOrWhiteSpace(textBox1.Text))
+            {
+                tip = decimal.Parse(textBox1.Text);
+            }
+            else
+            {
+                tip = 0;
+            }
+
+            total = totalWithoutVat + Vat + tip;
+
+            // Set unpaid to total by default
+            if (unpaid == 0)
+            {
+                unpaid = total;
+            }
+            // Update the labels with the calculated values
+            labelTotalPrice.Text = totalWithoutVat.ToString("€ 0.00");
             labelVat.Text = Vat.ToString("€ 0.00");
-
-            temptotal = unpaid;
-
-
-
+            lblTotalamount.Text = total.ToString("€ 0.00");
             label8.Text = unpaid.ToString("€ 0.00");
+        }
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            UpdateAmount();
         }
 
         private void BtnBack_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+       
     }
 }

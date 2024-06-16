@@ -17,7 +17,7 @@ namespace ChapeauModel
     {
         public List<Order> Orders { get; set; }
         public decimal Amount { get; set; }
-        public decimal Tip { get; set; }
+        public decimal Tip { get; set; } 
         public PaymentMethod PaymentMethod { get; set; }
         public DateTime Date { get; set; }
         public TimeSpan Time { get; set; }
