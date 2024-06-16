@@ -143,8 +143,28 @@ namespace ChapeauUI
             {
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            ClearScreen();
         }
+        private void ClearScreen()
+        {
+            // Clear text boxes
+            textBox1.Text = string.Empty; // Tip
+            textBox2.Text = string.Empty; // Feedback
+            textBox3.Text = string.Empty; // Going Dutch
 
+            // Reset combo boxes
+            comboBox1.SelectedIndex = -1; // Table Number
+            comboBox2.SelectedIndex = -1; // Payment Method
+
+            // Clear ListView
+            listView1.Items.Clear();
+
+            // Clear labels
+            labelTotalPrice.Text = "€ 0.00";
+            labelVat.Text = "€ 0.00";
+            lblTotalamount.Text = "€ 0.00";
+            label8.Text = "€ 0.00";
+        }
 
         private void button2_Click(object sender, EventArgs e)
         {
