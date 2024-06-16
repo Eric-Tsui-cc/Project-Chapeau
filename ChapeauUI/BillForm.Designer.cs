@@ -32,6 +32,7 @@
             label1 = new Label();
             pictureBox1 = new PictureBox();
             pnlReceipt = new Panel();
+            btnAddTip = new Button();
             lblTotalamount = new Label();
             label10 = new Label();
             label9 = new Label();
@@ -39,7 +40,7 @@
             label7 = new Label();
             textBox3 = new TextBox();
             label6 = new Label();
-            SubmitButton = new Button();
+            btnSubmit = new Button();
             textBox2 = new TextBox();
             label5 = new Label();
             button1 = new Button();
@@ -60,7 +61,6 @@
             ItemName = new ColumnHeader();
             Qty = new ColumnHeader();
             Price = new ColumnHeader();
-            btnAddTip = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             pnlReceipt.SuspendLayout();
             SuspendLayout();
@@ -96,7 +96,7 @@
             pnlReceipt.Controls.Add(label7);
             pnlReceipt.Controls.Add(textBox3);
             pnlReceipt.Controls.Add(label6);
-            pnlReceipt.Controls.Add(SubmitButton);
+            pnlReceipt.Controls.Add(btnSubmit);
             pnlReceipt.Controls.Add(textBox2);
             pnlReceipt.Controls.Add(label5);
             pnlReceipt.Controls.Add(button1);
@@ -116,6 +116,16 @@
             pnlReceipt.Size = new Size(410, 720);
             pnlReceipt.TabIndex = 2;
             pnlReceipt.Paint += panel1_Paint;
+            // 
+            // btnAddTip
+            // 
+            btnAddTip.Location = new Point(310, 180);
+            btnAddTip.Margin = new Padding(2);
+            btnAddTip.Name = "btnAddTip";
+            btnAddTip.Size = new Size(81, 27);
+            btnAddTip.TabIndex = 59;
+            btnAddTip.Text = "Add Tip";
+            btnAddTip.UseVisualStyleBackColor = true;
             // 
             // lblTotalamount
             // 
@@ -182,16 +192,16 @@
             label6.TabIndex = 52;
             label6.Text = "Going Dutch";
             // 
-            // SubmitButton
+            // btnSubmit
             // 
-            SubmitButton.Location = new Point(310, 301);
-            SubmitButton.Margin = new Padding(2);
-            SubmitButton.Name = "SubmitButton";
-            SubmitButton.Size = new Size(81, 27);
-            SubmitButton.TabIndex = 51;
-            SubmitButton.Text = "Submit";
-            SubmitButton.UseVisualStyleBackColor = true;
-            SubmitButton.Click += button2_Click;
+            btnSubmit.Location = new Point(310, 301);
+            btnSubmit.Margin = new Padding(2);
+            btnSubmit.Name = "btnSubmit";
+            btnSubmit.Size = new Size(81, 27);
+            btnSubmit.TabIndex = 51;
+            btnSubmit.Text = "Submit";
+            btnSubmit.UseVisualStyleBackColor = true;
+            btnSubmit.Click += button2_Click;
             // 
             // textBox2
             // 
@@ -371,16 +381,6 @@
             // 
             Price.Text = "Price";
             // 
-            // btnAddTip
-            // 
-            btnAddTip.Location = new Point(310, 180);
-            btnAddTip.Margin = new Padding(2);
-            btnAddTip.Name = "btnAddTip";
-            btnAddTip.Size = new Size(81, 27);
-            btnAddTip.TabIndex = 59;
-            btnAddTip.Text = "Add Tip";
-            btnAddTip.UseVisualStyleBackColor = true;
-            // 
             // BillForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -425,7 +425,7 @@
         private Button button1;
         private ColumnHeader Qty;
         private ColumnHeader Price;
-        private Button SubmitButton;
+        private Button btnSubmit;
         private Label label8;
         private Label label7;
         private TextBox textBox3;

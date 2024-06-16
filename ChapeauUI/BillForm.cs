@@ -34,6 +34,7 @@ namespace ChapeauUI
             InitializeComponent();
             paymentService = new PaymentService();
             LoadComboBoxData();
+            textBox1.TextChanged +=new EventHandler( textBox1_TextChanged);
         }
 
         private void label12_Click(object sender, EventArgs e)
@@ -114,14 +115,14 @@ namespace ChapeauUI
             try
             {
                 // Parse and handle tip input
-                if (string.IsNullOrWhiteSpace(textBox1.Text))
-                {
-                    tip = 0; // Default to 0 if input is empty
-                }
-                else
-                {
-                    tip = decimal.Parse(textBox1.Text);
-                }
+                //if (string.IsNullOrWhiteSpace(textBox1.Text))
+                //{
+                //    tip = 0; // Default to 0 if input is empty
+                //}
+                //else
+                //{
+                //    tip = decimal.Parse(textBox1.Text);
+                //}
 
                 // Handle feedback input
                 feedback = string.IsNullOrWhiteSpace(textBox2.Text) ? string.Empty : textBox2.Text;
@@ -130,11 +131,11 @@ namespace ChapeauUI
                 paymentMethod = (PaymentMethod)comboBox2.SelectedItem;
 
                 // Calculate the total amount including VAT and tip
-                total = totalWithoutVat + Vat + tip;
-                unpaid = total;
+                //total = totalWithoutVat + Vat + tip;
+                //unpaid = total;
 
                 // Create a new Bill object with the collected data
-                bill = new Bill(orders, totalWithoutVat, tip, paymentMethod, DateTime.Today, DateTime.Now.TimeOfDay, feedback);
+                bill = new Bill(orders, total, tip, paymentMethod, DateTime.Today, DateTime.Now.TimeOfDay, feedback);
 
                 // Finalize the payment
                 paymentService.FinalizePayment(bill);
@@ -170,7 +171,7 @@ namespace ChapeauUI
                     return;
                 }
                 unpaid -= goingDutchAmount;
-                UpdateAmount();
+                UpdateUnpaidAmount();
             }
             catch (Exception ex)
             {
@@ -181,31 +182,53 @@ namespace ChapeauUI
         public void UpdateAmount()
         {
             // Calculate the total amount including VAT and tip
-            if (!string.IsNullOrWhiteSpace(textBox1.Text))
-            {
-                tip = decimal.Parse(textBox1.Text);
-            }
-            else
-            {
-                tip = 0;
-            }
+            //if (!string.IsNullOrWhiteSpace(textBox1.Text))
+            //{
+            //    tip = decimal.Parse(textBox1.Text);
+            //}
+            //else
+            //{
+            //    tip = 0;
+            //}
 
             total = totalWithoutVat + Vat + tip;
-
+            unpaid = total;
             // Set unpaid to total by default
-            if (unpaid == 0)
-            {
-                unpaid = total;
-            }
+            //if (unpaid == 0)
+            //{
+            //    unpaid = total;
+            //}
             // Update the labels with the calculated values
             labelTotalPrice.Text = totalWithoutVat.ToString("€ 0.00");
             labelVat.Text = Vat.ToString("€ 0.00");
             lblTotalamount.Text = total.ToString("€ 0.00");
             label8.Text = unpaid.ToString("€ 0.00");
         }
+        private void UpdateUnpaidAmount() // Line 148: New method to update only the unpaid amount
+        {
+            // Update only the unpaid amount
+            label8.Text = unpaid.ToString("€ 0.00");
+        }
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            UpdateAmount();
+            try
+            {
+                // Parse and handle tip input
+                if (string.IsNullOrWhiteSpace(textBox1.Text))
+                {
+                    tip = 0; // Default to 0 if input is empty
+                }
+                else
+                {
+                    tip = decimal.Parse(textBox1.Text);
+                }
+
+                UpdateAmount(); // Recalculate the total and unpaid amounts including the tip
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void BtnBack_Click(object sender, EventArgs e)
