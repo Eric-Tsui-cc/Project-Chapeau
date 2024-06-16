@@ -136,6 +136,7 @@
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(150, 30);
             textBox3.TabIndex = 53;
+            textBox3.TextChanged += textBox3_TextChanged;
             // 
             // label6
             // 
@@ -190,6 +191,7 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(150, 30);
             textBox1.TabIndex = 47;
+            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // label4
             // 
@@ -262,9 +264,9 @@
             lblTotalWithoutVAT.Location = new Point(49, 480);
             lblTotalWithoutVAT.Margin = new Padding(4, 0, 4, 0);
             lblTotalWithoutVAT.Name = "lblTotalWithoutVAT";
-            lblTotalWithoutVAT.Size = new Size(180, 24);
+            lblTotalWithoutVAT.Size = new Size(58, 24);
             lblTotalWithoutVAT.TabIndex = 39;
-            lblTotalWithoutVAT.Text = "Total (Without VAT)";
+            lblTotalWithoutVAT.Text = "Total ";
             // 
             // labelTotalPrice
             // 
