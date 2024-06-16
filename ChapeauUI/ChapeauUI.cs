@@ -29,20 +29,27 @@ namespace ChapeauUI
 
         private void roundedButton4_Click(object sender, EventArgs e)
         {
-            Orders newForm = new Orders();
-
-            OpenUI(newForm);
-        }
-
-        private void roundedButton1_Click(object sender, EventArgs e)
-        {
             LoginPage newForm = new LoginPage();
             OpenUI(newForm);
 
 
         }
 
-        private void roundedButton3_Click(object sender, EventArgs e)
+        private void roundedButton5_Click_1(object sender, EventArgs e)
+        {
+            Orders newForm = new Orders();
+
+            OpenUI(newForm);
+        }
+
+        private void roundedButton6_Click_1(object sender, EventArgs e)
+        {
+            Tables newForm = new Tables();
+            OpenUI(newForm);
+
+        }
+
+        private void roundedButton4_Click(object sender, EventArgs e)
         {
             Tables newForm = new Tables();
             OpenUI(newForm);
