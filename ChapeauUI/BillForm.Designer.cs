@@ -32,7 +32,6 @@
             label1 = new Label();
             pictureBox1 = new PictureBox();
             pnlReceipt = new Panel();
-            btnAddTip = new Button();
             lblTotalamount = new Label();
             label10 = new Label();
             label9 = new Label();
@@ -88,7 +87,6 @@
             // pnlReceipt
             // 
             pnlReceipt.BackColor = SystemColors.InactiveCaption;
-            pnlReceipt.Controls.Add(btnAddTip);
             pnlReceipt.Controls.Add(lblTotalamount);
             pnlReceipt.Controls.Add(label10);
             pnlReceipt.Controls.Add(label9);
@@ -116,16 +114,6 @@
             pnlReceipt.Size = new Size(410, 720);
             pnlReceipt.TabIndex = 2;
             pnlReceipt.Paint += panel1_Paint;
-            // 
-            // btnAddTip
-            // 
-            btnAddTip.Location = new Point(310, 180);
-            btnAddTip.Margin = new Padding(2);
-            btnAddTip.Name = "btnAddTip";
-            btnAddTip.Size = new Size(81, 27);
-            btnAddTip.TabIndex = 59;
-            btnAddTip.Text = "Add Tip";
-            btnAddTip.UseVisualStyleBackColor = true;
             // 
             // lblTotalamount
             // 
@@ -170,9 +158,9 @@
             label7.Location = new Point(34, 498);
             label7.Margin = new Padding(2, 0, 2, 0);
             label7.Name = "label7";
-            label7.Size = new Size(140, 20);
+            label7.Size = new Size(136, 20);
             label7.TabIndex = 54;
-            label7.Text = "Unpaid Amount left";
+            label7.Text = "Remaining Balance";
             // 
             // textBox3
             // 
@@ -433,6 +421,5 @@
         private Label label10;
         private Label label9;
         private Label lblTotalamount;
-        private Button btnAddTip;
     }
 }

@@ -24,7 +24,7 @@ namespace ChapeauUI
         private decimal paid;
         /// </summary>
         private decimal unpaid;
-       // private decimal temptotal;
+        // private decimal temptotal;
         private string feedback;
         private decimal total;
         PaymentMethod paymentMethod;
@@ -34,7 +34,7 @@ namespace ChapeauUI
             InitializeComponent();
             paymentService = new PaymentService();
             LoadComboBoxData();
-            textBox1.TextChanged +=new EventHandler( textBox1_TextChanged);
+            textBox1.TextChanged += new EventHandler(textBox1_TextChanged);
         }
 
         private void label12_Click(object sender, EventArgs e)
@@ -52,13 +52,13 @@ namespace ChapeauUI
 
             if (OcuupiedTables.Count == 0)
             {
-                OcuupiedTables.Add(new Table { TableId = -1});
+                OcuupiedTables.Add(new Table { TableId = 0 });
             }
 
             comboBox1.DataSource = OcuupiedTables;
             comboBox1.DisplayMember = "TableId";
-            comboBox1.ValueMember = "TableId"; 
-            comboBox1.SelectedIndex = 0; 
+            comboBox1.ValueMember = "TableId";
+            comboBox1.SelectedIndex = 0;
 
             comboBox2.DataSource = Enum.GetValues(typeof(PaymentMethod));
         }
@@ -71,7 +71,7 @@ namespace ChapeauUI
             total = 0;
             tip = 0;
 
-            if (comboBox1.SelectedItem is Table table && table.TableId != -1)
+            if (comboBox1.SelectedItem is Table table && table.TableId != 0)
             {
                 orders = paymentService.GetUnpaidOrdersByTableId(table.TableId);
                 listView1.Items.Clear();
@@ -90,49 +90,35 @@ namespace ChapeauUI
 
                         if (item.MenuItem.Category is Category.Beers || item.MenuItem.Category is Category.Wines || item.MenuItem.Category is Category.Spirit)
                         {
-                            Vat +=  itemTotalPrice * 0.21m;
+                            Vat += itemTotalPrice * 0.21m;
                         }
                         else
                         {
                             Vat += itemTotalPrice * 0.09m;
                         }
-                       // Total += item.MenuItem.Price * item.Count + tip;
+                        // Total += item.MenuItem.Price * item.Count + tip;
                     }
                 }
-               // unpaid = Total;
+                // unpaid = Total;
                 UpdateAmount();
             }
             else
             {
-                listView1.Items.Clear(); 
+                listView1.Items.Clear();
                 MessageBox.Show("There are no occupied tables available for billing.", "No Occupied Tables", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
         }
 
-            private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                // Parse and handle tip input
-                //if (string.IsNullOrWhiteSpace(textBox1.Text))
-                //{
-                //    tip = 0; // Default to 0 if input is empty
-                //}
-                //else
-                //{
-                //    tip = decimal.Parse(textBox1.Text);
-                //}
-
                 // Handle feedback input
                 feedback = string.IsNullOrWhiteSpace(textBox2.Text) ? string.Empty : textBox2.Text;
 
                 // Get the selected payment method
                 paymentMethod = (PaymentMethod)comboBox2.SelectedItem;
-
-                // Calculate the total amount including VAT and tip
-                //total = totalWithoutVat + Vat + tip;
-                //unpaid = total;
 
                 // Create a new Bill object with the collected data
                 bill = new Bill(orders, total, tip, paymentMethod, DateTime.Today, DateTime.Now.TimeOfDay, feedback);
@@ -151,6 +137,7 @@ namespace ChapeauUI
                 paymentService.ChangeTableStatusToFree(table.TableId);
 
                 MessageBox.Show("Payment finalized and orders marked as paid.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             }
             catch (Exception ex)
             {
@@ -164,10 +151,11 @@ namespace ChapeauUI
             try
             {
                 decimal goingDutchAmount = decimal.Parse(textBox3.Text);
-                //paid = decimal.Parse(textBox3.Text);
-                if (unpaid - goingDutchAmount < 0)
+                decimal tolerance = 0.01m; // Define a small tolerance for floating-point comparison to account for any minor differences due to floating-point precision errors.
+
+                if (Math.Abs(unpaid - goingDutchAmount) > tolerance && unpaid - goingDutchAmount < 0)
                 {
-                    MessageBox.Show("The amount paid exceeds the total amount. Please check the payment amount.", "Payment Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("The amount entered exceeds the unpaid amount. Please check the input.", "Payment Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 unpaid -= goingDutchAmount;
@@ -181,30 +169,18 @@ namespace ChapeauUI
 
         public void UpdateAmount()
         {
-            // Calculate the total amount including VAT and tip
-            //if (!string.IsNullOrWhiteSpace(textBox1.Text))
-            //{
-            //    tip = decimal.Parse(textBox1.Text);
-            //}
-            //else
-            //{
-            //    tip = 0;
-            //}
+
 
             total = totalWithoutVat + Vat + tip;
             unpaid = total;
-            // Set unpaid to total by default
-            //if (unpaid == 0)
-            //{
-            //    unpaid = total;
-            //}
+
             // Update the labels with the calculated values
             labelTotalPrice.Text = totalWithoutVat.ToString("€ 0.00");
             labelVat.Text = Vat.ToString("€ 0.00");
             lblTotalamount.Text = total.ToString("€ 0.00");
             label8.Text = unpaid.ToString("€ 0.00");
         }
-        private void UpdateUnpaidAmount() // Line 148: New method to update only the unpaid amount
+        private void UpdateUnpaidAmount()
         {
             // Update only the unpaid amount
             label8.Text = unpaid.ToString("€ 0.00");
@@ -235,6 +211,6 @@ namespace ChapeauUI
         {
             this.Close();
         }
-       
+
     }
 }

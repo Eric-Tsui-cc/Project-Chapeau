@@ -29,7 +29,7 @@ namespace ChapeauDAL
             return ReadBills(ExecuteSelectQuery(query, sqlParameters))[0];
         }
 
-        // Finalize the payment for one or more bills
+        // Finalize the payment for a particullar Bill
         public void FinalizePayment(Bill bill)
         {
             string query = "INSERT INTO [Bill] (OrderId, Amount, Tip, PaymentMethod, Date, Time, Feedback) VALUES (@orderId, @amount, @tip, @paymentMethod, @date, @time, @feedback)";
@@ -53,7 +53,7 @@ namespace ChapeauDAL
             foreach (DataRow row in dataTable.Rows)
             {
                 int orderId = row.Field<int>("OrderId");
-                Order order = _orderDao.GetOrderById(orderId); // Assuming you have a method to get Order by Id
+                Order order = _orderDao.GetOrderById(orderId); 
                 List<Order> orders = new List<Order> { order };
 
                 Bill bill = new Bill(
