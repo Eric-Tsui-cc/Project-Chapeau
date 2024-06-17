@@ -40,9 +40,10 @@
             LoginButton.Cursor = Cursors.Hand;
             LoginButton.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point);
             LoginButton.ForeColor = SystemColors.ButtonHighlight;
-            LoginButton.Location = new Point(529, 703);
+            LoginButton.Location = new Point(282, 380);
+            LoginButton.Margin = new Padding(2, 2, 2, 2);
             LoginButton.Name = "LoginButton";
-            LoginButton.Size = new Size(637, 102);
+            LoginButton.Size = new Size(340, 55);
             LoginButton.TabIndex = 1;
             LoginButton.Text = "Log In";
             LoginButton.UseVisualStyleBackColor = false;
@@ -53,9 +54,10 @@
             wrongUCLabel.AutoSize = true;
             wrongUCLabel.BackColor = Color.Transparent;
             wrongUCLabel.ForeColor = Color.IndianRed;
-            wrongUCLabel.Location = new Point(740, 663);
+            wrongUCLabel.Location = new Point(395, 358);
+            wrongUCLabel.Margin = new Padding(2, 0, 2, 0);
             wrongUCLabel.Name = "wrongUCLabel";
-            wrongUCLabel.Size = new Size(228, 37);
+            wrongUCLabel.Size = new Size(126, 20);
             wrongUCLabel.TabIndex = 2;
             wrongUCLabel.Text = "Wrong User Code";
             wrongUCLabel.Visible = false;
@@ -64,22 +66,24 @@
             // 
             userCodeTextBox.BorderStyle = BorderStyle.None;
             userCodeTextBox.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point);
-            userCodeTextBox.Location = new Point(529, 583);
+            userCodeTextBox.Location = new Point(282, 315);
+            userCodeTextBox.Margin = new Padding(2, 2, 2, 2);
             userCodeTextBox.MaxLength = 4;
             userCodeTextBox.Name = "userCodeTextBox";
             userCodeTextBox.PlaceholderText = "Enter User Code";
-            userCodeTextBox.Size = new Size(637, 64);
+            userCodeTextBox.Size = new Size(340, 36);
             userCodeTextBox.TabIndex = 3;
             userCodeTextBox.TextAlign = HorizontalAlignment.Center;
             // 
             // LoginPage
             // 
-            AutoScaleDimensions = new SizeF(15F, 37F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1728, 1096);
+            ClientSize = new Size(931, 570);
             Controls.Add(userCodeTextBox);
             Controls.Add(wrongUCLabel);
             Controls.Add(LoginButton);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "LoginPage";
             Text = "LoginPage";
             ResumeLayout(false);
