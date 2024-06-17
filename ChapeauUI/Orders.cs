@@ -37,7 +37,7 @@ namespace ChapeauUI
             // Clear any existing columns
             this.TableOrdersListView.Columns.Clear();
 
-            // Add columns to the ListView in the desired order
+            // Adds columns to the ListView 
             this.TableOrdersListView.Columns.Add("Item Name", 100, HorizontalAlignment.Left);
             this.TableOrdersListView.Columns.Add("Table ID", 80, HorizontalAlignment.Left);
             this.TableOrdersListView.Columns.Add("Order ID", 80, HorizontalAlignment.Left);
@@ -139,6 +139,8 @@ namespace ChapeauUI
                             order.Status = Order.StringToStatus(newStatus);
                             orderService.ChangeOrderStatus(order);
                             LoadOrderOverview();
+                            MessageBox.Show("Status changed successfully");
+
                         }
                         else
                         {

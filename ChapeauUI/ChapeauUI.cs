@@ -4,7 +4,7 @@ namespace ChapeauUI
 {
     public partial class ChapeauUI : Form
     {
-        private Employee currentEmployee; // Add this field
+        private Employee currentEmployee; // Add this field 
 
         public ChapeauUI(Employee employee)
         {

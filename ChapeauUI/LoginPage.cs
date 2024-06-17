@@ -40,7 +40,7 @@ namespace ChapeauUI
             // Show new form, which needs to be open
             newForm.ShowDialog();
 
-            // Close previous form (LoginPage), so it's not running in the background
+            // Close previous form , so it's not running in the background
             activeForm.Close();
         }
 

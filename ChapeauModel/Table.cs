@@ -13,10 +13,6 @@ namespace ChapeauModel
         public TableStatus Status { get; set; }
         public int Capacity { get; set; }
 
-        public override string ToString()
-        {
-            return $"Table ID: {TableId}, Status: {Status}, Capacity: {Capacity}";
-        }
 
         public static TableStatus StringToStatus(string status)
         {

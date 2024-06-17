@@ -72,6 +72,8 @@ namespace ChapeauUI
                             table.Status = Table.StringToStatus(newStatus);
                             tableService.ChangeTableStatus(table);
                             LoadTableOverview();
+                            MessageBox.Show("Status Changed succesfully");
+
                         }
                         else
                         {
