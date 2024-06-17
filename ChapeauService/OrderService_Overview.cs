@@ -33,9 +33,21 @@ namespace ChapeauService
         {
             switch (sortBy)
             {
+                //The methods .Where(...) and .OrderByDescending(...) are part of LINQ (Language Integrated Query)
                 case "ReadyToServe":
                     return orders
                         .Where(o => o.Status == Order.OrderStatus.Done)
+                        /*o => o.Status == Order.OrderStatus.Done
+                        Parameter: o
+
+                        The parameter o represents each element in the collection being processed. In this context, o is an instance of the Order class.
+                        Lambda Operator: =>
+
+                        The => operator separates the parameter from the body of the lambda expression. It can be read as "goes to".
+                        Body: o.Status == Order.OrderStatus.Done
+
+                        The body of the lambda expression is the logic that will be applied to each element. It checks if the Status property of the Order object o is equal to Order.OrderStatus.Done.*/
+
                         .OrderByDescending(o => o.GetWaitingTime())
                         .ThenBy(o => o.TableId)
                         .ToList();

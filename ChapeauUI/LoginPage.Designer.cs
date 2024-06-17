@@ -67,6 +67,7 @@
             userCodeTextBox.Location = new Point(529, 583);
             userCodeTextBox.MaxLength = 4;
             userCodeTextBox.Name = "userCodeTextBox";
+            userCodeTextBox.PasswordChar = '*';
             userCodeTextBox.PlaceholderText = "Enter User Code";
             userCodeTextBox.Size = new Size(637, 64);
             userCodeTextBox.TabIndex = 3;

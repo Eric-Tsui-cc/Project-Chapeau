@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             panel2 = new Panel();
+            buttonWaiter = new RoundedButton();
+            buttonChef = new RoundedButton();
+            buttonManager = new RoundedButton();
             roundedButton1 = new RoundedButton();
             roundedButton3 = new RoundedButton();
             roundedButton4 = new RoundedButton();
@@ -39,11 +42,50 @@
             // panel2
             // 
             panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(buttonWaiter);
+            panel2.Controls.Add(buttonChef);
+            panel2.Controls.Add(buttonManager);
             panel2.Controls.Add(roundedButton1);
             panel2.Location = new Point(1, -7);
             panel2.Name = "panel2";
             panel2.Size = new Size(205, 1075);
             panel2.TabIndex = 8;
+            // 
+            // buttonWaiter
+            // 
+            buttonWaiter.BackColor = Color.Coral;
+            buttonWaiter.BorderRadius = 30;
+            buttonWaiter.ForeColor = Color.White;
+            buttonWaiter.Location = new Point(18, 782);
+            buttonWaiter.Name = "buttonWaiter";
+            buttonWaiter.Size = new Size(169, 52);
+            buttonWaiter.TabIndex = 7;
+            buttonWaiter.Text = "Waiter";
+            buttonWaiter.UseVisualStyleBackColor = false;
+            // 
+            // buttonChef
+            // 
+            buttonChef.BackColor = Color.Coral;
+            buttonChef.BorderRadius = 30;
+            buttonChef.ForeColor = Color.White;
+            buttonChef.Location = new Point(17, 714);
+            buttonChef.Name = "buttonChef";
+            buttonChef.Size = new Size(169, 52);
+            buttonChef.TabIndex = 6;
+            buttonChef.Text = "Bar/Kitchen";
+            buttonChef.UseVisualStyleBackColor = false;
+            // 
+            // buttonManager
+            // 
+            buttonManager.BackColor = Color.Coral;
+            buttonManager.BorderRadius = 30;
+            buttonManager.ForeColor = Color.White;
+            buttonManager.Location = new Point(18, 644);
+            buttonManager.Name = "buttonManager";
+            buttonManager.Size = new Size(169, 52);
+            buttonManager.TabIndex = 5;
+            buttonManager.Text = "Manager";
+            buttonManager.UseVisualStyleBackColor = false;
             // 
             // roundedButton1
             // 
@@ -118,5 +160,8 @@
         private RoundedButton roundedButton3;
         private RoundedButton roundedButton4;
         private Label label1;
+        private RoundedButton buttonWaiter;
+        private RoundedButton buttonChef;
+        private RoundedButton buttonManager;
     }
 }

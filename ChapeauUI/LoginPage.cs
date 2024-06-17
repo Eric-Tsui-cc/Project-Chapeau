@@ -1,13 +1,6 @@
 ﻿using ChapeauModel;
 using ChapeauService;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ChapeauUI
@@ -31,38 +24,23 @@ namespace ChapeauUI
             }
         }
 
-
-        // opens UI based on the role of employee which is logging in
-
         private void OpenFormBasedOnTheRole(Employee employee)
         {
-            if (employee.Role == EmployeeRole.Waiter)
-            {
-                // passing employee who logged in data to the next form.
-                ChapeauUI newForm = new ChapeauUI(employee);
-                OpenUI(newForm);
-            }
-            else if (employee.Role == EmployeeRole.Chef || employee.Role == EmployeeRole.Bartender)
-            {
-
-            }
-            else if (employee.Role == EmployeeRole.Chef)
-            {
-
-            }
-
+            // I'm passing the employee who logged in data to the home form.
+            ChapeauUI newForm = new ChapeauUI(employee);
+            OpenUI(newForm);
         }
 
         private void OpenUI(Form newForm)
         {
-            // define active form (LoginUI) and hide it
+            // Define active form and hide it
             Form activeForm = ActiveForm;
             activeForm.Hide();
 
-            // show new form, which needs to be open
+            // Show new form, which needs to be open
             newForm.ShowDialog();
 
-            // close previous form (LoginPage), so it's not running in the background
+            // Close previous form (LoginPage), so it's not running in the background
             activeForm.Close();
         }
 
@@ -79,14 +57,13 @@ namespace ChapeauUI
             else if (hashCheckAndGetEmployee.IsCorrectUserCode(UCode) == false)
             {
                 wrongUCLabel.Visible = true;
-                wrongUCLabel.Text = "Wrong Password";
-
+                wrongUCLabel.Text = "Wrong User Code";
             }
             else if (hashCheckAndGetEmployee.IsCorrectUserCode(UCode))
             {
-                OpenFormBasedOnTheRole(hashCheckAndGetEmployee.GetEmployeeByHashedUC(UCode));
+                Employee employee = hashCheckAndGetEmployee.GetEmployeeByHashedUC(UCode);
+                OpenFormBasedOnTheRole(employee);
             }
         }
-
     }
 }

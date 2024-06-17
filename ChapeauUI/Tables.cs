@@ -10,11 +10,15 @@ namespace ChapeauUI
     public partial class Tables : Form
     {
         TableService_Bogdan tableService = new TableService_Bogdan();
-        public Tables()
+        private Employee currentEmployee;
+
+        public Tables(Employee employee)
         {
             InitializeComponent();
+            currentEmployee = employee; // Set the current employee
             ConfigureTableListView();
             LoadTableOverview();
+            this.currentEmployee = currentEmployee;
         }
 
 
@@ -112,7 +116,7 @@ namespace ChapeauUI
 
         private void roundedButton3_Click(object sender, EventArgs e) // orders
         {
-            Orders newForm = new Orders();
+            Orders newForm = new Orders(currentEmployee);
 
             OpenUI(newForm);
 
@@ -121,7 +125,7 @@ namespace ChapeauUI
 
         private void roundedButton2_Click(object sender, EventArgs e) //Home
         {
-            ChapeauUI newForm = new ChapeauUI();
+            ChapeauUI newForm = new ChapeauUI(currentEmployee);
 
             OpenUI(newForm);
 

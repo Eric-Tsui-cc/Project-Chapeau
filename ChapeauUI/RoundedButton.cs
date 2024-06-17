@@ -2,13 +2,17 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
 namespace ChapeauUI
 {
     public class RoundedButton : Button
     {
+        //SETS BORDER RADIUS TO 30
         public int BorderRadius { get; set; } = 30;
 
+        //DEFINE BUTTON COLORS AND HOVER COLORS
         private Color defaultBackColor = Color.Coral;
         private Color hoverBackColor = Color.Tomato;
 
@@ -21,12 +25,10 @@ namespace ChapeauUI
             this.BackColor = defaultBackColor;
             this.ForeColor = defaultForeColor;
 
-            // Add event handlers for mouse enter and leave
+            //   //The += operator is used to attach the event handler methods to the events.
             this.MouseEnter += RoundedButton_MouseEnter;
             this.MouseLeave += RoundedButton_MouseLeave;
         }
-
-        // Event handler for mouse entering the button
         private void RoundedButton_MouseEnter(object sender, EventArgs e)
         {
             this.BackColor = hoverBackColor;
@@ -40,6 +42,9 @@ namespace ChapeauUI
             this.ForeColor = defaultForeColor;
         }
 
+        /*The OnPaint method is overridden to customize the drawing of the button. It is responsible for rendering
+ the button with rounded corners,filling it with the background color, drawing the border, and rendering
+ the text centered on the button.*/
         protected override void OnPaint(PaintEventArgs pevent)
         {
             GraphicsPath path = new GraphicsPath();

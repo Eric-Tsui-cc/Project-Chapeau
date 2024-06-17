@@ -18,13 +18,15 @@ namespace ChapeauUI
         private OrderService_Overview orderService = new OrderService_Overview();
         private List<Order> orders = new List<Order>();
 
-        public Orders()
+        private Employee currentEmployee; 
+
+        public Orders(Employee employee) 
         {
             InitializeComponent();
+            currentEmployee = employee; // Set the current employee
             ConfigureTableListView();
             LoadOrderOverview();
         }
-
 
         private void ConfigureTableListView()
         {
@@ -89,44 +91,6 @@ namespace ChapeauUI
             DisplayOrders(sortedOrders);
         }
 
-
-
-
-        //BUTTONS
-        private void OpenUI(Form newForm)
-        {
-            // define active form (LoginUI) and hide it
-            Form activeForm = ActiveForm;
-            activeForm.Hide();
-
-            // show new form, which needs to be open
-            newForm.ShowDialog();
-
-            // close previous form (LoginPage), so it's not running in the background
-            activeForm.Close();
-        }
-
-        private void roundedButton2_Click_1(object sender, EventArgs e)
-        {
-            ChapeauUI newForm = new ChapeauUI();
-
-            OpenUI(newForm);
-        }
-
-        private void roundedButton4_Click(object sender, EventArgs e)
-        {
-            Tables newForm = new Tables();
-
-            OpenUI(newForm);
-        }
-
-        private void roundedButton1_Click_1(object sender, EventArgs e)
-        {
-            LoginPage newForm = new LoginPage();
-            OpenUI(newForm);
-
-        }
-
         private void roundedButton5_Click(object sender, EventArgs e)
         {
             string selectedSort = this.comboBoxStatus.SelectedItem.ToString();
@@ -174,7 +138,7 @@ namespace ChapeauUI
                         {
                             order.Status = Order.StringToStatus(newStatus);
                             orderService.ChangeOrderStatus(order);
-                            roundedButton5_Click( sender, e);
+                            LoadOrderOverview();
                         }
                         else
                         {
@@ -196,6 +160,39 @@ namespace ChapeauUI
                 MessageBox.Show("Please select an order to change the status.");
             }
         }
+        //BUTTONS
+        private void OpenUI(Form newForm)
+        {
+            // define active form (LoginUI) and hide it
+            Form activeForm = ActiveForm;
+            activeForm.Hide();
 
+            // show new form, which needs to be open
+            newForm.ShowDialog();
+
+            // close previous form (LoginPage), so it's not running in the background
+            activeForm.Close();
+        }
+
+        private void roundedButton2_Click_1(object sender, EventArgs e)
+        {
+            ChapeauUI newForm = new ChapeauUI(currentEmployee);
+
+            OpenUI(newForm);
+        }
+
+        private void roundedButton4_Click(object sender, EventArgs e)
+        {
+            Tables newForm = new Tables(currentEmployee);
+
+            OpenUI(newForm);
+        }
+
+        private void roundedButton1_Click_1(object sender, EventArgs e)
+        {
+            LoginPage newForm = new LoginPage();
+            OpenUI(newForm);
+
+        }
     }
 }

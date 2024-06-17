@@ -17,7 +17,7 @@ namespace ChapeauService
             tableDao = new();
         }
 
-        /*Get Tables*/
+        /*Get ALL Tables*/
 
         public List<Table> GetAllTables()
         {
@@ -28,7 +28,7 @@ namespace ChapeauService
         {
             return tableDao.GetById(tableId);
         }
-        //Change
+        //Change THE STATUS
         public void ChangeTableStatus(Table table)
         {
              tableDao.ChangeTableStatus(table);
