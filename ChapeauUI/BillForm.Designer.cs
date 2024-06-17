@@ -345,10 +345,11 @@
             listView1.Location = new Point(12, 245);
             listView1.Margin = new Padding(2);
             listView1.Name = "listView1";
-            listView1.Size = new Size(281, 335);
+            listView1.Size = new Size(257, 335);
             listView1.TabIndex = 28;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;
+            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
             // 
             // ORDERID
             // 

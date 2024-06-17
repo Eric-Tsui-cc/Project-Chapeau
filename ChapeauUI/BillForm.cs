@@ -56,8 +56,8 @@ namespace ChapeauUI
             }
 
             comboBox1.DataSource = OcuupiedTables;
-            comboBox1.DisplayMember = "TableId";
-            comboBox1.ValueMember = "TableId";
+            comboBox1.DisplayMember = "TableId"; // Sets the property to be displayed in the combo box
+            comboBox1.ValueMember = "TableId";   //Sets the property that represents the actual value
             comboBox1.SelectedIndex = 0;
 
             comboBox2.DataSource = Enum.GetValues(typeof(PaymentMethod));
@@ -83,7 +83,7 @@ namespace ChapeauUI
                         listItem.SubItems.Add(item.MenuItem.Name);
                         listItem.SubItems.Add(item.Count.ToString());
                         listItem.SubItems.Add(item.MenuItem.Price.ToString("€ 0.00"));
-                        listView1.Items.Add(listItem);
+                        listView1.Items.Add(listItem);                                       
 
                         decimal itemTotalPrice = item.MenuItem.Price * item.Count;
                         totalWithoutVat += itemTotalPrice;
@@ -232,5 +232,9 @@ namespace ChapeauUI
             this.Close();
         }
 
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

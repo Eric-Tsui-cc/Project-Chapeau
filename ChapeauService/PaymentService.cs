@@ -15,7 +15,7 @@ namespace ChapeauService
         private TableDao tabledb;
         private OrderItemDao orderItemdb;
         private BillDao billdb;
-        public PaymentService()
+        public PaymentService()   // Initializes instances of the DAOs
         {   
             orderItemdb = new OrderItemDao();
             orderdb = new OrderDao(orderItemdb);
@@ -43,5 +43,6 @@ namespace ChapeauService
         {
             billdb.FinalizePayment(bill);
         }
+        
     }
 }

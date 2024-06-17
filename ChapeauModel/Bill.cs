@@ -8,14 +8,14 @@ namespace ChapeauModel
 {
     public enum PaymentMethod
     {
-        Credit=0,
+        Credit,
         Debit,
         Cash
     }
 
     public class Bill
     {
-        public List<Order> Orders { get; set; }
+        public List<Order> Orders { get; set; } //multiple orders with a single bill
         public decimal Amount { get; set; }
         public decimal Tip { get; set; } 
         public PaymentMethod PaymentMethod { get; set; }
