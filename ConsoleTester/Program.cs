@@ -9,14 +9,13 @@ namespace ConsoleTester
         static void Main(string[] args)
         {
 
-            OrderService orderService = new OrderService();
-            PaymentService paymentService = new PaymentService();
-            List<OrderItem> orderItems = orderService.GetDrinkOrderItems();
-            int table = 4;
-            List<Order>orders = paymentService.GetUnpaidOrdersByTableId(10);
-            foreach (Order order in orders)
+            KitchenBarService kitchenBarService = new KitchenBarService();
+            List<OrderItem> ServedFoodOrders = kitchenBarService.GetAllTodayServedFoodOrderItem();
+
+            foreach (OrderItem order in ServedFoodOrders)
             {
-                Console.WriteLine(order.OrderId);
+              
+                Console.WriteLine(order.Order.Status.ToString());
             }
 
 

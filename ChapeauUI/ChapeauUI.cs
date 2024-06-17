@@ -226,5 +226,11 @@ namespace ChapeauUI
             BillForm billForm = new BillForm();
             billForm.ShowDialog();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            KitchenViewPage kitchenViewPage = new KitchenViewPage();
+            kitchenViewPage.ShowDialog();
+        }
     }
 }

@@ -51,5 +51,9 @@ namespace ChapeauService
         {
             orderdb.ChangeOrderStatusToServed(orderId);
         }
+        public bool HasRunningOrders(int tableId)
+        {
+            return orderdb.HasRunningOrders(tableId);
+        }
     }
 }

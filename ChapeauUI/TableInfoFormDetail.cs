@@ -102,10 +102,10 @@ namespace ChapeauUI
                 TimeSpan difference = DateTime.Now - item.OrderTime;
                 double minutesDifference = difference.TotalMinutes;
                 int waittime = (int)difference.TotalMinutes;
-                string time = $"Wait time: {waittime}mins";
+                string time = $" {waittime}mins";
 
-                string formattedOutput = $"{item.MenuItem.Name} x{item.Count} ";
-                string formattedOutput1 = formattedOutput.PadRight(30) + time;
+                string formattedOutput = $"{item.MenuItem.Name} x{item.Count}*{item.Comment} ";
+                string formattedOutput1 = formattedOutput.PadRight(100) + time;
                 output += formattedOutput1 + "\n";
             }
             return output;

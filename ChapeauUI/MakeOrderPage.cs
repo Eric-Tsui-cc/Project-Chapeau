@@ -168,7 +168,7 @@ namespace ChapeauUI
             }
 
             DateTime datetime = DateTime.Now;
-            orderitem = new OrderItem(datetime, selectedItem, order, count, StatusOfOrderitem.Available,comment);
+            orderitem = new OrderItem(datetime, selectedItem, order, count, StatusOfOrderitem.Available, comment);
             order.items.Add(orderitem);
             RefreshSummary();
         }
@@ -177,7 +177,7 @@ namespace ChapeauUI
             summary = "";
             foreach (var item in order.items)
             {
-                summary += $"{item.MenuItem.Name} x{item.Count}\n";
+                summary += $"{item.MenuItem.Name} x{item.Count} *{item.Comment}\n";
             }
             label6.Text = summary;
         }

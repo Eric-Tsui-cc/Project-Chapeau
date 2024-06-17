@@ -9,8 +9,14 @@ using System.Threading.Tasks;
 
 namespace ChapeauDAL
 {
-    public class TableDao:BaseDao
+    public class TableDao : BaseDao
     {
+        Table table;
+        Order order;
+        public TableDao()
+        {
+            
+        }
         public Table GetTableById(int tableId)
         {
             Table table = null;
@@ -171,6 +177,35 @@ namespace ChapeauDAL
 
             // Return a default status if no data found
             return StatusOfTable.Occupied;
+        }
+        public Table GetTableByOrderId(int orderId)
+        {
+            string query = "SELECT [TABLE].TableId, [TABLE].Capacity, [TABLE].Status " +
+               "FROM [ORDER] " +
+               "INNER JOIN [TABLE] ON [ORDER].TableId = [TABLE].TableId " +
+               "WHERE [ORDER].OrderId = @OrderId";
+
+            SqlParameter[] sqlParameters =
+            {
+            new SqlParameter("@OrderId", orderId)
+            };
+
+            DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                DataRow row = dataTable.Rows[0];
+                table = new Table
+                {
+                    TableId = Convert.ToInt32(row["TableId"]),
+                    Capacity = Convert.ToInt32(row["Capacity"]),
+                    Status = (StatusOfTable)Enum.Parse(typeof(StatusOfTable), row["Status"].ToString())
+                };
+
+                
+            }
+            return table;
+
         }
     }
 }

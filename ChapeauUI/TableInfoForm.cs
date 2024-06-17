@@ -35,6 +35,13 @@ namespace ChapeauUI
             string message;
             string title;
 
+            // Check if the current table has running orders
+            if (overviewService.HasRunningOrders(table.TableId))
+            {
+                MessageBox.Show("There are running orders for this table. You cannot change the status.", "Operation Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit the method if there are running orders
+            }
+
             if (table.Status == StatusOfTable.Occupied)
             {
                 message = "Are you sure you want to change the table status to Free?";
@@ -46,28 +53,22 @@ namespace ChapeauUI
                 title = "Confirm Status Change";
             }
 
-
             DialogResult result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
 
             if (result == DialogResult.Yes)
             {
                 if (table.Status == StatusOfTable.Occupied)
                 {
                     overviewService.ChangeTableStatusToFree(table.TableId);
-                    MessageBox.Show("Status Changed！", "Confirm", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 }
                 else
                 {
                     overviewService.ChangeTableStatusToOccupied(table.TableId);
-                    MessageBox.Show("Status Changed！", "Confirm", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-
                 }
+                MessageBox.Show("Status Changed!", "Confirm", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
         }
+
 
         private void button2_Click(object sender, EventArgs e)
         {

@@ -28,9 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginPage));
             LoginButton = new RoundedButton();
             wrongUCLabel = new Label();
             userCodeTextBox = new TextBox();
+            pictureBox1 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // LoginButton
@@ -40,9 +43,10 @@
             LoginButton.Cursor = Cursors.Hand;
             LoginButton.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point);
             LoginButton.ForeColor = SystemColors.ButtonHighlight;
-            LoginButton.Location = new Point(529, 703);
+            LoginButton.Location = new Point(388, 456);
+            LoginButton.Margin = new Padding(2, 2, 2, 2);
             LoginButton.Name = "LoginButton";
-            LoginButton.Size = new Size(637, 102);
+            LoginButton.Size = new Size(467, 66);
             LoginButton.TabIndex = 1;
             LoginButton.Text = "Log In";
             LoginButton.UseVisualStyleBackColor = false;
@@ -53,9 +57,10 @@
             wrongUCLabel.AutoSize = true;
             wrongUCLabel.BackColor = Color.Transparent;
             wrongUCLabel.ForeColor = Color.IndianRed;
-            wrongUCLabel.Location = new Point(740, 663);
+            wrongUCLabel.Location = new Point(543, 430);
+            wrongUCLabel.Margin = new Padding(2, 0, 2, 0);
             wrongUCLabel.Name = "wrongUCLabel";
-            wrongUCLabel.Size = new Size(228, 37);
+            wrongUCLabel.Size = new Size(162, 24);
             wrongUCLabel.TabIndex = 2;
             wrongUCLabel.Text = "Wrong User Code";
             wrongUCLabel.Visible = false;
@@ -64,24 +69,39 @@
             // 
             userCodeTextBox.BorderStyle = BorderStyle.None;
             userCodeTextBox.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point);
-            userCodeTextBox.Location = new Point(529, 583);
+            userCodeTextBox.Location = new Point(388, 378);
+            userCodeTextBox.Margin = new Padding(2, 2, 2, 2);
             userCodeTextBox.MaxLength = 4;
             userCodeTextBox.Name = "userCodeTextBox";
             userCodeTextBox.PlaceholderText = "Enter User Code";
-            userCodeTextBox.Size = new Size(637, 64);
+            userCodeTextBox.Size = new Size(467, 43);
             userCodeTextBox.TabIndex = 3;
             userCodeTextBox.TextAlign = HorizontalAlignment.Center;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(439, 102);
+            pictureBox1.Margin = new Padding(4);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(401, 207);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 4;
+            pictureBox1.TabStop = false;
+            // 
             // LoginPage
             // 
-            AutoScaleDimensions = new SizeF(15F, 37F);
+            AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1728, 1096);
+            ClientSize = new Size(1267, 711);
+            Controls.Add(pictureBox1);
             Controls.Add(userCodeTextBox);
             Controls.Add(wrongUCLabel);
             Controls.Add(LoginButton);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "LoginPage";
             Text = "LoginPage";
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -91,5 +111,6 @@
         private RoundedButton LoginButton;
         private Label wrongUCLabel;
         private TextBox userCodeTextBox;
+        private PictureBox pictureBox1;
     }
 }

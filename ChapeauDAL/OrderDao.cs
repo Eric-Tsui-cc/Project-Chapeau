@@ -32,6 +32,98 @@ namespace ChapeauDAL
             SqlParameter[] sqlParameters = new SqlParameter[0];
             return ReadOrders(ExecuteSelectQuery(query, sqlParameters));
         }
+        public List<OrderItem> GetAllRunningDrinkOrderItem()
+        {   
+            List<OrderItem> RunningDrinkOrders = new List<OrderItem>();
+            string query = "SELECT orderId, tableId, status, employeeId FROM [ORDER] WHERE status = 'Running'";
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            List<Order> orders =  ReadOrders(ExecuteSelectQuery(query, sqlParameters));
+            foreach(Order order in orders)
+            {
+                foreach(OrderItem item in order.items)
+                {
+                    if(item.MenuItem.Card == Card.Drinks)
+                    {
+                        RunningDrinkOrders.Add(item);
+                    }
+                }
+            }
+
+            RunningDrinkOrders = RunningDrinkOrders
+                .OrderBy(item => item.OrderTime)  // Assuming OrderItem has a property called OrderTime
+                .ToList();
+
+            return RunningDrinkOrders;
+        }
+        public List<OrderItem> GetAllRunningFoodOrderItem()
+        {
+            List<OrderItem> RunningDrinkOrders = new List<OrderItem>();
+            string query = "SELECT orderId, tableId, status, employeeId FROM [ORDER] WHERE status = 'Running'";
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            List<Order> orders = ReadOrders(ExecuteSelectQuery(query, sqlParameters));
+            foreach (Order order in orders)
+            {
+                foreach (OrderItem item in order.items)
+                {
+                    if (item.MenuItem.Card == Card.Lunch || item.MenuItem.Card == Card.Dinner)
+                    {
+                        RunningDrinkOrders.Add(item);
+                    }
+                }
+            }
+
+            RunningDrinkOrders = RunningDrinkOrders
+                .OrderBy(item => item.OrderTime)  // Assuming OrderItem has a property called OrderTime
+                .ToList();
+
+            return RunningDrinkOrders;
+        }
+        public List<OrderItem> GetAllTodayServedFoodOrderItem()
+        {
+            List<OrderItem> RunningDrinkOrders = new List<OrderItem>();
+            string query = "SELECT orderId, tableId, status, employeeId FROM [ORDER] WHERE status = 'Served'";
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            List<Order> orders = ReadOrders(ExecuteSelectQuery(query, sqlParameters));
+            foreach (Order order in orders)
+            {
+                foreach (OrderItem item in order.items)
+                {
+                    if ((item.MenuItem.Card == Card.Lunch || item.MenuItem.Card == Card.Dinner) && item.OrderTime.Date == DateTime.Today)
+                    {
+                        RunningDrinkOrders.Add(item);
+                    }
+                }
+            }
+
+            RunningDrinkOrders = RunningDrinkOrders
+                .OrderBy(item => item.OrderTime)  // Assuming OrderItem has a property called OrderTime
+                .ToList();
+
+            return RunningDrinkOrders;
+        }
+        public List<OrderItem> GetAllTodayServedDrinkOrderItem()
+        {
+            List<OrderItem> RunningDrinkOrders = new List<OrderItem>();
+            string query = "SELECT orderId, tableId, status, employeeId FROM [ORDER] WHERE status = 'Served'";
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            List<Order> orders = ReadOrders(ExecuteSelectQuery(query, sqlParameters));
+            foreach (Order order in orders)
+            {
+                foreach (OrderItem item in order.items)
+                {
+                    if (item.MenuItem.Card == Card.Drinks && item.OrderTime.Date == DateTime.Today)
+                    {
+                        RunningDrinkOrders.Add(item);
+                    }
+                }
+            }
+
+            RunningDrinkOrders = RunningDrinkOrders
+                .OrderBy(item => item.OrderTime)  // Assuming OrderItem has a property called OrderTime
+                .ToList();
+
+            return RunningDrinkOrders;
+        }
         private List<Order> ReadOrders(DataTable dataTable)
         {
             List<Order> orders = new List<Order>();
@@ -264,6 +356,19 @@ namespace ChapeauDAL
             }
 
             return orders;
+        }
+        public bool HasRunningOrders(int tableId)
+        {
+            List<Order> orders = GetOrdersByTableId(tableId);
+            foreach(Order order in orders)
+            {
+                if(order.Status == StatusOfOrder.Running)
+                {
+                    return true;
+                }
+            }
+            return false;
+
         }
     }
 }

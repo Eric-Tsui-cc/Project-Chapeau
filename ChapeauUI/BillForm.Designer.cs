@@ -176,13 +176,14 @@
             // 
             // button1
             // 
+            button1.BackColor = SystemColors.Window;
             button1.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             button1.Location = new Point(171, 592);
             button1.Name = "button1";
             button1.Size = new Size(205, 74);
             button1.TabIndex = 48;
             button1.Text = "Finialize Order";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // textBox1

@@ -144,9 +144,9 @@
             // 
             // label6
             // 
-            label6.Location = new Point(30, 448);
+            label6.Location = new Point(12, 448);
             label6.Name = "label6";
-            label6.Size = new Size(383, 153);
+            label6.Size = new Size(419, 153);
             label6.TabIndex = 10;
             // 
             // TableOfOrder

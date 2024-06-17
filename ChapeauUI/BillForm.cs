@@ -174,7 +174,6 @@ namespace ChapeauUI
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            MessageBox.Show("Text changed event triggered");
 
             decimal originalTotal = total;
             if (decimal.TryParse(textBox1.Text, out decimal parsedTip))
