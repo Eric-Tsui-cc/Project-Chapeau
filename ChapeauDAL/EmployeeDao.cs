@@ -52,7 +52,7 @@ namespace ChapeauDAL
             string query = "SELECT EmployeeId, FirstName, LastName, Role, Status, UserCode FROM [EMPLOYEE] WHERE UserCode = @UserCode";
             SqlParameter[] sqlParameters = new SqlParameter[1]
             {
-                new SqlParameter("@UserCode", userCode)
+        new SqlParameter("@UserCode", userCode)
             };
             DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
 

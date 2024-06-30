@@ -13,11 +13,11 @@ namespace ChapeauDAL
 
         public BaseDao()
         {
-            if (ConfigurationManager.ConnectionStrings["Plebbproject"] == null)
+            if (ConfigurationManager.ConnectionStrings["RestuarantProjectGroup4"] == null)
             {
-                throw new Exception("Connection string 'Plebbproject' not found in App.config.");
+                throw new Exception("Connection string 'RestuarantProjectGroup4' not found in App.config.");
             }
-            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["Plebbproject"].ConnectionString);
+            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RestuarantProjectGroup4"].ConnectionString);
             adapter = new SqlDataAdapter();
         }
 
