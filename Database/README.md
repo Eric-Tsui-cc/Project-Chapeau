@@ -1,8 +1,8 @@
-# Project Chapeau - 数据库设置指南
+# Project Chapeau - Database Setup Guide
 
-## 数据库结构（反向工程自代码）
+## Database Schema (Reverse-Engineered from Code)
 
-根据代码中所有 DAO 层的 SQL 语句，推导出以下 6 张表：
+By analyzing all SQL statements across the DAO layer, the following 6 tables were derived:
 
 ```
 ┌─────────────┐     ┌──────────────┐     ┌─────────────┐
@@ -52,127 +52,126 @@
        └─────────────────────────────┘
 ```
 
-## 快速启动（3 步）
+## Quick Start
 
-### 1. 安装 SQL Server
+### 1. Install SQL Server
 
-选择以下任一方式：
+Choose one of the following options:
 
-| 方式 | 适合 | 下载 |
-|------|------|------|
-| **SQL Server LocalDB** | 最简单，Visual Studio 自带 | 已内置 |
-| **SQL Server Express** | 完整本地服务器 | https://go.microsoft.com/fwlink/?linkid=2216019 |
-| **Azure SQL** | 云端部署 | Azure Portal |
+| Option | Best For | Download |
+|--------|----------|----------|
+| **SQL Server LocalDB** | Easiest, included with Visual Studio | Built-in |
+| **SQL Server Express** | Full local server | https://go.microsoft.com/fwlink/?linkid=2216019 |
+| **Azure SQL** | Cloud deployment | Azure Portal |
 
-### 2. 运行建库脚本
+### 2. Run the Database Script
 
 ```powershell
-# 方式 A: 使用 sqlcmd（LocalDB）
+# Option A: Using sqlcmd (LocalDB)
 sqlcmd -S "(LocalDB)\MSSQLLocalDB" -i "Database\CreateDatabase.sql"
 
-# 方式 B: 使用 SQL Server Management Studio (SSMS)
-# 打开 SSMS → 连接到服务器 → 文件 → 打开 → 选择 CreateDatabase.sql → 执行
+# Option B: Using SQL Server Management Studio (SSMS)
+# Open SSMS → Connect to server → File → Open → Select CreateDatabase.sql → Execute
 ```
 
-### 3. 配置连接字符串
+### 3. Configure the Connection String
 
-编辑 `ChapeauUI\App.config`，选择对应环境的连接字符串：
+Edit `ChapeauUI\App.config` and select the connection string that matches your environment:
 
-**LocalDB（推荐开发用）：**
+**LocalDB (recommended for development):**
 ```xml
 <add name="RestuarantProjectGroup4"
      connectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\RestuarantProjectGroup4.mdf;Integrated Security=True;Connect Timeout=30"
      providerName="System.Data.SqlClient" />
 ```
 
-**SQL Server Express：**
+**SQL Server Express:**
 ```xml
 <add name="RestuarantProjectGroup4"
      connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=RestuarantProjectGroup4;Integrated Security=True;TrustServerCertificate=True"
      providerName="System.Data.SqlClient" />
 ```
 
-### 4. 运行程序
+### 4. Run the Application
 
 ```powershell
-cd "My Branch"
 dotnet run --project ChapeauUI
 ```
 
-## 默认登录账号
+## Default Login Credentials
 
-| 角色 | 密码 | 用途 |
-|------|------|------|
-| Waiter | `waiter1` | 服务员 - 餐桌概览、点餐、结账 |
-| Chef | `chef1` | 厨师 - 厨房视图 |
-| Bartender | `bartender1` | 调酒师 - 厨房视图（饮品） |
+| Role | Password | Access |
+|------|----------|--------|
+| Waiter | `waiter1` | Table overview, ordering, billing |
+| Chef | `chef1` | Kitchen view |
+| Bartender | `bartender1` | Kitchen view (drinks) |
 
-> ⚠️ 密码使用 SHA256 哈希存储。如需修改密码，请重新计算 SHA256 并更新 EMPLOYEE 表的 UserCode 字段。
+> ⚠️ Passwords are stored as SHA256 hashes. To change a password, recompute the SHA256 hash and update the `UserCode` field in the `EMPLOYEE` table.
 
-## 表结构详情
+## Table Schema Details
 
 ### EMPLOYEE
-| 列 | 类型 | 说明 |
-|---|------|------|
-| EmployeeId | INT (PK, 自增) | 员工ID |
-| UserCode | NVARCHAR(256) | SHA256 哈希密码 |
+| Column | Type | Description |
+|--------|------|-------------|
+| EmployeeId | INT (PK, Identity) | Employee ID |
+| UserCode | NVARCHAR(256) | SHA256-hashed password |
 | Role | NVARCHAR(20) | Waiter / Chef / Bartender |
 | Status | NVARCHAR(20) | Active / Inactive |
-| FirstName | NVARCHAR(50) | 名 |
-| LastName | NVARCHAR(50) | 姓 |
+| FirstName | NVARCHAR(50) | First name |
+| LastName | NVARCHAR(50) | Last name |
 
 ### TABLE
-| 列 | 类型 | 说明 |
-|---|------|------|
-| TableId | INT (PK, 自增) | 餐桌ID |
-| Capacity | INT | 容纳人数 |
+| Column | Type | Description |
+|--------|------|-------------|
+| TableId | INT (PK, Identity) | Table ID |
+| Capacity | INT | Seating capacity |
 | Status | NVARCHAR(20) | Free / Occupied |
 
 ### MENU_ITEM
-| 列 | 类型 | 说明 |
-|---|------|------|
-| MenuItemId | INT (PK, 自增) | 菜品ID |
-| Name | NVARCHAR(100) | 菜名 |
-| Category | NVARCHAR(20) | Mains/Starters/Entremet/Desserts/Beers/Wines/Spirit/CoffeeTea |
-| Card | NVARCHAR(20) | Lunch/Drinks/Dinner |
-| Price | DECIMAL(10,2) | 价格 |
-| Stock | INT | 库存 |
+| Column | Type | Description |
+|--------|------|-------------|
+| MenuItemId | INT (PK, Identity) | Menu item ID |
+| Name | NVARCHAR(100) | Item name |
+| Category | NVARCHAR(20) | Mains / Starters / Entremet / Desserts / Beers / Wines / Spirit / CoffeeTea |
+| Card | NVARCHAR(20) | Lunch / Drinks / Dinner |
+| Price | DECIMAL(10,2) | Price |
+| Stock | INT | Stock quantity |
 
 ### ORDER
-| 列 | 类型 | 说明 |
-|---|------|------|
-| OrderId | INT (PK, 自增) | 订单ID |
-| TableId | INT (FK → TABLE) | 关联餐桌 |
-| EmployeeId | INT (FK → EMPLOYEE) | 下单服务员 |
-| Status | NVARCHAR(20) | Running/Preparing/Prepared/Served |
-| PaymentStatus | INT | 0=未付, 1=已付 |
+| Column | Type | Description |
+|--------|------|-------------|
+| OrderId | INT (PK, Identity) | Order ID |
+| TableId | INT (FK → TABLE) | Associated table |
+| EmployeeId | INT (FK → EMPLOYEE) | Waiter who placed the order |
+| Status | NVARCHAR(20) | Running / Preparing / Prepared / Served |
+| PaymentStatus | INT | 0 = unpaid, 1 = paid |
 
 ### ORDER_ITEM
-| 列 | 类型 | 说明 |
-|---|------|------|
-| OrderItemId | INT (PK, 自增) | 订单项ID |
-| OrderId | INT (FK → ORDER) | 关联订单 |
-| MenuItemId | INT (FK → MENU_ITEM) | 关联菜品 |
-| Count | INT | 数量 |
-| Status | NVARCHAR(20) | Available/Outofstock |
-| OrderTime | DATETIME | 下单时间 |
-| Comment | NVARCHAR(255) | 备注 |
+| Column | Type | Description |
+|--------|------|-------------|
+| OrderItemId | INT (PK, Identity) | Order item ID |
+| OrderId | INT (FK → ORDER) | Associated order |
+| MenuItemId | INT (FK → MENU_ITEM) | Associated menu item |
+| Count | INT | Quantity |
+| Status | NVARCHAR(20) | Available / Outofstock |
+| OrderTime | DATETIME | Time the order was placed |
+| Comment | NVARCHAR(255) | Special instructions |
 
 ### BILL
-| 列 | 类型 | 说明 |
-|---|------|------|
-| BillId | INT (PK, 自增) | 账单ID |
-| OrderId | INT (FK → ORDER) | 关联订单 |
-| Amount | DECIMAL(10,2) | 金额 |
-| Tip | DECIMAL(10,2) | 小费 |
-| PaymentMethod | NVARCHAR(20) | Credit/Debit/Cash |
-| Date | NVARCHAR(50) | 日期 |
-| Time | NVARCHAR(50) | 时间 |
-| Feedback | NVARCHAR(500) | 客户反馈 |
+| Column | Type | Description |
+|--------|------|-------------|
+| BillId | INT (PK, Identity) | Bill ID |
+| OrderId | INT (FK → ORDER) | Associated order |
+| Amount | DECIMAL(10,2) | Total amount |
+| Tip | DECIMAL(10,2) | Tip amount |
+| PaymentMethod | NVARCHAR(20) | Credit / Debit / Cash |
+| Date | NVARCHAR(50) | Payment date |
+| Time | NVARCHAR(50) | Payment time |
+| Feedback | NVARCHAR(500) | Customer feedback |
 
-## 种子数据
+## Seed Data
 
-脚本自动插入：
-- **10 张餐桌**（容量 2-8 人）
-- **4 名员工**（2 服务员 + 1 厨师 + 1 调酒师）
-- **39 道菜品**（午餐 12 道 + 晚餐 12 道 + 饮品 15 道）
+The script automatically inserts:
+- **10 tables** (capacity 2–8 seats)
+- **4 employees** (2 waiters + 1 chef + 1 bartender)
+- **39 menu items** (12 lunch + 12 dinner + 15 drinks)
