@@ -44,13 +44,9 @@ namespace ChapeauUI
             }
             else if (employee.Role == EmployeeRole.Chef || employee.Role == EmployeeRole.Bartender)
             {
-
+                KitchenViewPage kitchenView = new KitchenViewPage();
+                OpenUI(kitchenView);
             }
-            else if (employee.Role == EmployeeRole.Chef)
-            {
-
-            }
-
         }
 
         private void OpenUI(Form newForm)

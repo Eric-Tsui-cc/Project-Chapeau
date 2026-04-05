@@ -19,17 +19,20 @@ namespace ChapeauDAL
         // Finalize the payment for one or more bills
         public void FinalizePayment(Bill bill)
         {
-            string query = "INSERT INTO [Bill] (OrderId,Amount, Tip, PaymentMethod, Date, Time, Feedback) VALUES (@orderId, @amount, @tip, @paymentMethod, @date, @time, @feedback)";
-            SqlParameter[] sqlParameters = {
-                    new SqlParameter("@orderId", bill.Orders[0].OrderId),
-                    new SqlParameter("@amount", bill.Amount),
-                    new SqlParameter("@tip", bill.Tip),
-                    new SqlParameter("@paymentMethod", bill.PaymentMethod.ToString()), // Enum as string
+            foreach (Order order in bill.Orders)
+            {
+                string query = "INSERT INTO [Bill] (OrderId,Amount, Tip, PaymentMethod, Date, Time, Feedback) VALUES (@orderId, @amount, @tip, @paymentMethod, @date, @time, @feedback)";
+                SqlParameter[] sqlParameters = {
+                    new SqlParameter("@orderId", order.OrderId),
+                    new SqlParameter("@amount", bill.Amount / bill.Orders.Count),
+                    new SqlParameter("@tip", bill.Tip / bill.Orders.Count),
+                    new SqlParameter("@paymentMethod", bill.PaymentMethod.ToString()),
                     new SqlParameter("@date", bill.Date.ToString()),
                     new SqlParameter("@time", bill.Time.ToString()),
                     new SqlParameter("@feedback", bill.Feedback)
                 };
-            ExecuteEditQuery(query, sqlParameters);
+                ExecuteEditQuery(query, sqlParameters);
+            }
         }
 
         

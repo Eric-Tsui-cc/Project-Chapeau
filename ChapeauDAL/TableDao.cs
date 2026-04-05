@@ -109,7 +109,7 @@ namespace ChapeauDAL
 
         public void DeleteTable(Table table)
         {
-            string query = "DELETE FROM TABLE WHERE TableId=@id;";
+            string query = "DELETE FROM [TABLE] WHERE TableId=@id;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
             new SqlParameter("@id", table.TableId)
@@ -118,11 +118,11 @@ namespace ChapeauDAL
         }
         public void AddTable(Table table)
         {
-            string query = "INSERT INTO TABLE (TableId, Status, Capacity) VALUES (@TableNumber, @Status, @Capacity);";
+            string query = "INSERT INTO [TABLE] (TableId, Status, Capacity) VALUES (@TableId, @Status, @Capacity);";
             SqlParameter[] sqlParameters =
             {
             new SqlParameter("@TableId", table.TableId),
-            new SqlParameter("@Status", table.Status),
+            new SqlParameter("@Status", table.Status.ToString()),
             new SqlParameter("@Capacity", table.Capacity),
 
         };
@@ -132,7 +132,7 @@ namespace ChapeauDAL
         {
             List<Table> tables = new List<Table>();
 
-            string query = "SELECT * FROM TABLE WHERE Status = @Status;";
+            string query = "SELECT * FROM [TABLE] WHERE Status = @Status;";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
             new SqlParameter("@Status", status)

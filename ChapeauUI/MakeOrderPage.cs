@@ -199,7 +199,21 @@ namespace ChapeauUI
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            // Clear all items from the current order
+            if (order.items.Count > 0)
+            {
+                DialogResult result = MessageBox.Show("Are you sure you want to clear all items from this order?", "Clear Order", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    order.items.Clear();
+                    RefreshSummary();
+                    MessageBox.Show("All items have been cleared.", "Order Cleared", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No items to clear.", "Empty Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

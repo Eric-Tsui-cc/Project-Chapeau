@@ -28,10 +28,44 @@ namespace ChapeauUI
             listView1.Show();
             listViewFinishOrders.Hide();
             BackButton.Hide();
+            PrepareButton.Click += PrepareButton_Click;
+            ReadyButton.Click += ReadyButton_Click;
             FillRunningOrderView();
             FillServedOrderView();
+        }
 
+        private void PrepareButton_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select an order to prepare.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            OrderItem selectedItem = listView1.SelectedItems[0].Tag as OrderItem;
+            if (selectedItem != null)
+            {
+                kitchenBarService.MarkOrderAsPreparing(selectedItem.Order.OrderId);
+                MessageBox.Show($"Order {selectedItem.Order.OrderId} is now being prepared.", "Status Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                FillRunningOrderView();
+            }
+        }
+
+        private void ReadyButton_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select an order to mark as ready.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            OrderItem selectedItem = listView1.SelectedItems[0].Tag as OrderItem;
+            if (selectedItem != null)
+            {
+                kitchenBarService.MarkOrderAsPrepared(selectedItem.Order.OrderId);
+                MessageBox.Show($"Order {selectedItem.Order.OrderId} is ready to serve!", "Status Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                FillRunningOrderView();
+            }
         }
         private void FillRunningOrderView()
         {

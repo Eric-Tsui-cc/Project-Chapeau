@@ -37,5 +37,13 @@ namespace ChapeauService
         {
             return orderdb.GetAllTodayServedFoodOrderItem();
         }
+        public void MarkOrderAsPreparing(int orderId)
+        {
+            orderdb.ChangeOrderStatusToPreparing(orderId);
+        }
+        public void MarkOrderAsPrepared(int orderId)
+        {
+            orderdb.ChangeOrderStatusToPrepared(orderId);
+        }
     }
 }

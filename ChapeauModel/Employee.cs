@@ -1,72 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
 namespace ChapeauModel
 {
+    public enum EmployeeRole
+    {
+        Waiter,
+        Chef,
+        Bartender
+    }
+
     public enum EmployeeStatus
     {
         Active,
         Inactive
     }
-    public enum EmployeeRole
-    {
-        Waiter, Bartender, Chef, Manager, Undefined
-    }
+
     public class Employee
     {
-        public string role = "";
-
         public int EmployeeId { get; set; }
+        public string UserCode { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string UserCode { get; set; }
-        public string status { get; set; }
+        public EmployeeRole Role { get; set; }
+        public EmployeeStatus Status { get; set; }
 
-        public EmployeeStatus Status
+        public Employee() { }
+
+        public Employee(int employeeId, string userCode, string firstName, string lastName, EmployeeRole role, EmployeeStatus status)
         {
-            get
-            {
-                if (status == "Active")
-                {
-                    return EmployeeStatus.Active;
-                }
-                else
-                {
-                    return EmployeeStatus.Inactive;
-                }
-
-            }
+            EmployeeId = employeeId;
+            UserCode = userCode;
+            FirstName = firstName;
+            LastName = lastName;
+            Role = role;
+            Status = status;
         }
 
-        public EmployeeRole Role
+        public override string ToString()
         {
-            get
-            {
-                if (role == "Waiter")
-                {
-                    return EmployeeRole.Waiter;
-                }
-                else if (role == "Chef")
-                {
-                    return EmployeeRole.Chef;
-                }
-                else if (role == "Bartender")
-                {
-                    return EmployeeRole.Bartender;
-                }
-                else if (role == "Manager")
-                {
-                    return EmployeeRole.Manager;
-                }
-                else
-                {
-                    return EmployeeRole.Undefined;
-                }
-            }
+            return $"{FirstName} {LastName}";
         }
     }
 }
-

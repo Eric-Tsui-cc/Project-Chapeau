@@ -25,14 +25,20 @@ namespace ChapeauDAL
 
         private Employee ReadEmployee(DataRow row)
         {
+            string roleString = row["Role"].ToString();
+            EmployeeRole role = Enum.TryParse(roleString, out EmployeeRole parsedRole) ? parsedRole : EmployeeRole.Waiter;
+
+            string statusString = row["Status"].ToString();
+            EmployeeStatus status = Enum.TryParse(statusString, out EmployeeStatus parsedStatus) ? parsedStatus : EmployeeStatus.Active;
+
             return new Employee()
             {
                 EmployeeId = Convert.ToInt32(row["EmployeeId"]),
                 UserCode = row["UserCode"].ToString(),
                 FirstName = row["FirstName"].ToString(),
                 LastName = row["LastName"].ToString(),
-                role = row["Role"].ToString(),
-                status = row["Status"].ToString()
+                Role = role,
+                Status = status
             };
         }
 
@@ -91,7 +97,7 @@ namespace ChapeauDAL
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@Id", employee.EmployeeId),
-                new SqlParameter("@Status", employee.Status)
+                new SqlParameter("@Status", employee.Status.ToString())
             };
             ExecuteEditQuery(query, sqlParameters);
         }
@@ -125,9 +131,9 @@ namespace ChapeauDAL
             string query = "INSERT INTO EMPLOYEE ( Status, UserCode, Role, FirstName, LastName) VALUES ( @Status, @UserCode, @Role, @FirstName, @LastName);";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@Status", employee.status),
+                new SqlParameter("@Status", employee.Status.ToString()),
                 new SqlParameter("@UserCode", hashedPassword),
-                new SqlParameter("@Role", employee.role),
+                new SqlParameter("@Role", employee.Role.ToString()),
                 new SqlParameter("@FirstName", employee.FirstName),
                 new SqlParameter("@LastName", employee.LastName)
             };

@@ -89,7 +89,7 @@ namespace ChapeauDAL
 
         public object ExecuteScalarQuery(string query, SqlParameter[] parameters)
         {
-            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Plebbproject"].ConnectionString))
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["RestuarantProjectGroup4"].ConnectionString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -128,7 +128,7 @@ namespace ChapeauDAL
 
             return dataTable;
         }
-        public void DeleteOrder(Order order)
+        public virtual void DeleteOrder(Order order)
         {
             string query = "DELETE FROM [Order] WHERE OrderId=@OrderId;";
             SqlParameter[] sqlParameters =

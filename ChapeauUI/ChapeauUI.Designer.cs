@@ -67,7 +67,7 @@
             Table1.TabIndex = 2;
             Table1.Text = "Table1";
             Table1.UseVisualStyleBackColor = true;
-            Table1.Click += Table1_Click;
+            Table1.Click += TableButton_Click;
             // 
             // Table2
             // 
@@ -78,7 +78,7 @@
             Table2.TabIndex = 3;
             Table2.Text = "Table2";
             Table2.UseVisualStyleBackColor = true;
-            Table2.Click += Table2_Click;
+            Table2.Click += TableButton_Click;
             // 
             // Table3
             // 
@@ -89,7 +89,7 @@
             Table3.TabIndex = 4;
             Table3.Text = "Table3";
             Table3.UseVisualStyleBackColor = true;
-            Table3.Click += Table3_Click;
+            Table3.Click += TableButton_Click;
             // 
             // Table4
             // 
@@ -100,7 +100,7 @@
             Table4.TabIndex = 5;
             Table4.Text = "Table4";
             Table4.UseVisualStyleBackColor = true;
-            Table4.Click += Table4_Click;
+            Table4.Click += TableButton_Click;
             // 
             // Table5
             // 
@@ -111,7 +111,7 @@
             Table5.TabIndex = 6;
             Table5.Text = "Table5";
             Table5.UseVisualStyleBackColor = true;
-            Table5.Click += Table5_Click;
+            Table5.Click += TableButton_Click;
             // 
             // Table6
             // 
@@ -122,7 +122,7 @@
             Table6.TabIndex = 7;
             Table6.Text = "Table6";
             Table6.UseVisualStyleBackColor = true;
-            Table6.Click += Table6_Click;
+            Table6.Click += TableButton_Click;
             // 
             // Table7
             // 
@@ -133,7 +133,7 @@
             Table7.TabIndex = 8;
             Table7.Text = "Table7";
             Table7.UseVisualStyleBackColor = true;
-            Table7.Click += Table7_Click;
+            Table7.Click += TableButton_Click;
             // 
             // Table8
             // 
@@ -144,7 +144,7 @@
             Table8.TabIndex = 9;
             Table8.Text = "Table8";
             Table8.UseVisualStyleBackColor = true;
-            Table8.Click += Table8_Click;
+            Table8.Click += TableButton_Click;
             // 
             // Table9
             // 
@@ -155,7 +155,7 @@
             Table9.TabIndex = 10;
             Table9.Text = "Table9";
             Table9.UseVisualStyleBackColor = true;
-            Table9.Click += Table9_Click;
+            Table9.Click += TableButton_Click;
             // 
             // Table10
             // 
@@ -166,7 +166,7 @@
             Table10.TabIndex = 11;
             Table10.Text = "Table10";
             Table10.UseVisualStyleBackColor = true;
-            Table10.Click += Table10_Click;
+            Table10.Click += TableButton_Click;
             // 
             // buttonFresh
             // 

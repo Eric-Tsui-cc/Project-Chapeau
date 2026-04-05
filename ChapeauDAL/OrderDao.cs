@@ -228,7 +228,7 @@ namespace ChapeauDAL
         }
 
 
-        public void DeleteOrder(Order order)
+        public override void DeleteOrder(Order order)
         {
             string query = "DELETE FROM [Order] WHERE OrderId=@OrderId;";
             SqlParameter[] sqlParameters =
@@ -263,16 +263,30 @@ namespace ChapeauDAL
 
             return orderIds;
         }
-        public void ChangeOrderStatusToServed(int orderId)
+        public void ChangeOrderStatus(int orderId, StatusOfOrder status)
         {
             string query = "UPDATE [ORDER] SET Status = @Status WHERE OrderId = @OrderId";
             SqlParameter[] sqlParameters =
             {
-                 new SqlParameter("@Status", StatusOfOrder.Served.ToString()),
-                 new SqlParameter("@OrderId", orderId)
-    };
-
+                new SqlParameter("@Status", status.ToString()),
+                new SqlParameter("@OrderId", orderId)
+            };
             ExecuteEditQuery(query, sqlParameters);
+        }
+
+        public void ChangeOrderStatusToServed(int orderId)
+        {
+            ChangeOrderStatus(orderId, StatusOfOrder.Served);
+        }
+
+        public void ChangeOrderStatusToPreparing(int orderId)
+        {
+            ChangeOrderStatus(orderId, StatusOfOrder.Preparing);
+        }
+
+        public void ChangeOrderStatusToPrepared(int orderId)
+        {
+            ChangeOrderStatus(orderId, StatusOfOrder.Prepared);
         }
         public void MarkOrderAsPaid(int orderId)
         {
