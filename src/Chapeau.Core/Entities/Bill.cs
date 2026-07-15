@@ -4,8 +4,8 @@ namespace Chapeau.Core.Entities;
 
 public class Bill : BaseEntity
 {   
-    public int OrderId { get; set; }
-    public Order? Order { get; set; }
+    public int TableId { get; set; }
+    public Table? Table { get; set; }
     
     public decimal Amount { get; set; }
     public decimal Tip { get; set; }
