@@ -3,10 +3,10 @@ namespace Chapeau.Core.Entities;
 
 public class Order : BaseEntity
 {
-    public int TableID { get; set; }
+    public int TableId { get; set; }
     public Table?Table { get; set; }
     
-    public int EmployeeID { get; set; }
+    public int EmployeeId { get; set; }
     public Employee? Employee { get; set; }
     
     public OrderStatus Status { get; set; }
