@@ -25,6 +25,13 @@ public class ChapeauDbContext : DbContext
         modelBuilder.Entity<Bill>().HasKey(e => e.Id);
         modelBuilder.Entity<MenuItem>().HasKey(e => e.Id);
         modelBuilder.Entity<OrderItem>().HasKey(e => e.Id);
+        modelBuilder.Entity<Employee>()
+            .HasIndex(e => e.Pin)
+            .IsUnique();
+
+        modelBuilder.Entity<Table>()
+            .HasIndex(t => t.Number)
+            .IsUnique();
         
         // for FKs
         modelBuilder.Entity<Order>()
