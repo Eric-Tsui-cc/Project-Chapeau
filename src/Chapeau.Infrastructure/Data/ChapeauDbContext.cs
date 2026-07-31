@@ -33,7 +33,7 @@ public class ChapeauDbContext : DbContext
             .HasForeignKey(o => o.EmployeeId);
 
         modelBuilder.Entity<OrderItem>()
-            .HasOne(oi => oi.Order)
+            .HasOne(oi => oi.MenuItem)
             .WithMany()
             .HasForeignKey(oi => oi.MenuItemId);
         
