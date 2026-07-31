@@ -361,3 +361,17 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# macOS
+.DS_Store
+
+# JetBrains Rider
+.idea/
+
+# Local SQLite database
+*.db
+*.db-shm
+*.db-wal
+
+# Local OpenCode session state
+.omo/run-continuation/
