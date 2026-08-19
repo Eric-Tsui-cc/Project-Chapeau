@@ -6,7 +6,7 @@ namespace Chapeau.Api.Controllers;
 
 [Route("api/[controller]")]
 
-public class HealthController : Controller
+public class HealthController : ControllerBase
 {
     [HttpGet]
     public IActionResult Get()
