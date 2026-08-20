@@ -1,3 +1,4 @@
+using Chapeau.Api.Dtos.Tables;
 using Chapeau.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Chapeau.Infrastructure.Data;
@@ -23,5 +24,21 @@ public class TablesController : ControllerBase
             .OrderBy(t => t.Number)
             .ToListAsync();
         return Ok(tables);
+    }
+
+    [HttpPatch("{id:int}/status")]
+    public async Task<IActionResult> UpdateStatus(
+        int id, 
+        UpdateTableStatusRequest request)
+    {
+        var table = await _dbContext.Tables
+            .FirstOrDefaultAsync(table => table.Id == id );
+        if (table is null)
+        {
+            return NotFound();
+        }
+        table.Status = request.Status;
+        await _dbContext.SaveChangesAsync();
+        return Ok(table);
     }
 }
