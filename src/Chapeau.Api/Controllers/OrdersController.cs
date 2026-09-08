@@ -77,4 +77,72 @@ public class OrdersController : ControllerBase
         return StatusCode(StatusCodes.Status201Created, orderResponse);
 
     }
+
+    
+    [HttpPost("{orderId:int}/items")]
+    public async Task<ActionResult<OrderItemResponse>> AddItem(int orderId, AddOrderItemRequest request)
+    {
+        var order = await _dbContext.Orders
+            .FirstOrDefaultAsync(order => order.Id == orderId);
+        if (order is null)
+        {
+            return NotFound();
+        }
+
+        if (order.IsPaid)
+        {
+            return Conflict();
+        }
+
+        if (request.Count < 1)
+        {
+            return BadRequest();
+        }
+
+        var item = await _dbContext.MenuItems
+            .FirstOrDefaultAsync(menuItem => menuItem.Id == request.MenuItemId);
+        if (item is null)
+        {
+            return NotFound();
+        }
+
+        if (item.Stock < request.Count)
+        {
+            return Conflict();
+        }
+
+        OrderItem orderItem = new OrderItem
+        {
+            OrderId = order.Id,
+            Status = OrderStatus.Running,
+            OrderTime = DateTime.UtcNow,
+            Count = request.Count,
+            Comment = request.Comment,
+            MenuItem = item,
+            Order = order,
+            MenuItemId = item.Id
+        };
+        
+        item.Stock -= request.Count;
+
+        
+        _dbContext.OrderItems.Add(orderItem);
+        await _dbContext.SaveChangesAsync();
+
+        OrderItemResponse response = new OrderItemResponse
+        {
+            Id = orderItem.Id,
+            OrderId = orderItem.OrderId,
+            MenuItemId = orderItem.MenuItemId,
+            Count = orderItem.Count,
+            Comment = orderItem.Comment,
+            OrderTime = orderItem.OrderTime,
+            MenuItemName = item.Name,
+            Status =  orderItem.Status
+
+        };
+        return StatusCode(StatusCodes.Status201Created, response);
+
+    }
+
 }
