@@ -4,6 +4,7 @@ using Chapeau.Core.Enums;
 using Microsoft.EntityFrameworkCore;
 using Chapeau.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+
 namespace Chapeau.Api.Controllers;
 
 [ApiController]
@@ -144,5 +145,50 @@ public class OrdersController : ControllerBase
         return StatusCode(StatusCodes.Status201Created, response);
 
     }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<OrderDetailsResponse>> GetById(int id)
+    {
+        var order = await _dbContext.Orders
+            .Include(order => order.Items )
+            .ThenInclude(item => item.MenuItem)
+            .FirstOrDefaultAsync(order => order.Id == id);
+        if (order is null)
+        {
+            return NotFound();
+        }
+
+        OrderDetailsResponse detailsResponse = new OrderDetailsResponse
+        {
+            Id = order.Id,
+            Status = order.Status,
+            EmployeeId = order.EmployeeId,
+            TableId = order.TableId,
+            CreatedAt = order.CreatedAt,
+            IsPaid = order.IsPaid
+        };
+
+        foreach (OrderItem item in order.Items)
+        {   
+            if (item.MenuItem is null)
+            {
+                return Problem("Order item has no related menu item.");
+            }
+            OrderItemResponse orderItemResponse = new OrderItemResponse
+            {
+                Id = item.Id,
+                OrderId = item.OrderId,
+                MenuItemId = item.MenuItemId,
+                Count = item.Count,
+                Comment = item.Comment,
+                OrderTime = item.OrderTime,
+                MenuItemName = item.MenuItem.Name,
+                Status = item.Status
+            };
+            detailsResponse.Items.Add(orderItemResponse);
+        }
+        return Ok(detailsResponse);
+    }
+    
 
 }
