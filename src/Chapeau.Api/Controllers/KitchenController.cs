@@ -17,23 +17,24 @@ public class KitchenController : ControllerBase
         _dbContext = dbContext;
     }
 
+    private readonly MenuCategory[] _kitchenCategories =
+    {
+        MenuCategory.Mains,
+        MenuCategory.Entremet,
+        MenuCategory.Desserts,
+        MenuCategory.Starters
+    };
+    
     [HttpGet("items")]
     public async Task<ActionResult<List<KitchenOrderItemResponse>>> GetItems()
     {   
         
-        var kitchenCategories = new[]
-        {
-            MenuCategory.Starters,
-            MenuCategory.Mains,
-            MenuCategory.Entremet,
-            MenuCategory.Desserts
-        };
-        
+
         var items = await _dbContext.OrderItems
             .Include(item => item.MenuItem)
             .Include(item => item.Order)
             .ThenInclude(order => order!.Table)
-            .Where(item => (item.Status == OrderStatus.Running || item.Status == OrderStatus.Preparing) && item.MenuItem != null && kitchenCategories.Contains(item.MenuItem.Category))
+            .Where(item => (item.Status == OrderStatus.Running || item.Status == OrderStatus.Preparing) && item.MenuItem != null && _kitchenCategories.Contains(item.MenuItem.Category))
             .OrderBy(t => t.OrderTime)
             .AsNoTracking()
             .ToListAsync();
@@ -63,6 +64,55 @@ public class KitchenController : ControllerBase
             itemResponses.Add(response);
         }
         return Ok(itemResponses);
+        
+    }
+
+    [HttpPatch("items/{id:int}/status")]
+    public async Task<IActionResult> UpdateItemStatus(
+        int id,
+        UpdateKitchenItemStatusRequest request)
+    {   
+
+        if (request.Status != OrderStatus.Preparing && request.Status != OrderStatus.Prepared)
+        {
+            return BadRequest();
+        }
+
+        var orderItem = await _dbContext.OrderItems
+            .Include(item => item.MenuItem)
+            .FirstOrDefaultAsync(item =>
+                item.Id == id);
+        
+        
+        if (orderItem is null)
+        {
+            return NotFound();
+        }
+        if (orderItem.MenuItem is null)
+        {
+            return Problem("Order item has no related menu item.");
+        }
+        if (!_kitchenCategories.Contains(orderItem.MenuItem.Category))
+        {
+            return NotFound("Item is not handled by the kitchen.");
+        }
+
+        if (orderItem.Status == request.Status)
+        {
+            return NoContent();
+        }
+        bool isAllowedTransition =
+            (orderItem.Status == OrderStatus.Running && request.Status == OrderStatus.Preparing) ||
+            (orderItem.Status == OrderStatus.Preparing && request.Status == OrderStatus.Prepared);
+        
+
+        if (isAllowedTransition is false)
+        {
+            return Conflict();
+        }
+        orderItem.Status = request.Status.Value;
+        await _dbContext.SaveChangesAsync();
+        return NoContent();
         
     }
 }
