@@ -189,6 +189,33 @@ public class OrdersController : ControllerBase
         }
         return Ok(detailsResponse);
     }
+
+    [HttpPatch("{orderId:int}/items/{itemId:int}/serve")]
+    public async Task<IActionResult> ServeItem(int orderId, int itemId)
+    {
+        var orderItem = await _dbContext.OrderItems
+            .FirstOrDefaultAsync(item => 
+                item.Id == itemId && item.OrderId == orderId);
+        
+        if (orderItem is null)
+        {
+            return NotFound();
+        }
+
+        if (orderItem.Status == OrderStatus.Prepared)
+        {
+            orderItem.Status = OrderStatus.Served;
+            await _dbContext.SaveChangesAsync();
+            return NoContent();
+        }
+        
+        if (orderItem.Status == OrderStatus.Served)
+        {
+            return NoContent();
+        }
+
+        return Conflict();
+    }
     
 
 }
