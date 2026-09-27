@@ -8,7 +8,7 @@ public class OrderItem : BaseEntity
     
     public int MenuItemId { get; set; }
     public MenuItem?MenuItem { get; set; }
-    
+    public decimal UnitPrice { get; set; }
     public int Count { get; set; }
     public OrderStatus Status { get; set; }
     public DateTime OrderTime { get; set; }

@@ -15,7 +15,7 @@ namespace Chapeau.Infrastructure.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.29");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.31");
 
             modelBuilder.Entity("Chapeau.Core.Entities.Bill", b =>
                 {
@@ -30,6 +30,9 @@ namespace Chapeau.Infrastructure.Migrations
                     b.Property<string>("Feedback")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
@@ -46,6 +49,8 @@ namespace Chapeau.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("TableId");
 
@@ -563,6 +568,10 @@ namespace Chapeau.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("UnitPrice")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MenuItemId");
@@ -670,11 +679,19 @@ namespace Chapeau.Infrastructure.Migrations
 
             modelBuilder.Entity("Chapeau.Core.Entities.Bill", b =>
                 {
+                    b.HasOne("Chapeau.Core.Entities.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Chapeau.Core.Entities.Table", "Table")
                         .WithMany()
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Order");
 
                     b.Navigation("Table");
                 });

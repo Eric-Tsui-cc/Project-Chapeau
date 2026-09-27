@@ -90,6 +90,8 @@ public class ChapeauDbContext : DbContext
             .Property(b => b.Tip).HasPrecision(10, 2);
         modelBuilder.Entity<MenuItem>()
             .Property(m => m.Price).HasPrecision(10, 2);
+        modelBuilder.Entity<OrderItem>()
+            .Property(o => o.UnitPrice).HasPrecision(10, 2);
 
         SeedData(modelBuilder);
     }

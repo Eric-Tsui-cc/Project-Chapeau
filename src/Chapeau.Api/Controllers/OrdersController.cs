@@ -121,6 +121,7 @@ public class OrdersController : ControllerBase
             Comment = request.Comment,
             MenuItem = item,
             Order = order,
+            UnitPrice = item.Price,
             MenuItemId = item.Id
         };
         
