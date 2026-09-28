@@ -23,6 +23,9 @@ namespace Chapeau.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("AdjustmentReason")
+                        .HasColumnType("TEXT");
+
                     b.Property<decimal>("Amount")
                         .HasPrecision(10, 2)
                         .HasColumnType("TEXT");

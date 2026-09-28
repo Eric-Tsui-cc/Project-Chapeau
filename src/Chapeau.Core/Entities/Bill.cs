@@ -8,7 +8,7 @@ public class Bill : BaseEntity
     public Table? Table { get; set; }
     public int OrderId { get; set; }
     public Order? Order { get; set; }
-    
+    public string? AdjustmentReason { get; set; } = string.Empty;
     public decimal Amount { get; set; }
     public decimal Tip { get; set; }
     
