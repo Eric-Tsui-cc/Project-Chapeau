@@ -12,4 +12,5 @@ public class OrderItemResponse
     public int Count { get; set; }
     public OrderStatus Status { get; set; }
     public string Comment { get; set; } = string.Empty;
+    public decimal UnitPrice {get; set;}
 }

@@ -140,7 +140,8 @@ public class OrdersController : ControllerBase
             Comment = orderItem.Comment,
             OrderTime = orderItem.OrderTime,
             MenuItemName = item.Name,
-            Status =  orderItem.Status
+            Status =  orderItem.Status,
+            UnitPrice = orderItem.UnitPrice
 
         };
         return StatusCode(StatusCodes.Status201Created, response);
@@ -184,7 +185,8 @@ public class OrdersController : ControllerBase
                 Comment = item.Comment,
                 OrderTime = item.OrderTime,
                 MenuItemName = item.MenuItem.Name,
-                Status = item.Status
+                Status = item.Status,
+                UnitPrice = item.UnitPrice
             };
             detailsResponse.Items.Add(orderItemResponse);
         }
@@ -216,6 +218,34 @@ public class OrdersController : ControllerBase
         }
 
         return Conflict();
+    }
+
+    [HttpGet("current")]
+    public async Task<ActionResult<OrderResponse>> GetCurrentByTable(
+        [FromQuery] int tableId)
+    {
+        var order = await _dbContext.Orders
+            .AsNoTracking()
+            .SingleOrDefaultAsync(order =>
+                order.TableId == tableId && !order.IsPaid);
+
+        if (order is null)
+        {
+            return NotFound("Order not found");
+        }
+
+        OrderResponse response = new OrderResponse()
+        {
+            CreatedAt = order.CreatedAt,
+            IsPaid = order.IsPaid,
+            TableId = order.TableId,
+            Status = order.Status,
+            EmployeeId = order.EmployeeId,
+            Id = order.Id,
+        };
+        
+        return Ok(response);
+        
     }
     
 

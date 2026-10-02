@@ -1,22 +1,21 @@
 import { useEffect, useState } from 'react'
 import type { Employee } from '../types/Employee'
 
-type Table = {
-  id: number
-  number: number
-  status: 'Free' | 'Occupied'
-}
+import type { Table } from '../types/Table'
 
 type TablesPageProps = {
   employee: Employee
   onLogout: () => void
+  onSelectTable: (table: Table) => void
 }
 
-function TablesPage({ employee, onLogout }: TablesPageProps) {
+function TablesPage({ employee, onLogout, onSelectTable }: TablesPageProps) {
   const [tables, setTables] = useState<Table[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [reloadCount, setReloadCount] = useState(0)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const selectedTable = tables.find((table) => table.id === selectedId)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -56,11 +55,12 @@ function TablesPage({ employee, onLogout }: TablesPageProps) {
   function refreshTables() {
     setIsLoading(true)
     setError(null)
+    setSelectedId(null)
     setReloadCount((count) => count + 1)
   }
 
   return (
-    <main className="tables-page">
+    <main className="tables-page tables-overview">
       <div className="employee-bar">
         <p>Signed in as <strong>{employee.firstName} {employee.lastName}</strong></p>
         <button type="button" className="secondary-button" onClick={onLogout}>Sign out</button>
@@ -72,7 +72,7 @@ function TablesPage({ employee, onLogout }: TablesPageProps) {
           <p>View current table availability.</p>
         </div>
         <button type="button" onClick={refreshTables} disabled={isLoading}>
-          {isLoading ? 'Loading...' : 'Refresh tables'}
+          Refresh
         </button>
       </header>
 
@@ -83,16 +83,34 @@ function TablesPage({ employee, onLogout }: TablesPageProps) {
         {!isLoading && !error && tables.length > 0 && (
           <ul className="table-grid">
             {tables.map((table) => (
-              <li key={table.id} className="table-card">
-                <h2>Table {table.number}</h2>
+              <li key={table.id}>
+                <button
+                  type="button"
+                  className={`table-card${selectedId === table.id ? ' is-selected' : ''}`}
+                  aria-pressed={selectedId === table.id}
+                  onClick={() => setSelectedId((currentId) => currentId === table.id ? null : table.id)}
+                >
+                {selectedId === table.id && <span className="selection-mark" aria-hidden="true">✓</span>}
+                <span className="table-number">Table {table.number}</span>
                 <span className={`status ${table.status === 'Free' ? 'free' : 'occupied'}`}>
+                  <span className="status-dot" aria-hidden="true" />
                   {table.status === 'Free' ? 'Available' : 'Occupied'}
                 </span>
+                </button>
               </li>
             ))}
           </ul>
         )}
       </section>
+      <footer className="table-actions">
+        <p role="status">{selectedTable ? `Table ${selectedTable.number} selected` : 'Select a table to continue.'}</p>
+        <button
+          className="primary-action"
+          type="button"
+          disabled={!selectedTable || isLoading || error !== null}
+          onClick={() => { if (selectedTable) onSelectTable(selectedTable) }}
+        >View order</button>
+      </footer>
     </main>
   )
 }

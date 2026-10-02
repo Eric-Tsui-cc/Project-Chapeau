@@ -75,7 +75,7 @@ function LoginPage({ onLogin }: LoginPageProps) {
             aria-describedby={error ? 'login-error' : undefined}
           />
           {error && <p id="login-error" className="error" role="alert">{error}</p>}
-          <button type="submit" disabled={isSubmitting}>
+          <button className="primary-action" type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
