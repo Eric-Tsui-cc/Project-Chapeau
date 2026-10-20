@@ -4,10 +4,13 @@ using Chapeau.Core.Enums;
 using Microsoft.EntityFrameworkCore;
 using Chapeau.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Chapeau.Api.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Waiter")]
 [Route("api/[controller]")]
 public class OrdersController : ControllerBase
 {
@@ -20,6 +23,13 @@ public class OrdersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<OrderResponse>> Create(CreateOrderRequest request)
     {
+        var employeeIdText = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!int.TryParse(employeeIdText, out int employeeId))
+        {
+            return Unauthorized();
+        }
+
         var table = await _dbContext.Tables
             .FirstOrDefaultAsync(table =>
                 table.Id == request.TableId);
@@ -31,7 +41,7 @@ public class OrdersController : ControllerBase
 
         var employee = await _dbContext.Employees
             .FirstOrDefaultAsync(employee =>
-                employee.Id == request.EmployeeId);
+                employee.Id == employeeId);
         
         if (employee is null )
         {

@@ -4,10 +4,12 @@ using Chapeau.Core.Enums;
 using Microsoft.EntityFrameworkCore;
 using Chapeau.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Chapeau.Api.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Chef")]
 [Route("api/[controller]")]
 public class KitchenController : ControllerBase
 {

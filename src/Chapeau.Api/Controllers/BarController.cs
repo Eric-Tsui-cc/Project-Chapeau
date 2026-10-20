@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Chapeau.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 namespace Chapeau.Api.Controllers;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController ]
+[Authorize(Roles = "Bartender")]
 [Route("api/[controller]")]
 public class BarController : ControllerBase
 {

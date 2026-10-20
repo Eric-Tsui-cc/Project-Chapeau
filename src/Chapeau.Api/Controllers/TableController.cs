@@ -3,11 +3,14 @@ using Chapeau.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Chapeau.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
 
 
 namespace Chapeau.Api.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Waiter")]
 [Route("api/[controller]")]
 public class TablesController : ControllerBase
 {
