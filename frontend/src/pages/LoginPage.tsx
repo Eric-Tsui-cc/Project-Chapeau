@@ -97,6 +97,7 @@ function LoginPage({ onLogin, notice = '' }: LoginPageProps) {
               {isSubmitting ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
+          <p className="login-hint"><a href="/menu">Browse the menu</a></p>
           {isDemo && <p className="login-hint"><span className="demo-badge">DEMO</span> Demo PINs: 1234 · 3456 · 4567</p>}
         </div>
       </section>

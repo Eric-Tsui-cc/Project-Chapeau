@@ -199,6 +199,12 @@ export function installDemoApi() {
     // --- tables ---
     if (path === '/api/tables' && method === 'GET') return respond(200, tables)
 
+    if (path === '/api/menuitems/customer' && method === 'GET') {
+      return respond(200, menuItems.map(({ id, name, card, category, price, stock }) => ({
+        id, name, card, category, price, isAvailable: stock > 0,
+      })))
+    }
+
     // --- menu ---
     if (path === '/api/menuitems' && method === 'GET') return respond(200, menuItems)
 

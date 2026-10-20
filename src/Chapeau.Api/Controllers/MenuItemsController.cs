@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Chapeau.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Chapeau.Api.Dtos.MenuItems;
 
 
 
@@ -20,6 +21,7 @@ public class MenuItemsController : ControllerBase
         _dbContext = dbContext;
     }
 
+
     [HttpGet]
     public async Task<ActionResult<List<MenuItem>>> GetAll()
     {
@@ -29,5 +31,34 @@ public class MenuItemsController : ControllerBase
             .ThenBy(item => item.Name)
             .ToListAsync();
         return Ok(items);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("customer")]
+    public async Task<ActionResult<List<MenuItemResponse>>> GetCustomerMenu()
+    {
+        var items = await _dbContext.MenuItems
+            .AsNoTracking()
+            .OrderBy(item => item.Card)
+            .ThenBy(item => item.Category)
+            .ThenBy(item => item.Name)
+            .ToListAsync();
+
+        List<MenuItemResponse> responses = new List<MenuItemResponse>();
+
+        foreach (var item in  items)
+        {
+            MenuItemResponse response = new MenuItemResponse
+            {
+                Card = item.Card,
+                Id = item.Id,
+                Name = item.Name,
+                Category = item.Category,
+                IsAvailable = item.Stock > 0,
+                Price =  item.Price,
+            };
+            responses.Add(response);
+        }
+        return Ok(responses);
     }
 }

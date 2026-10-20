@@ -1,3 +1,4 @@
+import CustomerMenuPage from './pages/CustomerMenuPage'
 import { useEffect, useRef, useState } from 'react'
 import LoginPage from './pages/LoginPage'
 import TablesPage from './pages/TablesPage'
@@ -8,7 +9,7 @@ import type { Table } from './types/Table'
 import type { Employee } from './types/Employee'
 import './App.css'
 
-function App() {
+function StaffApp() {
   const [employee, setEmployee] = useState<Employee | null>(null)
   const [selectedTable, setSelectedTable] = useState<Table | null>(null)
   const [isChecking, setIsChecking] = useState(true)
@@ -120,4 +121,10 @@ function App() {
     </>
   )
 }
+// A dedicated public entry point; staff session checks only run in StaffApp.
+function App() {
+  const path = window.location.pathname.replace(/\/+$/, '')
+  return path === '/menu' ? <CustomerMenuPage /> : <StaffApp />
+}
+
 export default App
