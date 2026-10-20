@@ -1,12 +1,16 @@
+import { csrfFetch } from '../api/client'
 import { useRef, useState } from 'react'
 import type { SubmitEvent } from 'react'
 import type { Employee } from '../types/Employee'
 
 type LoginPageProps = {
   onLogin: (employee: Employee) => void
+  notice?: string
 }
 
-function LoginPage({ onLogin }: LoginPageProps) {
+const isDemo = import.meta.env.VITE_DEMO === '1'
+
+function LoginPage({ onLogin, notice = '' }: LoginPageProps) {
   const [pin, setPin] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -26,7 +30,7 @@ function LoginPage({ onLogin }: LoginPageProps) {
     inFlight.current = true
     setIsSubmitting(true)
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await csrfFetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pin: Number(pin) }),
@@ -54,31 +58,47 @@ function LoginPage({ onLogin }: LoginPageProps) {
 
   return (
     <main className="login-page">
-      <section className="login-card" aria-labelledby="login-heading">
-        <p className="brand">CHAPEAU</p>
-        <h1 id="login-heading">Staff sign in</h1>
-        <p>Enter your employee PIN to continue.</p>
-        <form onSubmit={handleSubmit} aria-busy={isSubmitting}>
-          <label htmlFor="pin">Employee PIN</label>
-          <input
-            id="pin"
-            name="pin"
-            type="password"
-            inputMode="numeric"
-            autoComplete="current-password"
-            pattern="[0-9]+"
-            maxLength={10}
-            required
-            value={pin}
-            onChange={(event) => setPin(event.target.value)}
-            disabled={isSubmitting}
-            aria-describedby={error ? 'login-error' : undefined}
-          />
-          {error && <p id="login-error" className="error" role="alert">{error}</p>}
-          <button className="primary-action" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Signing in...' : 'Sign in'}
-          </button>
-        </form>
+      <section className="login-hero" aria-hidden="true">
+        <div className="brand">
+          <span className="app-brand-mark">C</span>
+          <span className="app-brand-name">CHAPEAU</span>
+        </div>
+        <h1>Service,<br />served smoothly.</h1>
+        <p>The tabletop console for waiters, kitchen and bar. Take orders, follow every course and settle the bill in one place.</p>
+        <div className="login-hero-points">
+          <span>Order at the table</span>
+          <span>Live kitchen & bar queues</span>
+          <span>Checkout in two taps</span>
+        </div>
+      </section>
+      <section className="login-side">
+        <div className="login-card" aria-labelledby="login-heading">
+          <h2 id="login-heading">Staff sign in</h2>
+          <p>Enter your employee PIN to continue.</p>
+          {notice && <p className="session-login-notice" role="status">{notice}</p>}
+          <form onSubmit={handleSubmit} aria-busy={isSubmitting}>
+            <label htmlFor="pin">Employee PIN</label>
+            <input
+              id="pin"
+              name="pin"
+              type="password"
+              inputMode="numeric"
+              autoComplete="current-password"
+              pattern="[0-9]+"
+              maxLength={10}
+              required
+              value={pin}
+              onChange={(event) => setPin(event.target.value)}
+              disabled={isSubmitting}
+              aria-describedby={error ? 'login-error' : undefined}
+            />
+            {error && <p id="login-error" className="error" role="alert">{error}</p>}
+            <button className="button primary" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Signing in...' : 'Sign in'}
+            </button>
+          </form>
+          {isDemo && <p className="login-hint"><span className="demo-badge">DEMO</span> Demo PINs: 1234 · 3456 · 4567</p>}
+        </div>
       </section>
     </main>
   )

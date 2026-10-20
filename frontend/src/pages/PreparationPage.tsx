@@ -1,5 +1,7 @@
+import { apiFetch } from '../api/client'
 import { useEffect, useRef, useState } from 'react'
 import type { Employee } from '../types/Employee'
+import AppShell from '../components/AppShell'
 
 type QueueItem = {
   orderId: number
@@ -53,7 +55,7 @@ function PreparationPage({ station, employee, onLogout }: PreparationPageProps) 
       const requestController = controller
       const timeout = setTimeout(() => requestController.abort(), 10000)
       try {
-        const response = await fetch(`/api/${station}/items`, { signal: requestController.signal })
+        const response = await apiFetch(`/api/${station}/items`, { signal: requestController.signal })
         if (!response.ok) throw new Error('Queue request failed')
         const data: QueueItem[] = await response.json()
         if (active) {
@@ -93,7 +95,7 @@ function PreparationPage({ station, employee, onLogout }: PreparationPageProps) 
     const timeout = setTimeout(() => controller.abort(), 10000)
     const nextStatus = station === 'kitchen' && item.status === 'Running' ? 'Preparing' : 'Prepared'
     try {
-      const response = await fetch(station === 'kitchen'
+      const response = await apiFetch(station === 'kitchen'
         ? `/api/kitchen/items/${item.orderItemId}/status`
         : `/api/bar/items/${item.orderItemId}/prepare`, {
         method: 'PATCH',
@@ -122,37 +124,45 @@ function PreparationPage({ station, employee, onLogout }: PreparationPageProps) 
   }
 
   const blocked = loading || updatingId !== null || error !== null || actionError !== null
+  const pendingCount = items.filter((item) => station === 'kitchen' ? item.status === 'Running' : false).length
   return (
-    <main className="tables-page">
-      <div className="employee-bar">
-        <p>Signed in as <strong>{employee.firstName} {employee.lastName}</strong> · {employee.role}</p>
-        <button className="secondary-button" type="button" onClick={onLogout} disabled={updatingId !== null}>Sign out</button>
-      </div>
-      <header className="page-header">
-        <div><p className="brand">CHAPEAU</p><h1>{station === 'kitchen' ? 'Kitchen' : 'Bar'}</h1><p>Oldest items first · Refreshes every 15 seconds</p></div>
-        <button type="button" disabled={loading || updatingId !== null} onClick={() => void refresh.current()}>Refresh</button>
-      </header>
-      <p className="queue-summary" role="status">{loading ? 'Refreshing queue...' : `${items.length} items in queue`}{lastUpdated !== null && ` · Updated ${new Date(lastUpdated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}</p>
-      {notice && <p role="status" className="order-notice">{notice}</p>}
+    <AppShell employee={employee} pageName={station === 'kitchen' ? 'Kitchen' : 'Bar'} pageCaption="Preparation queue" onLogout={onLogout}
+      actions={<button type="button" className="button secondary" disabled={loading || updatingId !== null} onClick={() => void refresh.current()}>↻ Refresh</button>}>
+      <p className="queue-summary" role="status">
+        <span className="live-dot" aria-hidden="true" />
+        {loading ? 'Refreshing queue...' : `${items.length} ${items.length === 1 ? 'item' : 'items'} in queue`}
+        {station === 'kitchen' && pendingCount > 0 && ` · ${pendingCount} to start`}
+        {lastUpdated !== null && ` · Updated ${new Date(lastUpdated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+      </p>
+      {notice && <p role="status" className="order-notice">✓ {notice}</p>}
       {(error || actionError) && <p role="alert" className="order-notice error">{error ?? actionError}</p>}
-      {!loading && !error && items.length === 0 && <section className="order-panel"><h2>All caught up</h2><p>New items will appear here automatically.</p></section>}
+      {!loading && !error && items.length === 0 && (
+        <section className="order-panel empty-panel centered">
+          <span className="empty-icon" aria-hidden="true">✅</span>
+          <h2>All caught up</h2>
+          <p>New items will appear here automatically — the queue refreshes every 15 seconds.</p>
+        </section>
+      )}
       <ul className="prep-grid" aria-label={`${station} queue`} aria-busy={loading}>
         {items.map((item) => (
-          <li key={item.orderItemId} className="prep-card">
-            <div className="prep-card-heading"><strong>Table {item.tableNumber}</strong><span className={`item-status ${item.status === 'Preparing' ? 'prep-preparing' : 'prep-pending'}`}>{item.status === 'Preparing' ? 'Preparing' : 'Pending'}</span></div>
-            <div className="prep-content">
-            <h2>{item.menuItemName}</h2>
-            <p className="prep-quantity">Quantity: {item.count}</p>
-            <p className="prep-time">{waitingTime(item.orderTime, now)} · Order #{item.orderId}</p>
-            {item.comment.trim() && <p className="prep-note"><strong>Note:</strong> {item.comment}</p>}
+          <li key={item.orderItemId} className={`prep-card ${item.status === 'Preparing' ? 'preparing' : 'pending'}`}>
+            <div className="prep-card-heading">
+              <strong>Table {item.tableNumber} · #{item.orderId}</strong>
+              <span className={`item-status ${item.status === 'Preparing' ? 'prep-preparing' : 'prep-pending'}`}>{item.status === 'Preparing' ? 'Preparing' : 'Pending'}</span>
             </div>
-            <button className={`primary-action ${station === 'kitchen' && item.status === 'Running' ? 'prep-start' : 'prep-ready'}`} type="button" disabled={blocked} onClick={() => void updateItem(item)}>
+            <div className="prep-content">
+              <h2>{item.menuItemName}</h2>
+              <p className="prep-quantity">Quantity: {item.count}</p>
+              <p className="prep-time">⏱ {waitingTime(item.orderTime, now)}</p>
+              {item.comment.trim() && <p className="prep-note">Note: {item.comment}</p>}
+            </div>
+            <button className={`button ${station === 'kitchen' && item.status === 'Running' ? 'prep-start' : 'prep-ready'}`} type="button" disabled={blocked} onClick={() => void updateItem(item)}>
               {updatingId === item.orderItemId ? 'Updating...' : station === 'kitchen' && item.status === 'Running' ? 'Start preparing' : 'Mark ready'}
             </button>
           </li>
         ))}
       </ul>
-    </main>
+    </AppShell>
   )
 }
 

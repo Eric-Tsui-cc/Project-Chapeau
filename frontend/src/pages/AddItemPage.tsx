@@ -1,3 +1,4 @@
+import { apiFetch } from '../api/client'
 import { useEffect, useRef, useState } from 'react'
 import type { SubmitEvent } from 'react'
 
@@ -48,7 +49,7 @@ function AddItemPage({ orderId, tableNumber, onBack, onAdded }: AddItemPageProps
     const timer = setTimeout(() => controller.abort(), 10000)
     async function loadMenu() {
       try {
-        const response = await fetch('/api/menuitems', { signal: controller.signal })
+        const response = await apiFetch('/api/menuitems', { signal: controller.signal })
         if (!response.ok) throw new Error('Unable to load the menu. Please retry.')
         const data: MenuItem[] = await response.json()
         if (active) setItems(data)
@@ -75,7 +76,7 @@ function AddItemPage({ orderId, tableNumber, onBack, onAdded }: AddItemPageProps
     setSubmitting(true)
     setError(null)
     try {
-      const response = await fetch(`/api/orders/${orderId}/items`, {
+      const response = await apiFetch(`/api/orders/${orderId}/items`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ menuItemId: selected.id, count, comment: comment.trim() }),
@@ -103,14 +104,19 @@ function AddItemPage({ orderId, tableNumber, onBack, onAdded }: AddItemPageProps
   }
 
   return (
-    <main className="tables-page">
-      <div className="employee-bar">
-        <button type="button" className="secondary-button" onClick={onBack} disabled={submitting}>Back to order</button>
-        <p>Table {tableNumber} · Order #{orderId}</p>
+    <main className="app-content nested-page">
+      <div className="page-toolbar">
+        <button type="button" className="button secondary" onClick={onBack} disabled={submitting}>← Back to order</button>
+        <p className="context">Table {tableNumber} · Order #{orderId}</p>
       </div>
-      <header className="page-header"><div><p className="brand">CHAPEAU</p><h1>Add item</h1><p>Select an item, then enter the quantity and any notes.</p></div></header>
-      {loading && <p role="status">Loading menu...</p>}
-      {loadError && <div className="order-panel"><p role="alert" className="error">{loadError}</p><button type="button" onClick={() => { setLoadError(null); setLoading(true); setReloadCount((value) => value + 1) }}>Retry</button></div>}
+      <header className="page-head">
+        <div>
+          <h1>Add item</h1>
+          <p className="page-caption">Select an item, then enter the quantity and any notes.</p>
+        </div>
+      </header>
+      {loading && <div className="order-panel"><p role="status">Loading menu...</p></div>}
+      {loadError && <div className="order-panel"><p role="alert" className="error">{loadError}</p><button type="button" className="button secondary" onClick={() => { setLoadError(null); setLoading(true); setReloadCount((value) => value + 1) }}>Retry</button></div>}
       {!loading && !loadError && (
         <div className="menu-layout">
           <section aria-label="Menu">
@@ -132,7 +138,7 @@ function AddItemPage({ orderId, tableNumber, onBack, onAdded }: AddItemPageProps
                 </div>
               </fieldset>
             </div>
-            {visibleItems.length === 0 && <p>No items match these filters. Tap a selected filter to clear it.</p>}
+            {visibleItems.length === 0 && <p className="menu-empty">No items match these filters. Tap a selected filter to clear it.</p>}
             <ul className="menu-list">
               {visibleItems.map((item) => (
                 <li key={item.id}>
@@ -140,7 +146,7 @@ function AddItemPage({ orderId, tableNumber, onBack, onAdded }: AddItemPageProps
                     <span className="menu-name">{item.name}</span>
                     <span className="menu-meta">{item.card} · {categoryNames[item.category] ?? item.category}</span>
                     <span className="menu-price">${item.price.toFixed(2)}</span>
-                    <span className="menu-meta">{item.stock > 0 ? `${item.stock} available` : 'Out of stock'}</span>
+                    <span className={`menu-stock${item.stock > 0 ? '' : ' out'}`}>{item.stock > 0 ? `In stock · ${item.stock}` : 'Out of stock'}</span>
                   </button>
                 </li>
               ))}
@@ -151,16 +157,16 @@ function AddItemPage({ orderId, tableNumber, onBack, onAdded }: AddItemPageProps
             {!selected && <p>Select an item from the menu to add it to this order.</p>}
             {selected && (
               <form onSubmit={addItem}>
-                <p>${selected.price.toFixed(2)} each · {selected.stock} available</p>
+                <p className="editor-price">${selected.price.toFixed(2)} each · {selected.stock} available</p>
                 <label htmlFor="item-quantity">Quantity</label>
                 <div className="quantity-stepper">
-                  <button type="button" className="secondary-button" aria-label="Decrease quantity" disabled={submitting || mustCheckOrder || Number(quantity) <= 1} onClick={() => setQuantity(String(Math.max(1, Math.min(selected.stock, Math.trunc(Number(quantity) || 1) - 1))))}>−</button>
+                  <button type="button" className="button secondary" aria-label="Decrease quantity" disabled={submitting || mustCheckOrder || Number(quantity) <= 1} onClick={() => setQuantity(String(Math.max(1, Math.min(selected.stock, Math.trunc(Number(quantity) || 1) - 1))))}>−</button>
                   <input id="item-quantity" type="number" inputMode="numeric" min={1} max={selected.stock} step={1} required value={quantity} onChange={(event) => setQuantity(event.target.value)} disabled={submitting || mustCheckOrder} />
-                  <button type="button" className="secondary-button" aria-label="Increase quantity" disabled={submitting || mustCheckOrder || Number(quantity) >= selected.stock} onClick={() => setQuantity(String(Math.min(selected.stock, Math.max(1, Math.trunc(Number(quantity) || 0) + 1))))}>+</button>
+                  <button type="button" className="button secondary" aria-label="Increase quantity" disabled={submitting || mustCheckOrder || Number(quantity) >= selected.stock} onClick={() => setQuantity(String(Math.min(selected.stock, Math.max(1, Math.trunc(Number(quantity) || 0) + 1))))}>+</button>
                 </div>
                 <label htmlFor="item-note">Notes (optional)</label>
                 <textarea id="item-note" rows={3} placeholder="e.g. No onion" value={comment} onChange={(event) => setComment(event.target.value)} disabled={submitting || mustCheckOrder} />
-                <button className="primary-action" type="submit" disabled={submitting || mustCheckOrder}>{submitting ? 'Adding...' : 'Add to order'}</button>
+                <button className="button primary" type="submit" disabled={submitting || mustCheckOrder}>{submitting ? 'Adding...' : 'Add to order'}</button>
               </form>
             )}
             {error && <p role="alert" className="error menu-error">{error}</p>}
