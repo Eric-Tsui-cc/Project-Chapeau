@@ -52,6 +52,35 @@ export function setCartQuantity(lines: CartLine[], key: string, quantity: number
   return lines.map((line) => line.key === key ? { ...line, quantity } : line)
 }
 
+const BASKET_STORAGE_KEY = 'chapeau-basket'
+
+// Restores a basket saved on this device. Entries that no longer match the
+// CartLine shape are dropped instead of breaking the page.
+export function loadSavedBasket(): CartLine[] {
+  try {
+    const parsed: unknown = JSON.parse(sessionStorage.getItem(BASKET_STORAGE_KEY) ?? '')
+    if (!Array.isArray(parsed)) return []
+    return parsed.filter((entry): entry is CartLine =>
+      typeof entry === 'object' && entry !== null
+      && typeof (entry as CartLine).key === 'string'
+      && typeof (entry as CartLine).menuItemId === 'number'
+      && typeof (entry as CartLine).name === 'string'
+      && Number.isFinite((entry as CartLine).unitPriceCents) && (entry as CartLine).unitPriceCents >= 0
+      && validQuantity((entry as CartLine).quantity)
+      && typeof (entry as CartLine).comment === 'string')
+  } catch {
+    return []
+  }
+}
+
+export function saveBasket(lines: CartLine[]) {
+  try {
+    sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(lines))
+  } catch {
+    // Private browsing or storage quota issues: the basket simply stays in memory.
+  }
+}
+
 export function cartTotalCents(lines: CartLine[]) {
   return lines.reduce((total, line) => total + line.unitPriceCents * line.quantity, 0)
 }

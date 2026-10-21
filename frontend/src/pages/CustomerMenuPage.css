@@ -71,3 +71,13 @@
 .customer-basket-dock { position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); transform: translateX(-50%); width: min(500px, calc(100% - 32px)); z-index: 10; box-shadow: 0 8px 28px #173e3433; border-radius: 14px; }
 .customer-basket-dock button { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; min-height: 60px; }
 @media (max-width: 480px) { .customer-header { align-items: flex-start; } .customer-header-actions { gap: 4px; flex-direction: column-reverse; align-items: flex-end; } .customer-dialog { padding: 20px; } .customer-dialog-header h2 { font-size: 23px; } }
+
+/* Customer order submission */
+.customer-submit-form { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid #d6ded2; }
+.customer-submit-form label { font-weight: 700; }
+.customer-submit-form input { width: 100%; min-height: 52px; padding: 12px; border: 1px solid #a4b69e; border-radius: 10px; background: white; color: #203b2c; font: inherit; font-size: 20px; }
+.customer-dialog .customer-primary:disabled, .customer-dialog .customer-reset:disabled { opacity: .5; cursor: not-allowed; }
+.customer-dialog .customer-continue { margin-top: 16px; width: 100%; }
+.customer-order-confirmation { display: flex; flex-direction: column; gap: 20px; text-align: center; line-height: 1.6; }
+.customer-confirmed-mark { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: #e2eddf; color: #24553d; font-size: 32px; margin: 0 auto; }
+

@@ -205,6 +205,37 @@ export function installDemoApi() {
       })))
     }
 
+    if (path === '/api/customer/orders/items' && method === 'POST') {
+      const body = await readJson<{ tableNumber: number; items: { menuItemId: number; count: number; comment?: string }[] }>(request)
+      if (!Number.isInteger(body.tableNumber) || body.tableNumber <= 0 || !Array.isArray(body.items) || body.items.length === 0 || body.items.some((item) => !item || !Number.isInteger(item.menuItemId) || item.menuItemId <= 0 || !Number.isInteger(item.count) || item.count <= 0)) return respond(400, 'Invalid table or items.')
+      const table = tables.find((candidate) => candidate.number === body.tableNumber)
+      if (!table) return respond(404, 'Table not found')
+      const order = orders.find((candidate) => candidate.table === table.id && !candidate.isPaid)
+      if (!order) return respond(409, 'Please ask your server to open the table.')
+      if (order.items.length > 0) return respond(409, 'An order has already been placed. Please ask your server to add items.')
+      const counts = new Map<number, number>()
+      for (const item of body.items) counts.set(item.menuItemId, (counts.get(item.menuItemId) ?? 0) + item.count)
+      for (const [id, count] of counts) {
+        const menuItem = menuItems.find((candidate) => candidate.id === id)
+        if (!menuItem) return respond(404, 'One or more menu items were not found.')
+        if (menuItem.stock < count) return respond(409, 'Not enough stock available.')
+      }
+      const orderTime = new Date().toISOString()
+      for (const line of body.items) {
+        const menuItem = menuItems.find((candidate) => candidate.id === line.menuItemId)!
+        const item: OrderDetails['items'][number] = {
+          id: nextItemId++, menuItemName: menuItem.name, count: line.count,
+          unitPrice: menuItem.price, status: 'Running', comment: line.comment?.trim() ?? '',
+        }
+        order.items.push(item)
+        menuItem.stock -= line.count
+        const queue = ['Beers', 'Wines', 'Spirit', 'CoffeeTea'].includes(menuItem.category) ? barQueue : kitchenQueue
+        queue.push({ orderId: order.id, orderItemId: item.id, tableNumber: table.number,
+          menuItemName: item.menuItemName, count: item.count, comment: item.comment, orderTime, status: 'Running' })
+      }
+      return respond(200, { orderId: order.id, tableNumber: table.number, message: 'Your order has been submitted.' })
+    }
+
     // --- menu ---
     if (path === '/api/menuitems' && method === 'GET') return respond(200, menuItems)
 
