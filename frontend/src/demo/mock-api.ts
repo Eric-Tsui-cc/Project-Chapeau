@@ -176,6 +176,25 @@ export function installDemoApi() {
       return respond(200, { requestToken: 'demo-csrf-token' })
     }
 
+    // Keep scripted replies confined to the explicitly enabled demo mode.
+    if (path === '/api/assistant/chat' && method === 'POST') {
+      const body = await readJson<{ message?: string }>(request)
+      if (typeof body.message !== 'string' || !body.message.trim() || body.message.length > 500) return respond(400, 'Invalid question.')
+      if (/allerg|gluten|vegan|vegetarian|nuts|dairy/i.test(body.message)) {
+        return respond(200, { reply: 'Demo reply: please ask your server to confirm ingredients and dietary suitability.', menuItemIds: [] })
+      }
+      const available = menuItems.filter((item) => item.stock > 0)
+      const drinks = ['Beers', 'Wines', 'Spirit', 'CoffeeTea']
+      const picks = /dessert|sweet/i.test(body.message)
+        ? available.filter((item) => item.category === 'Desserts').slice(0, 2)
+        : /main|meal|dinner|lunch/i.test(body.message)
+          ? [available.find((item) => item.category === 'Mains'), available.find((item) => drinks.includes(item.category))].filter((item): item is MenuItem => item !== undefined)
+          : /drink|coffee|tea|wine|beer/i.test(body.message)
+            ? available.filter((item) => drinks.includes(item.category)).slice(0, 2)
+            : available.slice(0, 2)
+      return respond(200, { reply: 'Demo reply: here are some sample menu picks. These are scripted suggestions; no AI service was called.', menuItemIds: picks.map((item) => item.id) })
+    }
+
     // --- auth ---
     if (path === '/api/auth/login' && method === 'POST') {
       const body = await readJson<{ pin: number }>(request)

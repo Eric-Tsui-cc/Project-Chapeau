@@ -3,6 +3,10 @@ using Chapeau.Infrastructure.Data;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Chapeau.Core.Assistant;
+using Chapeau.Infrastructure;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,6 +62,47 @@ builder.Services.AddAntiforgery(options =>
     options.HeaderName = "X-CSRF-TOKEN";
 });
 
+builder.Services.AddSingleton<GeminiOptions>(_ =>
+{
+    var options = builder.Configuration
+        .GetSection("Gemini")
+        .Get<GeminiOptions>();
+
+    if (options is null ||
+        string.IsNullOrWhiteSpace(options.ApiKey) ||
+        string.IsNullOrWhiteSpace(options.Model))
+    {
+        throw new InvalidOperationException(
+            "Gemini API key and model must be configured.");
+    }
+
+    return options;
+});
+
+
+builder.Services.AddHttpClient<IAssistantService, GeminiAssistantService>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri("https://generativelanguage.googleapis.com/");
+
+        client.Timeout = TimeSpan.FromSeconds(30);
+    });
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode =
+        StatusCodes.Status429TooManyRequests;
+
+    options.AddFixedWindowLimiter("assistant", limiter =>
+    {
+        limiter.PermitLimit = 10;
+        limiter.Window = TimeSpan.FromMinutes(1);
+        limiter.QueueLimit = 0;
+        limiter.AutoReplenishment = true;
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -65,12 +110,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
+app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseRateLimiter();
 
 app.MapControllers();
 
