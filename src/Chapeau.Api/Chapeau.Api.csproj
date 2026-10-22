@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Chapeau.Infrastructure\Chapeau.Infrastructure.csproj" />
+    <ProjectReference Include="..\Chapeau.Migrations.Postgres\Chapeau.Migrations.Postgres.csproj" />
   </ItemGroup>
 
 </Project>

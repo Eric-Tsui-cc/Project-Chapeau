@@ -49,7 +49,10 @@ var provider = builder.Configuration.GetValue<string>("DatabaseProvider");
 if (provider == "Postgres")
 {
     builder.Services.AddDbContext<ChapeauDbContext>(options =>
-        options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
+        options.UseNpgsql(
+            builder.Configuration.GetConnectionString("Postgres"),
+            postgres => postgres.MigrationsAssembly(
+                "Chapeau.Migrations.Postgres")));
 }
 else
 {

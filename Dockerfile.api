@@ -1,0 +1,33 @@
+# 第一阶段：编译和发布
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /source
+
+COPY global.json ./
+
+COPY src/Chapeau.Core/Chapeau.Core.csproj src/Chapeau.Core/
+COPY src/Chapeau.Infrastructure/Chapeau.Infrastructure.csproj src/Chapeau.Infrastructure/
+COPY src/Chapeau.Migrations.Postgres/Chapeau.Migrations.Postgres.csproj src/Chapeau.Migrations.Postgres/
+COPY src/Chapeau.Api/Chapeau.Api.csproj src/Chapeau.Api/
+
+RUN dotnet restore src/Chapeau.Api/Chapeau.Api.csproj
+
+COPY src/ src/
+
+RUN dotnet publish src/Chapeau.Api/Chapeau.Api.csproj \
+    -c Release \
+    -o /app/publish \
+    --no-restore \
+    /p:UseAppHost=false
+
+# 第二阶段：运行
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+
+ENV ASPNETCORE_HTTP_PORTS=8080
+EXPOSE 8080
+
+COPY --from=build /app/publish .
+
+USER $APP_UID
+
+ENTRYPOINT ["dotnet", "Chapeau.Api.dll"]

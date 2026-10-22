@@ -375,3 +375,6 @@ FodyWeavers.xsd
 
 # Local OpenCode session state
 .omo/run-continuation/
+# Local environment secrets
+.env.local
+/chapeau-images.tar

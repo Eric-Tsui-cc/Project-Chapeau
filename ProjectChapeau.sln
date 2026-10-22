@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapeau.Infrastructure", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapeau.Api", "src\Chapeau.Api\Chapeau.Api.csproj", "{5279A829-620B-4397-8CDF-8DEC15F8BDD3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapeau.Migrations.Postgres", "src\Chapeau.Migrations.Postgres\Chapeau.Migrations.Postgres.csproj", "{79F50B27-1E2F-4732-BA90-095F3A06E665}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{5279A829-620B-4397-8CDF-8DEC15F8BDD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5279A829-620B-4397-8CDF-8DEC15F8BDD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5279A829-620B-4397-8CDF-8DEC15F8BDD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F50B27-1E2F-4732-BA90-095F3A06E665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F50B27-1E2F-4732-BA90-095F3A06E665}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F50B27-1E2F-4732-BA90-095F3A06E665}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F50B27-1E2F-4732-BA90-095F3A06E665}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2311F34A-B93A-4B6C-AB3B-79DDE4119EB2} = {AC9F8D12-2355-4739-806B-933F07947150}
