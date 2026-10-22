@@ -104,6 +104,12 @@ function CustomerMenuPage() {
 
   const cards = [...new Set(items.map((item) => item.card))]
   const categories = [...new Set(items.map((item) => item.category))]
+  const matchingCards = new Set(items
+    .filter((item) => category === null || item.category === category)
+    .map((item) => item.card))
+  const matchingCategories = new Set(items
+    .filter((item) => card === null || item.card === card)
+    .map((item) => item.category))
   const visible = items.filter((item) =>
     (card === null || item.card === card) && (category === null || item.category === category))
   const groups = [...new Set(visible.map((item) => item.category))]
@@ -131,10 +137,24 @@ function CustomerMenuPage() {
           <>
             <div className="customer-filters">
               <fieldset><legend>Menu</legend><div className="customer-filter-row">
-                {cards.map((name) => <button key={name} type="button" className="customer-control" aria-pressed={card === name} onClick={() => setCard((current) => current === name ? null : name)}>{name}</button>)}
+                {cards.map((name) => (
+                  <button key={name} type="button" className="customer-control"
+                    aria-pressed={card === name}
+                    disabled={card !== name && !matchingCards.has(name)}
+                    onClick={() => setCard((current) => current === name ? null : name)}>
+                    {name}
+                  </button>
+                ))}
               </div></fieldset>
               <fieldset><legend>Category</legend><div className="customer-filter-row">
-                {categories.map((name) => <button key={name} type="button" className="customer-control" aria-pressed={category === name} onClick={() => setCategory((current) => current === name ? null : name)}>{categoryNames[name] ?? name}</button>)}
+                {categories.map((name) => (
+                  <button key={name} type="button" className="customer-control"
+                    aria-pressed={category === name}
+                    disabled={category !== name && !matchingCategories.has(name)}
+                    onClick={() => setCategory((current) => current === name ? null : name)}>
+                    {categoryNames[name] ?? name}
+                  </button>
+                ))}
               </div></fieldset>
               {(card !== null || category !== null) && <button type="button" className="customer-reset" onClick={() => { setCard(null); setCategory(null) }}>Reset filters</button>}
             </div>

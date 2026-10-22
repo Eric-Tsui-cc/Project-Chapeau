@@ -37,6 +37,7 @@
 .customer-header-actions { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 12px; }
 .customer-menu .customer-add { margin-top: 18px; padding: 8px 20px; }
 .customer-menu .customer-control:disabled { cursor: not-allowed; opacity: .5; }
+.customer-menu .customer-filter-row .customer-control:disabled { background: #eceee9; border-color: #d5d9d1; color: #737a70; opacity: 1; }
 .customer-cart-notice { color: #24553d; min-height: 24px; padding-top: 16px; font-weight: 600; }
 .customer-primary { min-height: 52px; border: 1px solid #24553d; border-radius: 12px; padding: 12px 20px; background: #24553d; color: white; font: inherit; font-weight: 700; cursor: pointer; }
 .customer-dialog { width: min(560px, calc(100% - 24px)); max-height: calc(100dvh - 32px); margin: auto; padding: 24px; border: 1px solid #d6ded2; border-radius: 18px; background: #fdfefa; color: #34443b; overflow-y: auto; overscroll-behavior: contain; box-shadow: 0 20px 80px #18332630; }
