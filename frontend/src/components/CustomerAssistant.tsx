@@ -7,6 +7,7 @@ import './CustomerAssistant.css'
 
 type Message = { id: number; role: 'user' | 'assistant'; text: string; itemIds?: number[] }
 const suggestions = ['A main and a drink', 'Show me desserts', 'Something to drink']
+const welcomeMessage: Message = { id: 0, role: 'assistant', text: 'Hello! Tell me what you feel like eating and your budget, and I can suggest dishes from our menu. Please include your preferences in each question.' }
 
 export function CustomerAssistant({ open, onClose, items, basketLocked, onAdd }: {
   open: boolean
@@ -26,9 +27,16 @@ export function CustomerAssistant({ open, onClose, items, basketLocked, onAdd }:
   const [busy, setBusy] = useState(false)
   const [feedback, setFeedback] = useState('')
   const [failure, setFailure] = useState<{ question: string; message: string } | null>(null)
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 0, role: 'assistant', text: 'Hello! Tell me what you feel like eating and your budget, and I can suggest dishes from our menu. Please include your preferences in each question.' },
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
+  const welcoming = messages.length === 0
+
+  useEffect(() => {
+    if (!open || !welcoming) return
+    const timeout = setTimeout(() => {
+      setMessages((current) => current.length === 0 ? [welcomeMessage] : current)
+    }, 1000)
+    return () => clearTimeout(timeout)
+  }, [open, welcoming])
 
   useEffect(() => {
     if (!open) return
@@ -56,7 +64,7 @@ export function CustomerAssistant({ open, onClose, items, basketLocked, onAdd }:
 
   async function send(text: string, retry = false) {
     const trimmed = text.trim()
-    if (!trimmed || trimmed.length > 500 || activeRequest.current || items.length === 0) return
+    if (welcoming || !trimmed || trimmed.length > 500 || activeRequest.current || items.length === 0) return
     const controller = new AbortController()
     activeRequest.current = controller
     // The backend's Gemini timeout is 30 seconds; allow time for CSRF and transit.
@@ -101,10 +109,13 @@ export function CustomerAssistant({ open, onClose, items, basketLocked, onAdd }:
       <p className="assistant-preview">{import.meta.env.VITE_DEMO === '1' ? <><span>Demo</span> Sample replies · No AI calls</> : <><span>AI assistant</span> Powered by Gemini · One question at a time</>}</p>
       <div className="assistant-messages" role="log" aria-label="Conversation" aria-live="polite" aria-relevant="additions" tabIndex={0}>
         {messages.map((message) => (
-          <div key={message.id} className={`assistant-message assistant-message-${message.role}`}>
-            <p className="assistant-speaker">{message.role === 'assistant' ? 'Chapeau' : 'You'}</p>
-            <p>{message.text}</p>
-            {message.itemIds?.map((id) => {
+          <div key={message.id} className={`assistant-message assistant-message-${message.role}${message.id === 0 ? ' assistant-welcome' : ''}`}>
+            {message.role === 'assistant' && <span className="assistant-avatar" aria-hidden="true">C</span>}
+            <div className="assistant-message-content">
+              <p className="assistant-speaker">{message.role === 'assistant' ? 'Chapeau' : 'You'}</p>
+              <div className="assistant-bubble"><p className="assistant-message-text">{message.text}</p></div>
+              {message.itemIds && message.itemIds.length > 0 && <div className="assistant-picks">
+              {message.itemIds.map((id) => {
               const item = items.find((candidate) => candidate.id === id)
               if (!item) return null
               return <div key={id} className="assistant-pick"><div><h3>{item.name}</h3><p>{formatMoney(Math.round(item.price * 100))} <span>· {item.card}</span></p></div>
@@ -112,11 +123,22 @@ export function CustomerAssistant({ open, onClose, items, basketLocked, onAdd }:
                   const error = onAdd(item)
                   setFeedback(error ?? `${item.name} added to your basket. You can adjust quantities and notes in the basket.`)
                 }}>{item.isAvailable ? 'Add to basket' : 'Sold out'}</button></div>
-            })}
+              })}
+              </div>}
+            </div>
           </div>
         ))}
-        {busy && <p className="assistant-thinking" role="status">Looking through the menu…</p>}
-        {!busy && items.length === 0 && <p className="assistant-thinking" role="status">The menu has not loaded yet, so I cannot suggest dishes. Please try again shortly, or browse the menu once it appears.</p>}
+        {(welcoming || busy) && <div className="assistant-message assistant-message-assistant assistant-pending" role="status">
+          <span className="assistant-avatar" aria-hidden="true">C</span>
+          <div className="assistant-message-content">
+            <p className="assistant-speaker" aria-hidden="true">Chapeau</p>
+            <div className="assistant-bubble assistant-typing">
+              <span className="assistant-typing-dots" aria-hidden="true"><span /><span /><span /></span>
+              <span>{welcoming ? 'Chapeau is typing…' : 'Looking through the menu…'}</span>
+            </div>
+          </div>
+        </div>}
+        {!welcoming && !busy && items.length === 0 && <p className="assistant-thinking" role="status">The menu has not loaded yet, so I cannot suggest dishes. Please try again shortly, or browse the menu once it appears.</p>}
         <div ref={messagesEnd} />
       </div>
       <div className="assistant-bottom">
@@ -127,7 +149,7 @@ export function CustomerAssistant({ open, onClose, items, basketLocked, onAdd }:
         <form className="assistant-compose" onSubmit={submit}>
           <label className="assistant-input-label" htmlFor={inputId}>Message Chapeau</label>
           <input ref={input} id={inputId} type="text" maxLength={500} value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="What would you like to eat?" autoComplete="off" />
-          <button type="submit" className="customer-primary" disabled={busy || !draft.trim() || items.length === 0}>Send</button>
+          <button type="submit" className="customer-primary" disabled={welcoming || busy || !draft.trim() || items.length === 0}>Send</button>
         </form>
         <p className="assistant-footnote">Nothing is ordered until you confirm your basket. For allergies, please ask your server.</p>
       </div>

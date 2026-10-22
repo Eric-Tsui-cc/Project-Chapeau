@@ -124,7 +124,14 @@ function StaffApp() {
 // A dedicated public entry point; staff session checks only run in StaffApp.
 function App() {
   const path = window.location.pathname.replace(/\/+$/, '')
-  return path === '/menu' ? <CustomerMenuPage /> : <StaffApp />
+  const isCustomerPage = path === '/menu'
+
+  useEffect(() => {
+    const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]')
+    if (favicon) favicon.href = isCustomerPage ? '/favicon-customer.svg' : '/favicon.svg'
+  }, [isCustomerPage])
+
+  return isCustomerPage ? <CustomerMenuPage /> : <StaffApp />
 }
 
 export default App
