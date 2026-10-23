@@ -1,6 +1,6 @@
 <div align="center">
 
-![Chapeau](https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12&height=200&section=header&text=Chapeau&fontSize=60&fontColor=fff&animation=fadeIn&desc=A%20restaurant%20POS%2C%20rebuilt%20from%20an%20unfinished%20course%20project&descAlignY=68&descSize=18)
+![Chapeau](https://capsule-render.vercel.app/api?type=waving&color=0:244C3A,100:71977A&height=190&section=header&text=Chapeau&fontSize=56&fontColor=FFFFFF&fontAlignY=38&desc=From%20WinForms%20to%20a%20modern%20restaurant%20web%20app&descSize=16&descAlignY=60)
 
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)](https://dotnet.microsoft.com/)
 [![React](https://img.shields.io/badge/React-19-61DAFB)](https://react.dev/)
@@ -11,7 +11,7 @@
 </div>
 
 Chapeau started as an unfinished five-person university project: a WinForms restaurant POS connected to SQL Server. After the course ended I rebuilt it on my own as a web platform, and used it to work through the problems the old version never solved. The original WinForms code is still in the repo (`ChapeauUI/`, `ChapeauService/`, `ChapeauDAL/`, `ChapeauModel/`), so everything old and new is in one place.
-
+## 🚀 Quick Start
 - **Live deployment:** [Guest menu](http://149.118.68.3/menu) · [Staff sign in](http://149.118.68.3/staff/login) — hosted on an Oracle Cloud VM with Docker Compose
 - **Offline demo:** `cd frontend && npm install && npm run demo`, then open http://localhost:5173/menu — no backend, the API calls are mocked in the browser
 
@@ -138,7 +138,19 @@ The rebuild combines a change of platform with changes to the model and business
 
 The old `Order` class held both order-level fields, such as the table and employee, and line-level fields, such as `MenuItemId`, quantity and comments. The rebuild separates these responsibilities: `Order` holds the table, responsible employee, creation time and payment state, while its `Items` collection contains an `OrderItem` for each line.
 
-![Order model before and after: one mixed Order class becomes Order and OrderItem](docs/images/order-model-before-after.png)
+**Before — order and line fields in one class**
+
+![Legacy Order model containing both order and dish fields](docs/images/order-model-before.png)
+
+**After — the order header**
+
+![Rebuilt Order model containing order-level fields and an Items collection](docs/images/order-header-after.png)
+
+**After — each item in the order**
+
+![OrderItem model with quantity, preparation status and a captured unit price](docs/images/order-item-after.png)
+
+[View the side-by-side comparison](docs/images/order-model-before-after.png)
 
 Each item now has its own preparation status, note and `UnitPrice` captured when it is added. This lets the kitchen and bar handle items independently and lets checkout calculate the subtotal from the prices recorded at ordering time, even if the menu price later changes.
 
@@ -146,7 +158,15 @@ Each item now has its own preparation status, note and `UnitPrice` captured when
 
 The old `OrderDao` loads all order records with a SQL string and manually converts each `DataRow` into an `Order`. The new kitchen endpoint uses EF Core to load related entities and filter by preparation status and kitchen category, ordered by the time each item was placed.
 
-![Data access before and after: ADO.NET SQL and DataRow mapping compared with an asynchronous EF Core kitchen query](docs/images/data-access-before-after.png)
+**Before — SQL and manual row mapping**
+
+![ADO.NET order query and column-by-column DataRow mapping](docs/images/data-access-before.png)
+
+**After — an asynchronous kitchen queue query**
+
+![EF Core query with related entities, status and category filters, and time ordering](docs/images/data-access-after.png)
+
+[View the side-by-side comparison](docs/images/data-access-before-after.png)
 
 These queries serve different scopes: the old example is a general order overview, while the new one is a kitchen queue. The technical change is from synchronous ADO.NET calls and column-by-column entity mapping to `Include`, LINQ filtering, `AsNoTracking` and `ToListAsync`. The API still explicitly maps the resulting entities to response DTOs; database entities and HTTP responses have different responsibilities.
 
@@ -154,7 +174,15 @@ These queries serve different scopes: the old example is a general order overvie
 
 In the old update path, the service delegates to a DAO that writes the supplied status to SQL Server. The new kitchen endpoint checks that the item exists, belongs to a kitchen category and can move from its current state to the requested state before saving with EF Core.
 
-![Status updates before and after: a service and SQL update compared with server-side kitchen transition validation](docs/images/status-update-before-after.png)
+**Before — delegate and save the supplied status**
+
+![Legacy service delegates to a DAO that updates the supplied order status](docs/images/status-update-before.png)
+
+**After — check kitchen ownership and the allowed transition**
+
+![Kitchen status update excerpt showing category checks, repeated-status handling, transition validation and saving](docs/images/status-transition-after.png)
+
+[View the full side-by-side comparison](docs/images/status-update-before-after.png) · [Read the complete endpoint](src/Chapeau.Api/Controllers/KitchenController.cs)
 
 The kitchen allows `Running → Preparing → Prepared`. Repeating the current status returns `204` without another change; an unsupported transition returns `409`. Invalid requested statuses return `400`, and missing items or items handled by another station return `404`. The bar has its own endpoint for moving drinks from `Running` to `Prepared`, and waiters mark prepared items as served.
 
@@ -196,17 +224,21 @@ The part I designed myself is the guardrail layer: recipe and allergen data ship
 
 Cost-wise it's about 1,000 prompt tokens per question, well under a tenth of a cent on Flash-Lite and within the free tier, which is also why I chose a full-menu prompt over a retrieval tool for a 40-item menu.
 
-## 🧭 Scope and what's next
+## 🧭 Project context and development
 
-Things I deliberately left out, and what I'd do next:
+This is a personal learning and portfolio project, not a system intended to run a real restaurant. I returned to an unfinished course project so I could work with a familiar business problem while learning how to build and deploy a web application. The focus is backend development: modelling orders, enforcing business rules, designing HTTP endpoints and managing data. The React frontend makes those workflows usable and gives visitors a way to try them.
 
-- Payment is recorded (method, amount, tip), not processed through a payment provider.
-- Guests submit their first order only; additions go through a waiter.
-- Recipe data is demo data, and the JSON says so in its own `dataStatus` field. Moving it into menu table columns via a migration is the first item on the roadmap.
-- Assistant recommendations are rejected outright if the model returns an unknown menu item; dropping the bad ID and keeping the reply would be the more graceful behaviour.
-- Login is a 4-digit PIN without rate limiting. That's a known trade-off for an internal-restaurant demo, and it's the first thing that would need to change for any public deployment.
-- Kitchen and bar queues poll the API every 15 seconds; the table overview refreshes on entry or on demand. SignalR could provide live updates in a future version.
+I started the rebuild in July 2026 and worked on it intermittently over roughly four months. The milestones below follow the repository's commit history; this was not four months of full-time development:
+
+- **July–August 2026:** rebuilt the entities and EF Core data layer, added migrations and demo data, and implemented the first table, menu and login endpoints.
+- **September 2026:** completed order creation, item preparation, serving and checkout, including stored order-item prices; started the React frontend at the end of the month.
+- **October 2026:** connected the staff screens, added cookie authentication, role checks and CSRF protection, then implemented customer ordering and the Gemini assistant.
+- **Late October 2026:** added PostgreSQL migrations and Docker deployment, put the application on an Oracle Cloud VM, and prepared the demos and before-and-after comparisons in this README.
+
+The menu, employees and recipe details are demonstration data. Ingredient and allergen information is illustrative, not a verified restaurant recipe catalogue. The checkout flow records a payment received by staff; it does not charge a card or connect to a payment provider.
 
 ## 🙏 Credits
 
-The original course project was built by a five-person team: Puok, Can, Laith, Bogdan and Bader. Their WinForms code is preserved untouched in this repository. The rebuild, the web API, the frontend, and the deployment are my work, with AI coding agents used for parts of the UI layer and assistant plumbing as noted above.
+The original course project was built by a five-person team: Puok, Can, Laith, Bogdan and Bader. Their WinForms code is preserved untouched in this repository. The rebuild, the web API, the frontend, and the deployment are my work, Codex and OpenCode used for parts of the UI layer and assistant plumbing as noted above.
+
+![Footer](https://capsule-render.vercel.app/api?type=waving&color=0:244C3A,100:71977A&height=90&section=footer)
