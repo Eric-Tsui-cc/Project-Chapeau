@@ -5,6 +5,7 @@ import { getMenuDetails } from '../lib/menu-details'
 import { cartTotalCents, formatMoney, loadSavedBasket, saveBasket, saveCartLine, setCartQuantity } from '../lib/customer-cart'
 import type { CartLine, CustomerMenuItem } from '../lib/customer-cart'
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router'
 import { submitCustomerOrder } from '../api/customer-orders'
 import type { CustomerConfirmation } from '../api/customer-orders'
 import './CustomerMenuPage.css'
@@ -119,10 +120,10 @@ function CustomerMenuPage() {
   return (
     <div className="customer-menu">
       <header className="customer-header">
-        <a className="customer-brand" href="/menu">CHAPEAU<span>Good food. Good company.</span></a>
+        <Link className="customer-brand" to="/menu">CHAPEAU<span>Good food. Good company.</span></Link>
                 <div className="customer-header-actions">
           <button className="customer-control" type="button" onClick={() => setDialog({ kind: 'basket' })} aria-label={confirmation ? `Order #${confirmation.orderId}, view details` : `Basket (${basketCount}), view`}>{confirmation ? `Order #${confirmation.orderId}` : `Basket (${basketCount})`}</button>
-          <a className="customer-staff-link" href="/">Staff sign in</a>
+          <Link className="customer-staff-link" to="/staff/login">Staff sign in</Link>
         </div>
       </header>
       <main className="customer-main">

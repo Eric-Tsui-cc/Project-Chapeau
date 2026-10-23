@@ -1,5 +1,6 @@
 import { apiFetch } from '../api/client'
 import { useEffect, useRef, useState } from 'react'
+import { Navigate } from 'react-router'
 import type { Employee } from '../types/Employee'
 import type { Table } from '../types/Table'
 import AppShell from '../components/AppShell'
@@ -17,7 +18,11 @@ type OrderPageProps = {
   table: Table
   employee: Employee
   onBack: () => void
+  view: OrderView
+  onViewChange: (view: OrderView) => void
 }
+
+export type OrderView = 'order' | 'items' | 'checkout'
 
 const statusLabels: Record<OrderDetails['items'][number]['status'], string> = {
   Running: 'Pending',
@@ -26,13 +31,11 @@ const statusLabels: Record<OrderDetails['items'][number]['status'], string> = {
   Served: 'Served',
 }
 
-function OrderPage({ table, employee, onBack }: OrderPageProps) {
+function OrderPage({ table, employee, onBack, view, onViewChange }: OrderPageProps) {
   const [state, setState] = useState<PageState>({ kind: 'loading' })
   const [reloadCount, setReloadCount] = useState(0)
   const [isCreating, setIsCreating] = useState(false)
   const creating = useRef(false)
-  const [showMenu, setShowMenu] = useState(false)
-  const [showCheckout, setShowCheckout] = useState(false)
   const [notice, setNotice] = useState('')
   const [servingId, setServingId] = useState<number | null>(null)
   const [serveError, setServeError] = useState<string | null>(null)
@@ -71,7 +74,7 @@ function OrderPage({ table, employee, onBack }: OrderPageProps) {
       clearTimeout(timeout)
       controller.abort()
     }
-  }, [table.id, reloadCount])
+  }, [table.id, reloadCount, view])
 
   function refreshOrder() {
     setServeError(null)
@@ -137,14 +140,18 @@ function OrderPage({ table, employee, onBack }: OrderPageProps) {
     }
   }
 
-  if (showCheckout && state.kind === 'ready') {
-    return <CheckoutPage orderId={state.order.id} tableNumber={table.number} onBack={() => { setShowCheckout(false); refreshOrder() }} onDone={onBack} />
+  if (view !== 'order' && (state.kind === 'empty' || (state.kind === 'ready' && state.order.isPaid))) {
+    return <Navigate to={`/staff/tables/${table.id}`} replace />
   }
 
-  if (showMenu && state.kind === 'ready') {
+  if (view === 'checkout' && state.kind === 'ready') {
+    return <CheckoutPage orderId={state.order.id} tableNumber={table.number} onBack={() => { onViewChange('order'); refreshOrder() }} onDone={onBack} />
+  }
+
+  if (view === 'items' && state.kind === 'ready') {
     return <AddItemPage orderId={state.order.id} tableNumber={table.number}
-      onBack={() => { setShowMenu(false); refreshOrder() }}
-      onAdded={() => { setShowMenu(false); setNotice('Item added to the order.'); refreshOrder() }} />
+      onBack={() => { onViewChange('order'); refreshOrder() }}
+      onAdded={() => { onViewChange('order'); setNotice('Item added to the order.'); refreshOrder() }} />
   }
 
   const busy = isCreating || servingId !== null || state.kind === 'loading'
@@ -178,8 +185,8 @@ function OrderPage({ table, employee, onBack }: OrderPageProps) {
           </div>
           <p className="order-count-line">{itemCount} {itemCount === 1 ? 'item' : 'items'} on this order.</p>
           {!state.order.isPaid && <div className="order-toolbar">
-            <button className="button primary" type="button" disabled={servingId !== null} onClick={() => { setNotice(''); setShowMenu(true) }}>+ Add item</button>
-            <button className="button success" type="button" disabled={servingId !== null || state.order.items.length === 0 || !allServed} onClick={() => { setNotice(''); setShowCheckout(true) }}>Checkout</button>
+            <button className="button primary" type="button" disabled={servingId !== null} onClick={() => { setNotice(''); onViewChange('items') }}>+ Add item</button>
+            <button className="button success" type="button" disabled={servingId !== null || state.order.items.length === 0 || !allServed} onClick={() => { setNotice(''); onViewChange('checkout') }}>Checkout</button>
           </div>}
           {!state.order.isPaid && !allServed && <p className="checkout-hint">ⓘ Serve all items to enable checkout.</p>}
           {state.order.items.length === 0 ? <p className="menu-empty">No items have been added yet.</p> : (

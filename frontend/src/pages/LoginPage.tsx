@@ -1,5 +1,6 @@
 import { csrfFetch } from '../api/client'
 import { useRef, useState } from 'react'
+import { Link } from 'react-router'
 import type { SubmitEvent } from 'react'
 import type { Employee } from '../types/Employee'
 
@@ -97,7 +98,7 @@ function LoginPage({ onLogin, notice = '' }: LoginPageProps) {
               {isSubmitting ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
-          <p className="login-hint"><a href="/menu">Browse the menu</a></p>
+          <p className="login-hint"><Link to="/menu">Browse the menu</Link></p>
           {isDemo && <p className="login-hint"><span className="demo-badge">DEMO</span> Demo PINs: 1234 · 3456 · 4567</p>}
         </div>
       </section>

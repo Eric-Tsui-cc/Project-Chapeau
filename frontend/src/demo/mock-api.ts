@@ -151,6 +151,12 @@ const barQueue: QueueItem[] = [
 export function installDemoApi() {
   const originalFetch = window.fetch
   let currentEmployee: Employee | null = null
+  // Only demo identities use sessionStorage. Real sign-in still uses HttpOnly cookies.
+  const demoSessionKey = 'chapeau-demo-employee'
+  try {
+    const employeeId = Number(sessionStorage.getItem(demoSessionKey))
+    currentEmployee = employees.find((employee) => employee.id === employeeId) ?? null
+  } catch { /* Demo sign-in can still work when browser storage is unavailable. */ }
 
   const respond = (status: number, body: unknown) =>
     new Response(body === undefined ? null : JSON.stringify(body), {
@@ -204,6 +210,7 @@ export function installDemoApi() {
       const employee = employees.find((candidate) => candidate.id === (roleByPin[body.pin] ?? 1)) ?? null
       if (!employee) return respond(404, { message: 'Unknown PIN' })
       currentEmployee = employee
+      try { sessionStorage.setItem(demoSessionKey, String(employee.id)) } catch { /* Storage is optional in demo mode. */ }
       return respond(200, employee)
     }
 
@@ -212,6 +219,7 @@ export function installDemoApi() {
     }
     if (path === '/api/auth/logout' && method === 'POST') {
       currentEmployee = null
+      try { sessionStorage.removeItem(demoSessionKey) } catch { /* Storage is optional in demo mode. */ }
       return respond(204, undefined)
     }
 
