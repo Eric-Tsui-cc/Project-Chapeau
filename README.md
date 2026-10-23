@@ -4,7 +4,7 @@
 
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)](https://dotnet.microsoft.com/)
 [![React](https://img.shields.io/badge/React-19-61DAFB)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6)](https://www.typescriptlang.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED)](https://www.docker.com/)
 
@@ -12,28 +12,55 @@
 
 Chapeau started as an unfinished five-person university project: a WinForms restaurant POS connected to SQL Server. After the course ended I rebuilt it on my own as a web platform, and used it to work through the problems the old version never solved. The original WinForms code is still in the repo (`ChapeauUI/`, `ChapeauService/`, `ChapeauDAL/`, `ChapeauModel/`), so everything old and new is in one place.
 
-- **Live deployment:** http://149.118.68.3 (runs from my own server via Docker Compose; it's online when my machine is)
+- **Live deployment:** [Guest menu](http://149.118.68.3/menu) · [Staff sign in](http://149.118.68.3/staff/login) — hosted on an Oracle Cloud VM with Docker Compose
 - **Offline demo:** `cd frontend && npm install && npm run demo`, then open http://localhost:5173/menu — no backend, the API calls are mocked in the browser
 
-Demo PINs (same on both):
-
-| PIN | Role |
-| --- | --- |
-| 1234 | Waiter |
-| 3456 | Chef |
-| 4567 | Bartender |
+> [!TIP]
+> ### Demo sign-in PINs
+>
+> **Waiter — `1234` or `2345`**
+>
+> **Chef — `3456`**
+>
+> **Bartender — `4567`**
+>
+> Enter a PIN on the staff sign-in page to open that role's workspace. Guests can browse the menu without signing in.
 
 ## 📸 What it looks like
 
-| | |
-| --- | --- |
-| ![Guest menu](docs/images/customer-menu.png) | ![Waiter floor view](docs/images/waiter-tables.png) |
-| ![Kitchen queue](docs/images/kitchen.png) | ![Ask Chapeau assistant](docs/images/customer-assistant.png) |
+### Guest experience
 
-<!-- TODO: 录一张核心流程 GIF（开台 → 点菜 → 厨房/吧台 → 结账），10 秒内、5MB 以下，放 docs/images/walkthrough.gif 后取消注释 -->
-<!-- ![Walkthrough](docs/images/walkthrough.gif) -->
+Browse the public menu at `/menu`, add dishes with per-line notes, and submit the first order to a table opened by a waiter. Ask Chapeau offers menu suggestions alongside the basket.
 
-Guests order from a public page at `/menu`: browse the menu, add items to a basket with per-line notes, enter their table number, and the order lands in the normal staff flow. Waiters open tables and take orders, the kitchen and bar each get their own queue, and once everything on an order is served the waiter can check it out, which frees the table.
+![Guest workflow: browsing the menu, adding dishes to the basket and submitting an order](docs/images/customer%20work-flow.gif)
+
+<details>
+<summary>View menu and assistant screenshots</summary>
+
+<p>
+  <a href="docs/images/customer-menu.png"><img src="docs/images/customer-menu.png" alt="Guest menu with dish categories and availability" width="49%" /></a>
+  <a href="docs/images/customer-assistant.png"><img src="docs/images/customer-assistant.png" alt="Ask Chapeau chat with menu recommendations" width="49%" /></a>
+</p>
+
+</details>
+
+### Staff workflow
+
+Waiters manage tables and orders; the kitchen and bar have separate preparation queues. Once every item is served, checkout records the payment and frees the table.
+
+![Staff workflow: managing an order through preparation, service and checkout](docs/images/employee%20work-flow.gif)
+
+<details>
+<summary>View table overview and kitchen screenshots</summary>
+
+<p>
+  <a href="docs/images/waiter-tables.png"><img src="docs/images/waiter-tables.png" alt="Waiter floor overview with free and occupied tables" width="49%" /></a>
+  <a href="docs/images/kitchen.png"><img src="docs/images/kitchen.png" alt="Kitchen queue with item statuses and waiting times" width="49%" /></a>
+</p>
+
+</details>
+
+<sub>Click an animation or screenshot to view it at full size.</sub>
 
 One thing worth trying on the live site: ask the assistant "I'm allergic to nuts — which dessert can I have?" It answers from the ingredient data and still tells you to confirm with your server before ordering.
 
@@ -90,14 +117,14 @@ Project-Chapeau/
 └── 📄 Dockerfile.frontend
 ```
 
-What to notice: in the old version the folder names say "layers" but the boundary shows up nowhere in the code, and every domain concept is one flat file. The rebuild separates entities, data access, the API surface and schema migrations, and pairs the API with a real frontend. The four old folders are still in the repo root, so the contrast sits one scroll away.
+The old version already separated UI, services, data access and models, but some UI code bypassed the service layer and called a DAO directly. The rebuild separates entities, data access, HTTP endpoints and schema migrations, and adds a React frontend. Business checks currently live mainly in controllers; a separate application-service layer would be a further improvement.
 
 ## 📜 What the old version looked like
 
 The course version had the standard UI / Service / DAL / Model folders and even used parameterised SQL, so it wasn't missing architecture on paper. The problems were in the details:
 
 - The UI sometimes bypassed the service layer when it was convenient.
-- The `Order` class mixed order-level and dish-level fields, so an order had one status for the whole table and every dish row carried no price of its own.
+- The `Order` class mixed order-level and dish-level fields, without a separate order header and collection of items. Each record held a status but no captured unit price.
 - There was no way to create an order end to end, no checkout implementation, and `BillId` sat on the model without anything ever using it.
 - The shared order screen had a combo box where any status could be set on any row.
 
@@ -105,40 +132,45 @@ Full comparison with quoted code: [docs/refactoring.md](docs/refactoring.md).
 
 ## 🔧 What I changed and why
 
-The biggest change was the data model. `Order` is now just the order: table, employee, created time, paid flag. Each dish is an `OrderItem` with its own count, note, preparation status, and the unit price at the time it was ordered. That single split is what makes the rest possible: the kitchen and bar can work items independently, a menu price change doesn't affect existing bills, and checkout totals come from stored prices instead of current menu prices.
+The rebuild combines a change of platform with changes to the model and business rules. These three examples show what changed in the code; the checkout flow below was added to complete the unfinished system.
 
-| Old (course project) | Rebuild |
-| --- | --- |
-| <!-- TODO: IDE 并排截图，左侧 ChapeauModel/Order.cs --> ![Order model before](docs/images/code-order-before.png) | <!-- TODO: 右侧 src/Chapeau.Core/Entities/Order.cs + OrderItem.cs --> ![Order model after](docs/images/code-order-after.png) |
+### 1. Separate an order from its individual items
 
-Kitchen and bar status changes are validated on the server. The kitchen can move an item from Running to Preparing and from Preparing to Prepared, nothing else, and anything outside that gets a 409 instead of a silent overwrite. Which queue an item appears in is decided by the menu item's category.
+The old `Order` class held both order-level fields, such as the table and employee, and line-level fields, such as `MenuItemId`, quantity and comments. The rebuild separates these responsibilities: `Order` holds the table, responsible employee, creation time and payment state, while its `Items` collection contains an `OrderItem` for each line.
 
-| Old (course project) | Rebuild |
-| --- | --- |
-| <!-- TODO: 左侧 ChapeauUI/Orders.cs 的状态下拉 --> ![Status handling before](docs/images/code-status-before.png) | <!-- TODO: 右侧 src/Chapeau.Api/Controllers/KitchenController.cs 的转换校验 --> ![Status handling after](docs/images/code-status-after.png) |
+![Order model before and after: one mixed Order class becomes Order and OrderItem](docs/images/order-model-before-after.png)
 
-Checkout closes the loop: the waiter can only bill an order once every item is served, the total is computed from the stored unit prices, and saving the bill, marking the order paid, and freeing the table all happen in one `SaveChangesAsync`.
+Each item now has its own preparation status, note and `UnitPrice` captured when it is added. This lets the kitchen and bar handle items independently and lets checkout calculate the subtotal from the prices recorded at ordering time, even if the menu price later changes.
+
+### 2. Replace ADO.NET mapping with asynchronous EF Core queries
+
+The old `OrderDao` loads all order records with a SQL string and manually converts each `DataRow` into an `Order`. The new kitchen endpoint uses EF Core to load related entities and filter by preparation status and kitchen category, ordered by the time each item was placed.
+
+![Data access before and after: ADO.NET SQL and DataRow mapping compared with an asynchronous EF Core kitchen query](docs/images/data-access-before-after.png)
+
+These queries serve different scopes: the old example is a general order overview, while the new one is a kitchen queue. The technical change is from synchronous ADO.NET calls and column-by-column entity mapping to `Include`, LINQ filtering, `AsNoTracking` and `ToListAsync`. The API still explicitly maps the resulting entities to response DTOs; database entities and HTTP responses have different responsibilities.
+
+### 3. Validate status transitions before saving
+
+In the old update path, the service delegates to a DAO that writes the supplied status to SQL Server. The new kitchen endpoint checks that the item exists, belongs to a kitchen category and can move from its current state to the requested state before saving with EF Core.
+
+![Status updates before and after: a service and SQL update compared with server-side kitchen transition validation](docs/images/status-update-before-after.png)
+
+The kitchen allows `Running → Preparing → Prepared`. Repeating the current status returns `204` without another change; an unsupported transition returns `409`. Invalid requested statuses return `400`, and missing items or items handled by another station return `404`. The bar has its own endpoint for moving drinks from `Running` to `Prepared`, and waiters mark prepared items as served.
+
+### Completing the workflow
+
+Checkout is an addition to the unfinished course project, rather than a rewrite of an existing checkout implementation. An order must contain items, remain unpaid and have every item served before it can be billed. The default amount comes from stored unit prices, with an optional amount override. Saving the bill, marking the order paid and freeing the table happen in one `SaveChangesAsync` call. This records a payment received by staff; it does not process a payment through a provider.
 
 Guest orders handle failure honestly. If the API answers, the guest sees submitted or rejected with the reason. If the connection drops before an answer, the frontend counts the submission as uncertain, tells the guest it can't confirm whether the order arrived, and keeps the basket rather than auto-resending and risking a double order.
 
 ## 🏗️ Architecture
 
-```mermaid
-flowchart TB
-    S[Staff SPA - React 19]
-    G[Guest /menu + assistant]
-    N[Nginx - static SPA + /api proxy]
-    A[ASP.NET Core 8 API - cookie auth, antiforgery, rate limits]
-    P[(PostgreSQL)]
-    M[Gemini Flash-Lite]
-    S --> N
-    G --> N
-    N --> A
-    A --> P
-    A <-.menu JSON in prompt.-> M
-```
+![Deployment architecture: a React browser client connects to Nginx, the .NET 8 API and PostgreSQL run in Docker Compose on an Oracle Cloud VM, and the API calls Gemini over HTTPS](docs/images/architecture.svg)
 
-Docker Compose runs PostgreSQL, the API, and the Nginx-served frontend. Development uses SQLite and switches to Postgres through a `DatabaseProvider` setting; migrations live in `Chapeau.Migrations.Postgres`. Guest and assistant endpoints are anonymous but rate-limited; everything staff-facing requires a role.
+[Editable Excalidraw source](docs/images/Architecture.excalidraw)
+
+Docker Compose runs PostgreSQL, the API, and the Nginx-served frontend. Development uses SQLite and switches to Postgres through a `DatabaseProvider` setting. SQLite migrations live in `Chapeau.Infrastructure`; PostgreSQL migrations live in `Chapeau.Migrations.Postgres`. Guest menu, ordering and assistant endpoints allow anonymous access; the assistant has a request rate limit. Staff operations require authentication, with role checks on waiter, kitchen and bar endpoints.
 
 ## 🚀 Running it
 
@@ -173,7 +205,7 @@ Things I deliberately left out, and what I'd do next:
 - Recipe data is demo data, and the JSON says so in its own `dataStatus` field. Moving it into menu table columns via a migration is the first item on the roadmap.
 - Assistant recommendations are rejected outright if the model returns an unknown menu item; dropping the bad ID and keeping the reply would be the more graceful behaviour.
 - Login is a 4-digit PIN without rate limiting. That's a known trade-off for an internal-restaurant demo, and it's the first thing that would need to change for any public deployment.
-- Kitchen and table views poll the API; SignalR would fit naturally here.
+- Kitchen and bar queues poll the API every 15 seconds; the table overview refreshes on entry or on demand. SignalR could provide live updates in a future version.
 
 ## 🙏 Credits
 
