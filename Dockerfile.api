@@ -13,6 +13,8 @@ RUN dotnet restore src/Chapeau.Api/Chapeau.Api.csproj
 
 COPY src/ src/
 
+COPY data/menu-details.json data/menu-details.json
+
 RUN dotnet publish src/Chapeau.Api/Chapeau.Api.csproj \
     -c Release \
     -o /app/publish \

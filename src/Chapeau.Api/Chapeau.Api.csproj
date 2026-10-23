@@ -19,5 +19,12 @@
     <ProjectReference Include="..\Chapeau.Infrastructure\Chapeau.Infrastructure.csproj" />
     <ProjectReference Include="..\Chapeau.Migrations.Postgres\Chapeau.Migrations.Postgres.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="..\..\data\menu-details.json"
+             Link="Data\menu-details.json"
+             CopyToOutputDirectory="PreserveNewest"
+             CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
 
 </Project>
