@@ -1,5 +1,7 @@
 import { CustomerBasketDialog, CustomerItemDialog } from '../components/CustomerCartDialogs'
 import { CustomerAssistant } from '../components/CustomerAssistant'
+import { CustomerAllergens } from '../components/CustomerMenuDetails'
+import { getMenuDetails } from '../lib/menu-details'
 import { cartTotalCents, formatMoney, loadSavedBasket, saveBasket, saveCartLine, setCartQuantity } from '../lib/customer-cart'
 import type { CartLine, CustomerMenuItem } from '../lib/customer-cart'
 import { useEffect, useRef, useState } from 'react'
@@ -164,19 +166,26 @@ function CustomerMenuPage() {
               <section className="customer-section" key={group} aria-labelledby={`category-${group}`}>
                 <h2 id={`category-${group}`}>{categoryNames[group] ?? group}</h2>
                 <ul className="customer-dishes">
-                  {visible.filter((item) => item.category === group).map((item) => (
+                  {visible.filter((item) => item.category === group).map((item) => {
+                    const details = getMenuDetails(item)
+                    return (
                     <li key={item.id} className={`customer-dish${item.isAvailable ? '' : ' is-sold-out'}`}>
                       <div className="customer-dish-top"><h3>{item.name}</h3><span className="customer-price">${item.price.toFixed(2)}</span></div>
+                      {details && <p className="customer-dish-description">{details.description}</p>}
                       <div className="customer-dish-meta"><span>{item.card}</span>{!item.isAvailable && <span className="customer-sold-out">Sold out</span>}</div>
-                      {item.isAvailable && <button className="customer-control customer-add" type="button" disabled={basketLocked} aria-label={`Add ${item.name} to basket`} onClick={() => setDialog({ kind: 'item', item })}>Add</button>}
+                      {details && <CustomerAllergens allergens={details.allergens} />}
+                      <div className="customer-dish-actions">
+                        {item.isAvailable && <button className="customer-control customer-add" type="button" disabled={basketLocked} aria-label={`Add ${item.name} to basket`} onClick={() => setDialog({ kind: 'item', item })}>Add</button>}
+                      </div>
                     </li>
-                  ))}
+                    )
+                  })}
                 </ul>
               </section>
             ))}
           </>
         )}
-        <footer className="customer-footer">Questions about ingredients or dietary needs? Please speak to your server.</footer>
+        <footer className="customer-footer">Recipe details are illustrative for this demo. Please speak to your server about ingredients, allergies and cross-contact.</footer>
       </main>
       {(basketCount > 0 || confirmation) && <div className="customer-basket-dock"><button className="customer-primary" type="button" onClick={() => setDialog({ kind: 'basket' })}>{confirmation ? <span>View order confirmation · #{confirmation.orderId}</span> : <><span>View basket · {basketCount} {basketCount === 1 ? 'item' : 'items'}</span><span>{formatMoney(cartTotalCents(basket))}</span></>}</button></div>}
       <button type="button" className={`customer-assistant-launcher${basketCount > 0 || confirmation ? ' has-basket' : ''}`} aria-haspopup="dialog" aria-expanded={assistantOpen} onClick={() => setAssistantOpen(true)}>
@@ -196,7 +205,7 @@ function CustomerMenuPage() {
           return error instanceof Error ? error.message : 'Unable to add this item. Please try the menu.'
         }
       }} />
-      {dialog?.kind === 'item' && <CustomerItemDialog key={dialog.line?.key ?? dialog.item.id} item={dialog.item} line={dialog.line} onClose={() => setDialog(dialog.line ? { kind: 'basket' } : null)} onSave={saveItem} />}
+      {dialog?.kind === 'item' && <CustomerItemDialog key={dialog.line?.key ?? dialog.item.id} item={dialog.item} line={dialog.line} canOrder={!basketLocked && dialog.item.isAvailable} onClose={() => setDialog(dialog.line ? { kind: 'basket' } : null)} onSave={saveItem} />}
       {dialog?.kind === 'basket' && <CustomerBasketDialog lines={basket} onClose={() => { if (!submitting) setDialog(null) }}
         submission={{ tableNumber, busy: submitting, blocked: submissionBlocked, error: submitError, confirmation,
           onTableNumber: (value) => { if (!basketLocked) { setTableNumber(value); setSubmitError(null) } },

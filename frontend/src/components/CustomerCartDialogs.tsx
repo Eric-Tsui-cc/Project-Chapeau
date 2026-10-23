@@ -3,6 +3,7 @@ import type { ReactNode, SubmitEvent } from 'react'
 import { cartTotalCents, formatMoney, MAX_QUANTITY } from '../lib/customer-cart'
 import type { CartLine, CustomerMenuItem } from '../lib/customer-cart'
 import type { CustomerConfirmation } from '../api/customer-orders'
+import { CustomerMenuDetails } from './CustomerMenuDetails'
 
 function CustomerDialog({ title, onClose, children, busy = false }: { title: string; onClose: () => void; children: ReactNode; busy?: boolean }) {
   const dialog = useRef<HTMLDialogElement>(null)
@@ -27,9 +28,10 @@ function CustomerDialog({ title, onClose, children, busy = false }: { title: str
   )
 }
 
-export function CustomerItemDialog({ item, line, onClose, onSave }: {
+export function CustomerItemDialog({ item, line, canOrder = true, onClose, onSave }: {
   item: CustomerMenuItem
   line?: CartLine
+  canOrder?: boolean
   onClose: () => void
   onSave: (quantity: number, comment: string) => string | null
 }) {
@@ -41,12 +43,16 @@ export function CustomerItemDialog({ item, line, onClose, onSave }: {
   const numericQuantity = Number(quantity)
   function submit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (!canOrder) return
     setError(onSave(numericQuantity, comment))
   }
   return (
-    <CustomerDialog title={line ? 'Edit basket item' : 'Add to basket'} onClose={onClose}>
+    <CustomerDialog title={line ? 'Edit basket item' : 'Dish details'} onClose={onClose}>
       <form className="customer-item-form" onSubmit={submit}>
         <div className="customer-dish-top"><h3>{item.name}</h3><strong>{formatMoney(Math.round(item.price * 100))} each</strong></div>
+        <CustomerMenuDetails item={item} />
+        {!canOrder && <p className="customer-cart-error">{item.isAvailable ? 'Please ask your server to check your order or add more items.' : 'This item is currently sold out.'}</p>}
+        <fieldset className="customer-order-fields" disabled={!canOrder}>
         <label htmlFor={quantityId}>Quantity</label>
         <div className="customer-quantity">
           <button className="customer-control" type="button" aria-label="Decrease quantity" disabled={numericQuantity <= 1} onClick={() => setQuantity(String(Math.max(1, Math.trunc(numericQuantity || 1) - 1)))}>−</button>
@@ -57,6 +63,7 @@ export function CustomerItemDialog({ item, line, onClose, onSave }: {
         <textarea id={commentId} rows={3} value={comment} onChange={(event) => { setComment(event.target.value); setError(null) }} placeholder="e.g. No onion" />
         {error && <p className="customer-cart-error" role="alert">{error}</p>}
         <button className="customer-primary" type="submit">{line ? 'Save changes' : 'Add to basket'}</button>
+        </fieldset>
       </form>
     </CustomerDialog>
   )

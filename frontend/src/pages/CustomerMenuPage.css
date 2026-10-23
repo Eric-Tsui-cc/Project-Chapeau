@@ -21,7 +21,14 @@
 .customer-section { margin: 24px 0 32px; }
 .customer-section h2 { font-family: Georgia, serif; font-size: 28px; font-weight: 500; margin-bottom: 16px; }
 .customer-dishes { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.customer-dish { min-width: 0; padding: 22px; border: 1px solid var(--customer-line); border-radius: 12px; background: white; }
+.customer-dish { display: flex; flex-direction: column; min-width: 0; padding: 22px; border: 1px solid var(--customer-line); border-radius: 12px; background: white; }
+.customer-dish-description { margin-top: 10px; color: #526353; font-size: 14px; line-height: 1.6; }
+.customer-dish-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 18px; }
+.customer-allergens { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 8px; margin-top: 12px; font-size: 12px; line-height: 1.5; }
+.customer-allergens-label { color: #704c2b; font-weight: 700; }
+.customer-allergens ul { display: flex; flex-wrap: wrap; gap: 5px; list-style: none; margin: 0; padding: 0; }
+.customer-allergens li { padding: 2px 8px; border: 1px solid #e6d6bd; border-radius: 6px; background: #f8f0e3; color: #704c2b; font-weight: 600; }
+.customer-allergens-unknown { color: #64705f; }
 .customer-dish-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
 .customer-dish h3 { font-size: 18px; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
 .customer-price { white-space: nowrap; color: #203b2c; font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -35,7 +42,7 @@
 /* Customer basket */
 .customer-menu .customer-main { padding-bottom: 110px; }
 .customer-header-actions { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 12px; }
-.customer-menu .customer-add { margin-top: 18px; padding: 8px 20px; }
+.customer-menu .customer-add { padding: 8px 20px; }
 .customer-menu .customer-control:disabled { cursor: not-allowed; opacity: .5; }
 .customer-menu .customer-filter-row .customer-control:disabled { background: #eceee9; border-color: #d5d9d1; color: #737a70; opacity: 1; }
 .customer-cart-notice { color: #24553d; min-height: 24px; padding-top: 16px; font-weight: 600; }
@@ -47,6 +54,13 @@
 .customer-dialog h3 { font-size: 19px; overflow-wrap: anywhere; }
 .customer-dialog .customer-dish-top > strong { white-space: nowrap; }
 .customer-item-form { display: flex; flex-direction: column; gap: 16px; }
+.customer-order-fields { display: flex; flex-direction: column; gap: 16px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.customer-item-details { display: grid; gap: 14px; padding: 16px 0; border-top: 1px solid #d6ded2; border-bottom: 1px solid #d6ded2; }
+.customer-item-details h4 { margin: 0 0 6px; color: #203b2c; font-size: 13px; }
+.customer-item-details p { line-height: 1.6; }
+.customer-item-details .customer-allergens { margin-top: 0; }
+.customer-detail-note { font-size: 13px; color: #526353; line-height: 1.6; }
+.customer-detail-notice { padding: 10px 12px; border-radius: 8px; background: #f1f3eb; color: #526353; font-size: 12px; }
 .customer-item-form label { font-weight: 600; }
 .customer-item-form input, .customer-item-form textarea { width: 100%; min-height: 48px; padding: 12px; border: 1px solid #a4b69e; border-radius: 10px; color: #203b2c; background: white; font: inherit; }
 .customer-item-form textarea { resize: vertical; }

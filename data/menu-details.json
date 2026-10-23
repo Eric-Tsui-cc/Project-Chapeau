@@ -1,0 +1,410 @@
+{
+  "dataStatus": "Illustrative recipes for the Chapeau portfolio demo. These details have not been verified against a real kitchen or supplier labels.",
+  "allergenNotice": "Allergen tags describe the demo recipes, not a complete safety assessment. An empty list does not mean allergen-free. Please ask your server about allergies, substitutions and cross-contact before ordering.",
+  "items": [
+    {
+      "menuItemId": 1,
+      "name": "Bruschetta",
+      "description": "Tomato, basil and garlic on crisp sourdough.",
+      "ingredients": "Toasted sourdough topped with ripe tomatoes, fresh basil, garlic and extra virgin olive oil.",
+      "allergens": [
+        "Wheat",
+        "Gluten"
+      ]
+    },
+    {
+      "menuItemId": 2,
+      "name": "Caesar Salad",
+      "description": "Cos lettuce, Parmesan and croutons with creamy Caesar dressing.",
+      "ingredients": "Crisp cos lettuce, shaved Parmesan and sourdough croutons with a creamy dressing made with egg, anchovies, Dijon mustard and lemon.",
+      "allergens": [
+        "Wheat",
+        "Gluten",
+        "Milk",
+        "Egg",
+        "Fish",
+        "Mustard"
+      ]
+    },
+    {
+      "menuItemId": 3,
+      "name": "Soup of the Day",
+      "description": "A comforting potato and leek soup with cream and chives.",
+      "ingredients": "Our demo soup is a velvety potato and leek soup, finished with cream, butter and chives, using vegetable stock made with celery.",
+      "allergens": [
+        "Milk",
+        "Celery"
+      ],
+      "allergenNotes": "The soup recipe can change. Ask your server to confirm today's ingredients and allergens."
+    },
+    {
+      "menuItemId": 4,
+      "name": "Grilled Chicken",
+      "description": "Lemon and rosemary chicken with roast potatoes and salad.",
+      "ingredients": "Lemon and rosemary grilled chicken breast with olive-oil roasted potatoes and a dressed mixed-leaf salad.",
+      "allergens": [],
+      "allergenNotes": "No listed allergens in the illustrative recipe. This is not an allergen-free claim."
+    },
+    {
+      "menuItemId": 5,
+      "name": "Beef Burger",
+      "description": "Beef patty, cheddar and salad in a sesame brioche bun.",
+      "ingredients": "Grilled beef patty, cheddar, lettuce, tomato and pickles in a sesame brioche bun, with house mayonnaise and mustard sauce.",
+      "allergens": [
+        "Wheat",
+        "Gluten",
+        "Milk",
+        "Egg",
+        "Sesame",
+        "Mustard"
+      ]
+    },
+    {
+      "menuItemId": 6,
+      "name": "Fish & Chips",
+      "description": "Crisp beer-battered fish, golden chips and tartare sauce.",
+      "ingredients": "White fish in a crisp wheat-flour and barley-beer batter, served with golden chips, lemon and egg-based tartare sauce with mustard and capers.",
+      "allergens": [
+        "Fish",
+        "Wheat",
+        "Barley",
+        "Gluten",
+        "Egg",
+        "Mustard"
+      ],
+      "allergenNotes": "Ask staff about shared fryers and the fish species used."
+    },
+    {
+      "menuItemId": 7,
+      "name": "Vegetarian Pasta",
+      "description": "Penne with roasted vegetables, tomato, basil and vegetarian cheese.",
+      "ingredients": "Durum-wheat penne with roasted courgette, capsicum, cherry tomatoes, garlic and basil in a tomato sauce, finished with vegetarian hard cheese made from milk.",
+      "allergens": [
+        "Wheat",
+        "Gluten",
+        "Milk"
+      ]
+    },
+    {
+      "menuItemId": 8,
+      "name": "Tiramisu",
+      "description": "Espresso-soaked sponge with mascarpone and cocoa.",
+      "ingredients": "Espresso-soaked wheat sponge fingers layered with mascarpone, whipped egg and cocoa.",
+      "allergens": [
+        "Wheat",
+        "Gluten",
+        "Milk",
+        "Egg"
+      ]
+    },
+    {
+      "menuItemId": 9,
+      "name": "Ice Cream",
+      "description": "Two scoops of classic vanilla ice cream.",
+      "ingredients": "Two scoops of vanilla ice cream made with cream, milk, egg yolk and vanilla, served in a bowl.",
+      "allergens": [
+        "Milk",
+        "Egg"
+      ],
+      "allergenNotes": "Other flavours, toppings and cones can introduce additional allergens; confirm any changes with staff."
+    },
+    {
+      "menuItemId": 10,
+      "name": "Garlic Bread",
+      "description": "Toasted baguette with garlic butter and parsley.",
+      "ingredients": "Warm wheat baguette spread with garlic butter and parsley, toasted until golden.",
+      "allergens": [
+        "Wheat",
+        "Gluten",
+        "Milk"
+      ]
+    },
+    {
+      "menuItemId": 11,
+      "name": "Fries",
+      "description": "Golden potato fries finished with sea salt.",
+      "ingredients": "Crisp potato fries cooked in sunflower oil and finished with sea salt.",
+      "allergens": [],
+      "allergenNotes": "Coatings, seasoning and shared frying oil must be checked with the kitchen; do not assume the fries are gluten-free."
+    },
+    {
+      "menuItemId": 12,
+      "name": "Coffee",
+      "description": "Freshly brewed black coffee, with optional milk.",
+      "ingredients": "Freshly brewed black coffee made with roasted coffee beans and water; milk is optional.",
+      "allergens": [],
+      "allergenNotes": "Adding dairy milk introduces milk. Plant-based milks may contain soy, oats, gluten or specific tree nuts depending on the product. Confirm the selected milk and shared steam-wand handling with staff."
+    },
+    {
+      "menuItemId": 13,
+      "name": "Oysters Kilpatrick",
+      "description": "Grilled oysters with smoky bacon and a tangy savoury sauce.",
+      "ingredients": "Oysters grilled in their shells with smoky bacon and a house Worcestershire-style sauce made with anchovies, tamarind, vinegar and spices.",
+      "allergens": [
+        "Molluscs",
+        "Fish"
+      ],
+      "allergenNotes": "The sauce formulation and bacon supplier can introduce additional allergens; confirm the products used with staff."
+    },
+    {
+      "menuItemId": 14,
+      "name": "Calamari",
+      "description": "Crisp calamari with lemon and garlic aioli.",
+      "ingredients": "Tender squid dusted in seasoned wheat flour and fried until crisp, served with lemon and garlic aioli made with egg and mustard.",
+      "allergens": [
+        "Molluscs",
+        "Wheat",
+        "Gluten",
+        "Egg",
+        "Mustard"
+      ],
+      "allergenNotes": "Ask staff about shared frying oil."
+    },
+    {
+      "menuItemId": 15,
+      "name": "Pâté",
+      "description": "Smooth chicken-liver pate with toasted sourdough.",
+      "ingredients": "Smooth chicken-liver pâté blended with butter, cream, shallots and thyme, served with toasted wheat sourdough.",
+      "allergens": [
+        "Milk",
+        "Wheat",
+        "Gluten"
+      ]
+    },
+    {
+      "menuItemId": 16,
+      "name": "Ribeye Steak",
+      "description": "Grilled ribeye with herb butter, roast potatoes and vegetables.",
+      "ingredients": "Grilled ribeye steak finished with garlic and parsley butter, served with roasted potatoes and seasonal vegetables.",
+      "allergens": [
+        "Milk"
+      ]
+    },
+    {
+      "menuItemId": 17,
+      "name": "Lamb Rack",
+      "description": "Herb-crusted lamb rack with buttery mash and green beans.",
+      "ingredients": "Roasted lamb rack with a Dijon mustard, wheat-breadcrumb and rosemary crust, served with buttery potato mash and green beans.",
+      "allergens": [
+        "Wheat",
+        "Gluten",
+        "Mustard",
+        "Milk"
+      ]
+    },
+    {
+      "menuItemId": 18,
+      "name": "Salmon Fillet",
+      "description": "Pan-seared salmon with lemon-caper butter and seasonal greens.",
+      "ingredients": "Pan-seared salmon with lemon and caper butter, crushed potatoes and seasonal greens.",
+      "allergens": [
+        "Fish",
+        "Milk"
+      ]
+    },
+    {
+      "menuItemId": 19,
+      "name": "Duck Confit",
+      "description": "Crisp duck leg with roast potatoes, red cabbage and orange sauce.",
+      "ingredients": "Slow-cooked duck leg with crisp skin, duck-fat roasted potatoes, braised red cabbage and a fresh orange sauce.",
+      "allergens": [],
+      "allergenNotes": "The illustrative sauce uses fresh orange juice and duck cooking juices. Confirm any stock, glaze or sauce substitutions with staff."
+    },
+    {
+      "menuItemId": 20,
+      "name": "Vegetable Risotto",
+      "description": "Creamy mushroom, pea and asparagus risotto with vegetarian cheese.",
+      "ingredients": "Arborio rice with mushrooms, peas and asparagus, cooked in celery-based vegetable stock and finished with butter and vegetarian hard cheese made from milk.",
+      "allergens": [
+        "Milk",
+        "Celery"
+      ]
+    },
+    {
+      "menuItemId": 21,
+      "name": "Crème Brûlée",
+      "description": "Vanilla custard beneath a delicate caramelised sugar crust.",
+      "ingredients": "Baked vanilla custard made with cream and egg yolks, topped with a thin caramelised sugar crust.",
+      "allergens": [
+        "Milk",
+        "Egg"
+      ]
+    },
+    {
+      "menuItemId": 22,
+      "name": "Chocolate Lava Cake",
+      "description": "Warm chocolate cake with a molten centre and vanilla ice cream.",
+      "ingredients": "Warm dark-chocolate cake with a soft centre, made with butter, egg and wheat flour, served with vanilla ice cream. The demo chocolate contains soy lecithin.",
+      "allergens": [
+        "Wheat",
+        "Gluten",
+        "Milk",
+        "Egg",
+        "Soy"
+      ]
+    },
+    {
+      "menuItemId": 23,
+      "name": "Cheesecake",
+      "description": "Baked vanilla cheesecake with a biscuit base and berry compote.",
+      "ingredients": "Baked cream-cheese and vanilla cheesecake on a buttery wheat-biscuit base, finished with a berry compote.",
+      "allergens": [
+        "Wheat",
+        "Gluten",
+        "Milk",
+        "Egg"
+      ]
+    },
+    {
+      "menuItemId": 24,
+      "name": "Truffle Fries",
+      "description": "Golden fries with truffle-flavoured oil, Parmesan and parsley.",
+      "ingredients": "Golden potato fries tossed with truffle-flavoured olive oil, grated Parmesan and chopped parsley.",
+      "allergens": [
+        "Milk"
+      ],
+      "allergenNotes": "Ask staff about fry coatings, truffle-oil ingredients and shared frying oil."
+    },
+    {
+      "menuItemId": 25,
+      "name": "Espresso Martini",
+      "description": "Vodka, coffee liqueur and fresh espresso, shaken over ice.",
+      "ingredients": "Vodka, coffee liqueur, fresh espresso and sugar syrup, shaken over ice and finished with coffee beans; no cream or egg white in the demo recipe.",
+      "allergens": [],
+      "allergenNotes": "Contains alcohol. Coffee liqueur ingredients and supplier allergen information must be checked; the empty list is not an allergen-free claim."
+    },
+    {
+      "menuItemId": 26,
+      "name": "House Beer",
+      "description": "A crisp, refreshing lager with a clean malt finish.",
+      "ingredients": "A crisp house lager brewed with water, malted barley, hops and yeast.",
+      "allergens": [
+        "Barley",
+        "Gluten"
+      ],
+      "allergenNotes": "Contains alcohol. Confirm the brand and supplier information with staff."
+    },
+    {
+      "menuItemId": 27,
+      "name": "Craft Pale Ale",
+      "description": "A hop-forward pale ale with citrus and floral notes.",
+      "ingredients": "A hop-forward pale ale brewed with water, barley malt, wheat malt, hops and yeast, with citrus and floral notes.",
+      "allergens": [
+        "Barley",
+        "Wheat",
+        "Gluten"
+      ],
+      "allergenNotes": "Contains alcohol. Brewery recipes vary; confirm the current beer with staff."
+    },
+    {
+      "menuItemId": 28,
+      "name": "Stout",
+      "description": "Dark roasted malt with coffee and cocoa notes.",
+      "ingredients": "A dark stout brewed with roasted barley, barley malt, water, hops and yeast, with coffee and cocoa notes.",
+      "allergens": [
+        "Barley",
+        "Gluten"
+      ],
+      "allergenNotes": "Contains alcohol. Milk stouts can contain lactose from milk; confirm the actual stout with staff."
+    },
+    {
+      "menuItemId": 29,
+      "name": "Shiraz",
+      "description": "A red wine with dark-berry fruit and pepper notes.",
+      "ingredients": "Red wine made from Shiraz grapes, with dark-berry and pepper notes. The illustrative wine uses sulphite preservatives.",
+      "allergens": [
+        "Sulphites"
+      ],
+      "allergenNotes": "Contains alcohol. Confirm the bottle's sulphite declaration and any milk- or egg-based fining-agent declarations with staff."
+    },
+    {
+      "menuItemId": 30,
+      "name": "Chardonnay",
+      "description": "A white wine with stone-fruit and citrus notes.",
+      "ingredients": "White wine made from Chardonnay grapes, with stone-fruit and citrus notes. The illustrative wine uses sulphite preservatives.",
+      "allergens": [
+        "Sulphites"
+      ],
+      "allergenNotes": "Contains alcohol. Confirm the bottle's sulphite declaration and any milk- or egg-based fining-agent declarations with staff."
+    },
+    {
+      "menuItemId": 31,
+      "name": "Sauvignon Blanc",
+      "description": "A fresh white wine with citrus and herbaceous notes.",
+      "ingredients": "White wine made from Sauvignon Blanc grapes, with fresh citrus and herbaceous notes. The illustrative wine uses sulphite preservatives.",
+      "allergens": [
+        "Sulphites"
+      ],
+      "allergenNotes": "Contains alcohol. Confirm the bottle's sulphite declaration and any milk- or egg-based fining-agent declarations with staff."
+    },
+    {
+      "menuItemId": 32,
+      "name": "Whiskey",
+      "description": "Oak-aged whiskey, served neat or over ice.",
+      "ingredients": "A measure of oak-aged distilled whiskey, served neat or over ice.",
+      "allergens": [],
+      "allergenNotes": "Contains alcohol. Check the selected brand and any flavourings or mixers with staff; grain origin alone is not a verified allergen declaration for a distilled spirit."
+    },
+    {
+      "menuItemId": 33,
+      "name": "Vodka",
+      "description": "Unflavoured vodka, served neat or over ice.",
+      "ingredients": "A measure of unflavoured distilled vodka, served neat or over ice.",
+      "allergens": [],
+      "allergenNotes": "Contains alcohol. Brand, flavourings and any added mixers require supplier checks."
+    },
+    {
+      "menuItemId": 34,
+      "name": "Gin",
+      "description": "Juniper-led gin, served neat or over ice.",
+      "ingredients": "A measure of juniper-led distilled gin, served neat or over ice.",
+      "allergens": [],
+      "allergenNotes": "Contains alcohol. Botanicals vary by brand and can include specific nuts; confirm the gin and any mixer with staff."
+    },
+    {
+      "menuItemId": 35,
+      "name": "Rum",
+      "description": "Sugar-cane or molasses-based rum, served neat or over ice.",
+      "ingredients": "A measure of sugar-cane or molasses-based distilled rum, served neat or over ice.",
+      "allergens": [],
+      "allergenNotes": "Contains alcohol. Spiced or flavoured rum and any added mixers require supplier checks."
+    },
+    {
+      "menuItemId": 36,
+      "name": "Cocktail - Mojito",
+      "description": "White rum, fresh lime and mint, topped with soda.",
+      "ingredients": "White rum, fresh lime, mint and sugar, topped with soda water and served over ice.",
+      "allergens": [],
+      "allergenNotes": "Contains alcohol. Confirm the rum, any prepared syrups and substitutions with staff."
+    },
+    {
+      "menuItemId": 37,
+      "name": "Cocktail - Margarita",
+      "description": "Tequila, orange liqueur and lime with a salt rim.",
+      "ingredients": "Tequila, orange liqueur and freshly squeezed lime juice, shaken over ice and served with a salt rim.",
+      "allergens": [],
+      "allergenNotes": "Contains alcohol. Confirm the liqueur and any prepared cocktail mix with staff."
+    },
+    {
+      "menuItemId": 38,
+      "name": "Nuts Mix",
+      "description": "Roasted peanuts, almonds, cashews and walnuts with rosemary.",
+      "ingredients": "Roasted peanuts, almonds, cashews and walnuts tossed with olive oil, rosemary and sea salt.",
+      "allergens": [
+        "Peanuts",
+        "Almond",
+        "Cashew",
+        "Walnut"
+      ],
+      "allergenNotes": "Nut varieties and seasoning can change; confirm the current mix with staff."
+    },
+    {
+      "menuItemId": 39,
+      "name": "Olives",
+      "description": "Green and black olives with lemon, garlic and oregano.",
+      "ingredients": "Green and black olives marinated with olive oil, lemon zest, garlic and oregano.",
+      "allergens": [],
+      "allergenNotes": "Check the supplier's brine and preservative information, including sulphites where applicable."
+    }
+  ]
+}
