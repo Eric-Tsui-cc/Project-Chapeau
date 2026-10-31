@@ -12,7 +12,7 @@
 
 Chapeau started as an unfinished five-person university project: a WinForms restaurant POS connected to SQL Server. After the course ended I rebuilt it on my own as a web platform, and used it to work through the problems the old version never solved. The original WinForms code is still in the repo (`ChapeauUI/`, `ChapeauService/`, `ChapeauDAL/`, `ChapeauModel/`), so everything old and new is in one place.
 ## 🚀 Quick Start
-- **Live deployment:** [Guest menu](http://149.118.68.3/menu) · [Staff sign in](http://149.118.68.3/staff/login) — hosted on an Oracle Cloud VM with Docker Compose
+- **Live deployment:** [Guest menu](https://chapeau.erictsuicc.me/menu) · [Staff sign in](https://chapeau.erictsuicc.me/staff/login) — hosted on an Oracle Cloud VM with Docker Compose
 - **Offline demo:** `cd frontend && npm install && npm run demo`, then open http://localhost:5173/menu — no backend, the API calls are mocked in the browser
 
 > [!TIP]
