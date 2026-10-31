@@ -1,0 +1,385 @@
+{
+  "lang": "en",
+  "pageTitle": "Project Chapeau · Architecture",
+  "title": "{cy:PROJECT CHAPEAU} · Restaurant Ordering & Staff Operations",
+  "subtitle": "Source snapshot ab648f5 · Web rebuild · Deployment, backend modules and AI recommendations",
+  "width": 1280,
+  "layers": [
+    {
+      "id": "ui",
+      "label": "Browser UI",
+      "color": "blue"
+    },
+    {
+      "id": "svc",
+      "label": "Application & infrastructure",
+      "color": "cyan"
+    },
+    {
+      "id": "domain",
+      "label": "Domain definitions",
+      "color": "purple"
+    },
+    {
+      "id": "data",
+      "label": "Storage & static data",
+      "color": "green"
+    },
+    {
+      "id": "ext",
+      "label": "External service",
+      "color": "amber"
+    }
+  ],
+  "flows": [
+    {
+      "id": "http",
+      "label": "HTTP requests & responses",
+      "color": "cyan"
+    },
+    {
+      "id": "db",
+      "label": "Data reads & writes",
+      "color": "green"
+    },
+    {
+      "id": "dep",
+      "label": "Code dependency / data assembly",
+      "color": "purple",
+      "dash": true
+    },
+    {
+      "id": "ai",
+      "label": "Model requests & results",
+      "color": "amber"
+    }
+  ],
+  "groups": [
+    {
+      "label": "React 19 + TypeScript · Two entry points in one SPA",
+      "x": 24,
+      "y": 155,
+      "w": 1232,
+      "h": 165,
+      "color": "blue"
+    },
+    {
+      "label": ".NET 8 backend · Controllers coordinate business rules and EF Core queries",
+      "x": 24,
+      "y": 500,
+      "w": 1232,
+      "h": 525,
+      "color": "cyan"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "guest",
+      "short": "Guest UI",
+      "layer": "ui",
+      "x": 50,
+      "y": 185,
+      "w": 535,
+      "h": 110,
+      "title": "Guest UI · /menu",
+      "sub": "Public menu, basket, initial order and Ask Chapeau",
+      "lines": [
+        "No staff login; guests confirm suggested items in their basket"
+      ]
+    },
+    {
+      "id": "staff",
+      "short": "Staff UI",
+      "layer": "ui",
+      "x": 695,
+      "y": 185,
+      "w": 535,
+      "h": 110,
+      "title": "Staff UI · /staff/*",
+      "sub": "Role-specific workspaces for waiters, kitchen and bar",
+      "lines": [
+        "Tables & orders → Preparation → Serving → Checkout"
+      ]
+    },
+    {
+      "id": "nginx",
+      "short": "Nginx",
+      "layer": "svc",
+      "x": 50,
+      "y": 375,
+      "w": 1180,
+      "h": 90,
+      "title": "Nginx · Frontend container :80",
+      "sub": "Serves SPA assets and route fallback; proxies /api/* to api:8080"
+    },
+    {
+      "id": "api",
+      "short": "API controllers",
+      "layer": "svc",
+      "x": 50,
+      "y": 535,
+      "w": 750,
+      "h": 260,
+      "title": "Chapeau.Api · REST Controllers",
+      "sub": "Cookie auth + role checks + CSRF; assistant rate limit",
+      "rows": [
+        {
+          "name": "Auth / Table",
+          "desc": "PIN login, sessions, table management"
+        },
+        {
+          "name": "MenuItems / CustomerOrders",
+          "desc": "Menu, stock checks, guest ordering"
+        },
+        {
+          "name": "Orders / Kitchen / Bar / Bill",
+          "desc": "Preparation, serving, bills, table release"
+        },
+        {
+          "name": "Assistant",
+          "desc": "Load stocked menu → request suggestions"
+        }
+      ],
+      "footer": "Controllers enforce business rules; bills record payments received by staff."
+    },
+    {
+      "id": "core",
+      "short": "Core",
+      "layer": "domain",
+      "x": 920,
+      "y": 535,
+      "w": 310,
+      "h": 260,
+      "title": "Chapeau.Core",
+      "sub": "Entities, enums and assistant contracts",
+      "lines": [
+        "Table / Employee / MenuItem",
+        "Order → OrderItem / Bill",
+        "IAssistantService",
+        "Used by API and Infrastructure"
+      ]
+    },
+    {
+      "id": "ef",
+      "short": "EF Core",
+      "layer": "svc",
+      "x": 50,
+      "y": 885,
+      "w": 350,
+      "h": 110,
+      "title": "ChapeauDbContext · EF Core",
+      "sub": "Chapeau.Infrastructure / Data",
+      "lines": [
+        "Relations, indexes, seeds, async saves"
+      ]
+    },
+    {
+      "id": "assistant",
+      "short": "Assistant service",
+      "layer": "svc",
+      "x": 500,
+      "y": 885,
+      "w": 300,
+      "h": 110,
+      "title": "GeminiAssistantService",
+      "sub": "Stateless single-turn call · HttpClient",
+      "lines": [
+        "Enrich menu; parse structured results"
+      ]
+    },
+    {
+      "id": "details",
+      "short": "Menu details",
+      "layer": "data",
+      "x": 920,
+      "y": 885,
+      "w": 310,
+      "h": 110,
+      "title": "menu-details.json",
+      "sub": "Shared ingredients and allergen data",
+      "lines": [
+        "Bundled into SPA; also read by API"
+      ]
+    },
+    {
+      "id": "postgres",
+      "short": "PostgreSQL",
+      "layer": "data",
+      "x": 50,
+      "y": 1090,
+      "w": 350,
+      "h": 125,
+      "title": "PostgreSQL 16 · db:5432",
+      "sub": "Docker Compose · postgres-data volume",
+      "lines": [
+        "Tables, staff, menu, orders, items, bills",
+        "Chapeau.Migrations.Postgres"
+      ]
+    },
+    {
+      "id": "gemini",
+      "short": "Gemini API",
+      "layer": "ext",
+      "x": 500,
+      "y": 1090,
+      "w": 300,
+      "h": 125,
+      "title": "Google Gemini API",
+      "sub": "External model service over HTTPS",
+      "lines": [
+        "In: question + stocked menu + details",
+        "Out: reply + menuItemIds"
+      ]
+    },
+    {
+      "id": "sqlite",
+      "short": "SQLite",
+      "layer": "data",
+      "x": 50,
+      "y": 1310,
+      "w": 350,
+      "h": 110,
+      "title": "SQLite · Local development",
+      "sub": "Switched via DatabaseProvider",
+      "lines": [
+        "Chapeau.Infrastructure / Migrations"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "guest.b",
+      "to": "nginx.t@0.23",
+      "flow": "http",
+      "label": "Menu / orders / chat",
+      "labelPos": [
+        310,
+        340
+      ]
+    },
+    {
+      "from": "staff.b",
+      "to": "nginx.t@0.77",
+      "flow": "http",
+      "label": "Session / staff actions",
+      "labelPos": [
+        960,
+        340
+      ]
+    },
+    {
+      "from": "nginx.b@0.32",
+      "to": "api.t@0.5",
+      "flow": "http",
+      "label": "/api/* → api:8080",
+      "labelPos": [
+        440,
+        485
+      ]
+    },
+    {
+      "from": "api.r@0.4",
+      "to": "core.l@0.4",
+      "flow": "dep",
+      "label": "Types",
+      "labelPos": [
+        860,
+        620
+      ]
+    },
+    {
+      "from": "api.b@0.23",
+      "to": "ef.t",
+      "flow": "db",
+      "label": "Query / SaveChangesAsync",
+      "labelPos": [
+        220,
+        835
+      ]
+    },
+    {
+      "from": "api.b@0.8",
+      "to": "assistant.t",
+      "flow": "http",
+      "label": "Question + stocked menu",
+      "labelPos": [
+        650,
+        835
+      ]
+    },
+    {
+      "from": "details.l",
+      "to": "assistant.r",
+      "flow": "dep",
+      "label": "Details",
+      "labelPos": [
+        860,
+        928
+      ]
+    },
+    {
+      "from": "ef.b",
+      "to": "postgres.t",
+      "flow": "db",
+      "label": "Postgres provider",
+      "labelPos": [
+        225,
+        1045
+      ]
+    },
+    {
+      "from": "assistant.b",
+      "to": "gemini.t",
+      "flow": "ai",
+      "label": "HTTPS · JSON",
+      "arrow": "both",
+      "labelPos": [
+        650,
+        1045
+      ]
+    },
+    {
+      "from": "ef.l@0.5",
+      "to": "sqlite.l@0.5",
+      "flow": "db",
+      "rail": "x:12",
+      "label": "Development mode",
+      "labelPos": [
+        95,
+        1265
+      ]
+    }
+  ],
+  "notes": [
+    {
+      "x": 460,
+      "y": 1280,
+      "w": 770,
+      "text": "{b:Runtime boundaries}  Server Compose: Nginx + API + PostgreSQL.\nAI suggests dishes; guests submit orders through the order endpoint.\nMenu details also power SPA dish descriptions, as noted in the data node."
+    },
+    {
+      "x": 50,
+      "y": 1470,
+      "w": 1180,
+      "text": "{b:Scope}  Current Web rebuild; DTO and individual page details omitted.\nLegacy ChapeauUI / ChapeauService / ChapeauDAL / ChapeauModel are retained for comparison and are outside this runtime.\nThe offline demo uses an in-browser mock API."
+    },
+    {
+      "x": 50,
+      "y": 1545,
+      "w": 1180,
+      "text": "{dim:Sources: README.md, compose.server.yaml, frontend/nginx.conf, Program.cs, controllers, ChapeauDbContext and GeminiAssistantService.\nWire animations illustrate source-backed exchanges; they are not live production telemetry.}"
+    }
+  ],
+  "log": {
+    "title": "Illustrative data flow · Based on source relationships",
+    "live": {
+      "rows": 5
+    },
+    "y": 1615
+  },
+  "footer": {
+    "cwd": "Project-Chapeau",
+    "cmd": "docker compose -f compose.local.yaml up -d --build",
+    "note": "Repository local-stack command; requires a Gemini API key. Shown for reference only."
+  }
+}
