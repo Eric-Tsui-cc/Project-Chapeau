@@ -32,7 +32,7 @@ Chapeau started as an unfinished five-person university project: a WinForms rest
 
 Browse the public menu at `/menu`, add dishes with per-line notes, and submit the first order to a table opened by a waiter. Ask Chapeau offers menu suggestions alongside the basket.
 
-![Guest workflow: browsing the menu, adding dishes to the basket and submitting an order](docs/images/customer%20work-flow.gif)
+![Guest workflow: browsing the menu, adding dishes to the basket and submitting an order](docs/images/customer-workflow-zoom.gif)
 
 <details>
 <summary>View menu and assistant screenshots</summary>
@@ -48,7 +48,7 @@ Browse the public menu at `/menu`, add dishes with per-line notes, and submit th
 
 Waiters manage tables and orders; the kitchen and bar have separate preparation queues. Once every item is served, checkout records the payment and frees the table.
 
-![Staff workflow: managing an order through preparation, service and checkout](docs/images/employee%20work-flow.gif)
+![Staff workflow: managing an order through preparation, service and checkout](docs/images/employee-workflow-zoom.gif)
 
 <details>
 <summary>View table overview and kitchen screenshots</summary>
@@ -174,7 +174,7 @@ Guest orders handle failure honestly. If the API answers, the guest sees submitt
 
 ![Deployment architecture: a React browser client connects to Nginx, the .NET 8 API and PostgreSQL run in Docker Compose on an Oracle Cloud VM, and the API calls Gemini over HTTPS](docs/images/architecture.svg)
 
-[Editable Excalidraw source](docs/images/Architecture.excalidraw)
+[Explore the interactive architecture diagram](https://chapeau.erictsuicc.me/architecture/)
 
 Docker Compose runs PostgreSQL, the API, and the Nginx-served frontend. Development uses SQLite and switches to Postgres through a `DatabaseProvider` setting. SQLite migrations live in `Chapeau.Infrastructure`; PostgreSQL migrations live in `Chapeau.Migrations.Postgres`. Guest menu, ordering and assistant endpoints allow anonymous access; the assistant has a request rate limit. Staff operations require authentication, with role checks on waiter, kitchen and bar endpoints.
 
